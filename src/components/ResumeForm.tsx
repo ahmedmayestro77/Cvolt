@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getResumeFormSchema, ResumeFormValues } from '@/lib/resumeSchema';
 import { useTranslation } from 'react-i18next';
 import { useResumes, Resume } from '@/hooks/use-resumes';
-import { Loader2, Wand2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ResumeStepper from '@/components/ResumeStepper';
 import PersonalDetailsStep from '@/components/resume-form-steps/PersonalDetailsStep';
@@ -16,7 +16,6 @@ import EducationStep from '@/components/resume-form-steps/EducationStep';
 import SkillsStep from '@/components/resume-form-steps/SkillsStep';
 import ResumePreview from '@/components/ResumePreview';
 import { showError } from '@/utils/toast';
-import AIResumePromptDialog from './AIResumePromptDialog';
 
 interface ResumeFormProps {
   mode: 'create' | 'edit';
@@ -27,11 +26,9 @@ interface ResumeFormProps {
 const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const location = useLocation();
   const [searchParams] = useSearchParams();
   const { useAddResume, useUpdateResume } = useResumes();
   const [currentStep, setCurrentStep] = useState(0);
-  const [isAiDialogOpen, setIsAiDialogOpen] = useState(false);
 
   const addResumeMutation = useAddResume();
   const updateResumeMutation = useUpdateResume();
@@ -57,12 +54,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }
       form.reset(resumeToEdit);
     }
   }, [resumeToEdit, form]);
-
-  useEffect(() => {
-    if (location.state?.openAiDialog) {
-      setIsAiDialogOpen(true);
-    }
-  }, [location.state]);
 
   useEffect(() => {
     if (mode === 'edit' && !isLoading && !resumeToEdit) {
@@ -91,10 +82,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }
     setCurrentStep(prev => prev - 1);
   };
 
-  const handleOpenAiDialog = () => {
-    setIsAiDialogOpen(true);
-  };
-
   const onSubmit = (values: ResumeFormValues) => {
     if (mode === 'create') {
       addResumeMutation.mutate({ resumeData: values, templateSlug }, {
@@ -116,70 +103,52 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }
   }
 
   return (
-    <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
-        <div className="lg:overflow-y-auto">
-          <Card className="max-w-4xl mx-auto">
-            <CardHeader>
-              <div className="flex justify-center mb-8 pt-4">
-                <ResumeStepper steps={steps} currentStep={currentStep} />
-              </div>
-              <div className="flex justify-between items-center">
-                <CardTitle className="text-center text-2xl flex-grow">{steps[currentStep].name}</CardTitle>
-                {mode === 'create' && (
-                  <Button variant="outline" size="sm" onClick={handleOpenAiDialog} className="gap-2">
-                    <Wand2 className="h-4 w-4 text-primary" />
-                    {t('aiGenerator.generateButton')}
-                  </Button>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent>
-              <FormProvider {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                  <div className="min-h-[300px]">
-                    {steps[currentStep].component}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
+      <div className="lg:overflow-y-auto">
+        <Card className="max-w-4xl mx-auto">
+          <CardHeader>
+            <div className="flex justify-center mb-8 pt-4">
+              <ResumeStepper steps={steps} currentStep={currentStep} />
+            </div>
+            <CardTitle className="text-center text-2xl">{steps[currentStep].name}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <FormProvider {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <div className="min-h-[300px]">
+                  {steps[currentStep].component}
+                </div>
+                <div className="flex justify-between items-center pt-4 border-t">
+                  <div>
+                    {currentStep > 0 && (
+                      <Button type="button" variant="outline" onClick={handlePrevStep}>
+                        {t('resumeForm.previousButton')}
+                      </Button>
+                    )}
                   </div>
-                  <div className="flex justify-between items-center pt-4 border-t">
-                    <div>
-                      {currentStep > 0 && (
-                        <Button type="button" variant="outline" onClick={handlePrevStep}>
-                          {t('resumeForm.previousButton')}
-                        </Button>
-                      )}
-                    </div>
-                    <div>
-                      {currentStep < steps.length - 1 && (
-                        <Button type="button" onClick={handleNextStep}>
-                          {t('resumeForm.nextButton')}
-                        </Button>
-                      )}
-                      {currentStep === steps.length - 1 && (
-                        <Button type="submit" disabled={isSubmitting}>
-                          {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                          {mode === 'create' ? t('resumeForm.createButton') : t('resumeForm.updateButton')}
-                        </Button>
-                      )}
-                    </div>
+                  <div>
+                    {currentStep < steps.length - 1 && (
+                      <Button type="button" onClick={handleNextStep}>
+                        {t('resumeForm.nextButton')}
+                      </Button>
+                    )}
+                    {currentStep === steps.length - 1 && (
+                      <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {mode === 'create' ? t('resumeForm.createButton') : t('resumeForm.updateButton')}
+                      </Button>
+                    )}
                   </div>
-                </form>
-              </FormProvider>
-            </CardContent>
-          </Card>
-        </div>
-        <div className="hidden lg:flex justify-center items-start py-8">
-          <ResumePreview resume={watchedValues} templateSlug={templateSlug} />
-        </div>
+                </div>
+              </form>
+            </FormProvider>
+          </CardContent>
+        </Card>
       </div>
-      <AIResumePromptDialog
-        isOpen={isAiDialogOpen}
-        onClose={() => setIsAiDialogOpen(false)}
-        onGenerate={(data) => {
-          form.reset(data);
-          setIsAiDialogOpen(false);
-        }}
-      />
-    </>
+      <div className="hidden lg:flex justify-center items-start py-8">
+        <ResumePreview resume={watchedValues} templateSlug={templateSlug} />
+      </div>
+    </div>
   );
 };
 

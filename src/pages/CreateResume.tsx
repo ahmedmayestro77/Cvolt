@@ -9,6 +9,8 @@ import { useResumes } from '@/hooks/use-resumes';
 import ResumeForm from '@/components/ResumeForm';
 import { useAuth } from '@/hooks/use-auth';
 import { showError } from '@/utils/toast';
+import AIResumePromptDialog from '@/components/AIResumePromptDialog';
+import { ResumeFormValues } from '@/lib/resumeSchema';
 
 const CreateResume = () => {
   const { t } = useTranslation();
@@ -16,12 +18,12 @@ const CreateResume = () => {
   const { useGetResumes } = useResumes();
   const { data: resumes, isLoading: resumesLoading } = useGetResumes();
   const { supabase } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const [isParsing, setIsParsing] = useState(false);
-  const [parsedData, setParsedData] = useState(null);
+  const [parsedData, setParsedData] = useState<ResumeFormValues | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [isAiDialogOpen, setIsAiDialogOpen] = useState(false);
 
   const resumeToEdit = location.state?.resumeToEdit;
 
@@ -60,6 +62,12 @@ const CreateResume = () => {
     setShowForm(true);
   };
 
+  const handleAiGenerate = (data: ResumeFormValues) => {
+    setParsedData(data);
+    setShowForm(true);
+    setIsAiDialogOpen(false);
+  };
+
   if (showForm) {
     return <ResumeForm mode="create" resumeToEdit={parsedData || resumeToEdit} />;
   }
@@ -86,56 +94,75 @@ const CreateResume = () => {
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold">How would you like to start?</h1>
-        <p className="text-lg text-muted-foreground mt-2">Choose an option below to begin creating your resume.</p>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader>
-            <div className="flex items-center gap-4">
-              <FileUp className="h-10 w-10 text-primary" />
-              <div>
-                <CardTitle>Upload Existing Resume</CardTitle>
-                <CardDescription>Save time. We'll parse your PDF.</CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full" onClick={() => document.getElementById('resume-upload-input')?.click()} disabled={isParsing}>
-              {isParsing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileUp className="mr-2 h-4 w-4" />}
-              Upload PDF
-            </Button>
-            <input type="file" id="resume-upload-input" className="hidden" accept=".pdf" onChange={handleFileChange} />
-          </CardContent>
-        </Card>
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader>
-            <div className="flex items-center gap-4">
-              <FilePlus className="h-10 w-10 text-primary" />
-              <div>
-                <CardTitle>Start from Scratch</CardTitle>
-                <CardDescription>Fill out our easy-to-use form.</CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full" variant="outline" onClick={handleShowManualForm}>
-              <FilePlus className="mr-2 h-4 w-4" />
-              Create Manually
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-       <div className="text-center mt-8">
-          <p className="text-muted-foreground">Or, let our AI build it for you from a prompt.</p>
-          <Button variant="link" onClick={() => navigate('/create', { state: { openAiDialog: true } })}>
-            <Wand2 className="mr-2 h-4 w-4" />
-            Generate with AI Prompt
-          </Button>
+    <>
+      <div className="container mx-auto p-6">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold">How would you like to start?</h1>
+          <p className="text-lg text-muted-foreground mt-2">Choose an option below to begin creating your resume.</p>
         </div>
-    </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <Card className="hover:shadow-lg transition-shadow flex flex-col">
+            <CardHeader>
+              <div className="flex items-center gap-4">
+                <FileUp className="h-10 w-10 text-primary" />
+                <div>
+                  <CardTitle>Upload Existing Resume</CardTitle>
+                  <CardDescription>Save time. We'll parse your PDF.</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-grow flex items-end">
+              <Button className="w-full" onClick={() => document.getElementById('resume-upload-input')?.click()} disabled={isParsing}>
+                {isParsing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileUp className="mr-2 h-4 w-4" />}
+                Upload PDF
+              </Button>
+              <input type="file" id="resume-upload-input" className="hidden" accept=".pdf" onChange={handleFileChange} />
+            </CardContent>
+          </Card>
+          
+          <Card className="hover:shadow-lg transition-shadow flex flex-col border-2 border-primary">
+            <CardHeader>
+              <div className="flex items-center gap-4">
+                <Wand2 className="h-10 w-10 text-primary" />
+                <div>
+                  <CardTitle>Generate with AI</CardTitle>
+                  <CardDescription>Describe your ideal resume and let AI write it.</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-grow flex items-end">
+              <Button className="w-full" onClick={() => setIsAiDialogOpen(true)}>
+                <Wand2 className="mr-2 h-4 w-4" />
+                Use AI Generator
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow flex flex-col">
+            <CardHeader>
+              <div className="flex items-center gap-4">
+                <FilePlus className="h-10 w-10 text-primary" />
+                <div>
+                  <CardTitle>Start from Scratch</CardTitle>
+                  <CardDescription>Fill out our easy-to-use form step-by-step.</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-grow flex items-end">
+              <Button className="w-full" variant="outline" onClick={handleShowManualForm}>
+                <FilePlus className="mr-2 h-4 w-4" />
+                Create Manually
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+      <AIResumePromptDialog
+        isOpen={isAiDialogOpen}
+        onClose={() => setIsAiDialogOpen(false)}
+        onGenerate={handleAiGenerate}
+      />
+    </>
   );
 };
 
