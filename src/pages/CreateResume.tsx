@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2, Star } from 'lucide-react';
@@ -7,18 +7,22 @@ import { useTranslation } from 'react-i18next';
 import { useProfile } from '@/hooks/use-profile';
 import { useResumes } from '@/hooks/use-resumes';
 import ResumeForm from '@/components/ResumeForm';
+import { ResumeFormValues } from '@/lib/resumeSchema';
 
 const CreateResume = () => {
   const { t } = useTranslation();
   const { data: profile, isLoading: profileLoading } = useProfile();
   const { useGetResumes } = useResumes();
   const { data: resumes, isLoading: resumesLoading } = useGetResumes();
+  const location = useLocation();
+
+  const aiGeneratedData = location.state?.aiGeneratedData as ResumeFormValues | undefined;
 
   if (resumesLoading || profileLoading) {
     return <div className="flex justify-center items-center h-screen"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
 
-  if (profile?.subscription_status === 'free' && resumes && resumes.length >= 1) {
+  if (!aiGeneratedData && profile?.subscription_status === 'free' && resumes && resumes.length >= 1) {
     return (
       <div className="container mx-auto p-6 text-center">
         <Card className="max-w-lg mx-auto mt-10">
@@ -35,7 +39,7 @@ const CreateResume = () => {
     );
   }
 
-  return <ResumeForm mode="create" />;
+  return <ResumeForm mode="create" resumeToEdit={aiGeneratedData} />;
 };
 
 export default CreateResume;

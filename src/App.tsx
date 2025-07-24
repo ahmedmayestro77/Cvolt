@@ -11,7 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Templates from "./pages/Templates";
 import CreateResume from "./pages/CreateResume";
 import MyResumes from "./pages/MyResumes";
-import MyCoverLetters from "./pages/MyCoverLetters"; // Import new page
+import MyCoverLetters from "./pages/MyCoverLetters";
 import ATSAnalyzer from "./pages/ATSAnalyzer";
 import Pricing from "./pages/Pricing";
 import Header from "./components/Header";
@@ -20,6 +20,7 @@ import Contact from "./pages/Contact";
 import AuthPage from "./pages/AuthPage";
 import AppLayout from "./components/AppLayout";
 import { Footer } from "./components/Footer";
+import AIResumeGenerator from "./pages/AIResumeGenerator";
 
 const queryClient = new QueryClient();
 
@@ -44,12 +45,13 @@ const App = () => (
                 <Route path="/templates" element={<Templates />} />
                 <Route path="/create" element={<CreateResume />} />
                 <Route path="/my-resumes" element={<MyResumes />} />
-                <Route path="/my-cover-letters" element={<MyCoverLetters />} /> {/* Add new route */}
+                <Route path="/my-cover-letters" element={<MyCoverLetters />} />
                 <Route path="/edit-resume/:id" element={<EditResume />} />
                 <Route path="/pricing" element={<Pricing />} />
                 
                 {/* Pro-only Routes inside AppLayout */}
                 <Route element={<ProRoute />}>
+                  <Route path="/ai-resume-generator" element={<AIResumeGenerator />} />
                   <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
                 </Route>
               </Route>

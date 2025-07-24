@@ -19,7 +19,7 @@ import { showError } from '@/utils/toast';
 
 interface ResumeFormProps {
   mode: 'create' | 'edit';
-  resumeToEdit?: Resume;
+  resumeToEdit?: Resume | ResumeFormValues;
   isLoading?: boolean;
 }
 
@@ -34,7 +34,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }
   const updateResumeMutation = useUpdateResume();
 
   const isSubmitting = addResumeMutation.isPending || updateResumeMutation.isPending;
-  const templateSlug = resumeToEdit?.template_slug || searchParams.get('template') || 'modern-minimalist';
+  const templateSlug = (resumeToEdit as Resume)?.template_slug || searchParams.get('template') || 'modern-minimalist';
 
   const resumeFormSchema = getResumeFormSchema(t);
 
@@ -87,8 +87,8 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }
       addResumeMutation.mutate({ resumeData: values, templateSlug }, {
         onSuccess: () => navigate('/my-resumes'),
       });
-    } else if (resumeToEdit) {
-      updateResumeMutation.mutate({ id: resumeToEdit.id, updatedValues: values, templateSlug }, {
+    } else if (resumeToEdit && 'id' in resumeToEdit) {
+      updateResumeMutation.mutate({ id: (resumeToEdit as Resume).id, updatedValues: values, templateSlug }, {
         onSuccess: () => navigate('/my-resumes'),
       });
     }
