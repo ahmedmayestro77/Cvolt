@@ -1,68 +1,53 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { showSuccess, showError } from '@/utils/toast';
 import { useResumes } from '@/hooks/use-resumes';
 import { useNavigate, useParams } from 'react-router-dom';
 import ResumeForm, { getResumeFormSchema, ResumeFormValues } from '@/components/ResumeForm';
 import { useTranslation } from 'react-i18next';
 import { Loader2 } from 'lucide-react';
+import { showError } from '@/utils/toast';
 
 const EditResume = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
-  const { getResumeById, updateResume } = useResumes();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const { useGetResumeById, useUpdateResume } = useResumes();
+
+  const { data: resumeToEdit, isLoading: loading } = useGetResumeById(id);
+  const updateResumeMutation = useUpdateResume();
 
   const resumeFormSchema = getResumeFormSchema(t);
 
   const form = useForm<ResumeFormValues>({
     resolver: zodResolver(resumeFormSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
-      phone: "",
-      linkedin: "",
-      summary: "",
-      experience: "",
-      education: "",
-      skills: "",
+      fullName: "", email: "", phone: "", linkedin: "",
+      summary: "", experience: "", education: "", skills: "",
     },
   });
 
   useEffect(() => {
-    if (!id) {
-      navigate('/my-resumes');
-      return;
+    if (resumeToEdit) {
+      form.reset(resumeToEdit);
     }
-
-    const fetchResume = async () => {
-      setLoading(true);
-      const resumeToEdit = await getResumeById(id);
-      if (resumeToEdit) {
-        form.reset(resumeToEdit);
-      } else {
-        showError(t('editResume.notFound'));
-        navigate('/my-resumes');
-      }
-      setLoading(false);
-    };
-
-    fetchResume();
-  }, [id, getResumeById, form, navigate, t]);
+  }, [resumeToEdit, form]);
+  
+  useEffect(() => {
+    if (!loading && !resumeToEdit) {
+      showError(t('editResume.notFound'));
+      navigate('/my-resumes');
+    }
+  }, [loading, resumeToEdit, navigate, t]);
 
   const onSubmit = async (values: ResumeFormValues) => {
     if (!id) return;
-    try {
-      await updateResume(id, values);
-      showSuccess(t('editResume.updateSuccess'));
-      navigate('/my-resumes');
-    } catch (error) {
-      console.error("Failed to update resume:", error);
-      showError(t('editResume.updateError'));
-    }
+    updateResumeMutation.mutate({ id, updatedValues: values }, {
+      onSuccess: () => {
+        navigate('/my-resumes');
+      }
+    });
   };
 
   if (loading) {
@@ -90,7 +75,7 @@ const EditResume = () => {
             form={form}
             onSubmit={onSubmit}
             buttonText={t('resumeForm.updateButton')}
-            isSubmitting={form.formState.isSubmitting}
+            isSubmitting={updateResumeMutation.isPending}
           />
         </CardContent>
       </Card>

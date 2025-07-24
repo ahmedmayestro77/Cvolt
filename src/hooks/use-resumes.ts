@@ -1,16 +1,17 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ResumeFormValues } from '@/components/ResumeForm';
 import { useAuth } from './use-auth';
-import { showError } from '@/utils/toast';
+import { showError, showSuccess } from '@/utils/toast';
 
 // The shape of the resume data in the frontend
 export interface Resume extends ResumeFormValues {
   id: string;
   last_modified: string;
+  created_at: string;
+  user_id: string;
 }
 
 // The shape of the data to be inserted/updated in Supabase
-// Using snake_case to match database columns
 type ResumePayload = {
   full_name: string;
   email: string;
@@ -22,111 +23,60 @@ type ResumePayload = {
   skills: string;
 };
 
+// Helper to map db snake_case to frontend camelCase
+const fromSupabase = (dbResume: any): Resume => ({
+  id: dbResume.id,
+  fullName: dbResume.full_name,
+  email: dbResume.email,
+  phone: dbResume.phone,
+  linkedin: dbResume.linkedin,
+  summary: dbResume.summary,
+  experience: dbResume.experience,
+  education: dbResume.education,
+  skills: dbResume.skills,
+  last_modified: dbResume.last_modified,
+  created_at: dbResume.created_at,
+  user_id: dbResume.user_id,
+});
+
+// Helper to map frontend camelCase to db snake_case
+const toSupabase = (resume: ResumeFormValues): ResumePayload => ({
+  full_name: resume.fullName,
+  email: resume.email,
+  phone: resume.phone,
+  linkedin: resume.linkedin,
+  summary: resume.summary,
+  experience: resume.experience,
+  education: resume.education,
+  skills: resume.skills,
+});
+
+
 export const useResumes = () => {
   const { supabase, session } = useAuth();
-  const [resumes, setResumes] = useState<Resume[]>([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
 
-  const fetchResumes = useCallback(async () => {
-    if (!session) {
-      setResumes([]);
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    try {
+  // Query to fetch all resumes for the current user
+  const useGetResumes = () => useQuery<Resume[], Error>({
+    queryKey: ['resumes', session?.user?.id],
+    queryFn: async () => {
+      if (!session) return [];
       const { data, error } = await supabase
         .from('resumes')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) {
-        throw error;
-      }
-      
-      // Map from snake_case (db) to camelCase (js)
-      const formattedData = data.map(r => ({ ...r, fullName: r.full_name, lastModified: r.last_modified }))
-      setResumes(formattedData || []);
-    } catch (error) {
-      showError('Failed to fetch resumes.');
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [supabase, session]);
+      if (error) throw error;
+      return data.map(fromSupabase);
+    },
+    enabled: !!session,
+  });
 
-  useEffect(() => {
-    fetchResumes();
-  }, [fetchResumes]);
-
-  const addResume = async (newResume: ResumeFormValues) => {
-    if (!session) throw new Error('User not authenticated');
-
-    const payload: ResumePayload = {
-      full_name: newResume.fullName,
-      email: newResume.email,
-      phone: newResume.phone,
-      linkedin: newResume.linkedin,
-      summary: newResume.summary,
-      experience: newResume.experience,
-      education: newResume.education,
-      skills: newResume.skills,
-    };
-
-    const { data, error } = await supabase
-      .from('resumes')
-      .insert(payload)
-      .select()
-      .single();
-
-    if (error) throw error;
-    
-    await fetchResumes(); // Re-fetch to update the list
-    return data;
-  };
-
-  const updateResume = async (id: string, updatedValues: ResumeFormValues) => {
-    if (!session) throw new Error('User not authenticated');
-
-    const payload: ResumePayload = {
-      full_name: updatedValues.fullName,
-      email: updatedValues.email,
-      phone: updatedValues.phone,
-      linkedin: updatedValues.linkedin,
-      summary: updatedValues.summary,
-      experience: updatedValues.experience,
-      education: updatedValues.education,
-      skills: updatedValues.skills,
-    };
-
-    const { data, error } = await supabase
-      .from('resumes')
-      .update({ ...payload, last_modified: new Date().toISOString() })
-      .eq('id', id)
-      .select()
-      .single();
-      
-    if (error) throw error;
-
-    await fetchResumes(); // Re-fetch to update the list
-    return data;
-  };
-
-  const deleteResume = async (id: string) => {
-    if (!session) throw new Error('User not authenticated');
-
-    const { error } = await supabase.from('resumes').delete().eq('id', id);
-    if (error) throw error;
-
-    setResumes((prevResumes) => prevResumes.filter((resume) => resume.id !== id));
-  };
-
-  const getResumeById = async (id: string) => {
-    if (!session) throw new Error('User not authenticated');
-    
-    setLoading(true);
-    try {
+  // Query to fetch a single resume by ID
+  const useGetResumeById = (id: string | undefined) => useQuery<Resume | undefined, Error>({
+    queryKey: ['resumes', id],
+    queryFn: async () => {
+      if (!id || !session) return undefined;
       const { data, error } = await supabase
         .from('resumes')
         .select('*')
@@ -134,24 +84,80 @@ export const useResumes = () => {
         .single();
 
       if (error) throw error;
-      
-      // Map from snake_case (db) to camelCase (js)
-      return { ...data, fullName: data.full_name, lastModified: data.last_modified };
-    } catch (error) {
-      showError('Failed to fetch resume details.');
+      return fromSupabase(data);
+    },
+    enabled: !!id && !!session,
+  });
+
+  // Mutation to add a new resume
+  const useAddResume = () => useMutation({
+    mutationFn: async (newResume: ResumeFormValues) => {
+      if (!session) throw new Error('User not authenticated');
+      const { data, error } = await supabase
+        .from('resumes')
+        .insert(toSupabase(newResume))
+        .select()
+        .single();
+      if (error) throw error;
+      return fromSupabase(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['resumes', session?.user?.id] });
+      showSuccess('Resume created successfully!');
+    },
+    onError: (error) => {
+      showError('Failed to create resume.');
       console.error(error);
-      return undefined;
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+  });
+
+  // Mutation to update an existing resume
+  const useUpdateResume = () => useMutation({
+    mutationFn: async ({ id, updatedValues }: { id: string, updatedValues: ResumeFormValues }) => {
+      if (!session) throw new Error('User not authenticated');
+      const payload = toSupabase(updatedValues);
+      const { data, error } = await supabase
+        .from('resumes')
+        .update({ ...payload, last_modified: new Date().toISOString() })
+        .eq('id', id)
+        .select()
+        .single();
+      if (error) throw error;
+      return fromSupabase(data);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['resumes', session?.user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['resumes', data.id] });
+      showSuccess('Resume updated successfully!');
+    },
+    onError: (error) => {
+      showError('Failed to update resume.');
+      console.error(error);
+    },
+  });
+
+  // Mutation to delete a resume
+  const useDeleteResume = () => useMutation({
+    mutationFn: async (id: string) => {
+      if (!session) throw new Error('User not authenticated');
+      const { error } = await supabase.from('resumes').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['resumes', session?.user?.id] });
+      showSuccess('Resume deleted successfully.');
+    },
+    onError: (error) => {
+      showError('Failed to delete resume.');
+      console.error(error);
+    },
+  });
 
   return {
-    resumes,
-    loading,
-    addResume,
-    updateResume,
-    deleteResume,
-    getResumeById,
+    useGetResumes,
+    useGetResumeById,
+    useAddResume,
+    useUpdateResume,
+    useDeleteResume,
   };
 };

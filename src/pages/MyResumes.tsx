@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { FileText, Edit, Download, Trash2, Loader2 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useResumes, Resume } from '@/hooks/use-resumes';
-import { showSuccess, showError } from '@/utils/toast';
 import { useTranslation } from 'react-i18next';
 import { createRoot } from 'react-dom/client';
 import html2canvas from 'html2canvas';
@@ -48,17 +47,13 @@ const ResumeItem: React.FC<ResumeItemProps> = ({ resume, onDelete, onDownload })
 
 const MyResumes = () => {
   const { t } = useTranslation();
-  const { resumes, deleteResume, loading } = useResumes();
+  const { useGetResumes, useDeleteResume } = useResumes();
+  const { data: resumes, isLoading } = useGetResumes();
+  const deleteResumeMutation = useDeleteResume();
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = (id: string) => {
     if (window.confirm(t('myResumes.deleteConfirm'))) {
-      try {
-        await deleteResume(id);
-        showSuccess(t('myResumes.deleteSuccess'));
-      } catch (error) {
-        console.error("Failed to delete resume:", error);
-        showError(t('myResumes.deleteError'));
-      }
+      deleteResumeMutation.mutate(id);
     }
   };
 
@@ -99,11 +94,11 @@ const MyResumes = () => {
         {t('myResumes.description')}
       </p>
 
-      {loading ? (
+      {isLoading ? (
         <div className="flex justify-center items-center py-10">
           <Loader2 className="h-8 w-8 animate-spin" />
         </div>
-      ) : resumes.length === 0 ? (
+      ) : !resumes || resumes.length === 0 ? (
         <div className="text-center py-10">
           <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
             {t('myResumes.noResumes')}

@@ -2,21 +2,22 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { showSuccess, showError } from '@/utils/toast';
-import { useResumes } from '@/hooks/use-resumes';
 import { useNavigate, Link } from 'react-router-dom';
 import ResumeForm, { getResumeFormSchema, ResumeFormValues } from '@/components/ResumeForm';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/use-auth';
+import { useResumes } from '@/hooks/use-resumes';
 import { Loader2, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const CreateResume = () => {
   const { t } = useTranslation();
-  const { addResume } = useResumes();
   const navigate = useNavigate();
   const { profile } = useAuth();
-  const { resumes, loading: resumesLoading } = useResumes();
+  const { useGetResumes, useAddResume } = useResumes();
+
+  const { data: resumes, isLoading: resumesLoading } = useGetResumes();
+  const addResumeMutation = useAddResume();
 
   const resumeFormSchema = getResumeFormSchema(t);
 
@@ -28,15 +29,12 @@ const CreateResume = () => {
     },
   });
 
-  const onSubmit = async (values: ResumeFormValues) => {
-    try {
-      await addResume(values);
-      showSuccess(t('createResume.createSuccess'));
-      navigate('/my-resumes');
-    } catch (error) {
-      console.error("Failed to create resume:", error);
-      showError(t('createResume.createError'));
-    }
+  const onSubmit = (values: ResumeFormValues) => {
+    addResumeMutation.mutate(values, {
+      onSuccess: () => {
+        navigate('/my-resumes');
+      },
+    });
   };
 
   if (resumesLoading) {
@@ -47,7 +45,7 @@ const CreateResume = () => {
     );
   }
 
-  if (profile?.subscription_status === 'free' && resumes.length >= 1) {
+  if (profile?.subscription_status === 'free' && resumes && resumes.length >= 1) {
     return (
       <div className="container mx-auto p-6 text-center">
         <Card className="max-w-lg mx-auto mt-10">
@@ -82,7 +80,7 @@ const CreateResume = () => {
             form={form}
             onSubmit={onSubmit}
             buttonText={t('resumeForm.createButton')}
-            isSubmitting={form.formState.isSubmitting}
+            isSubmitting={addResumeMutation.isPending}
           />
         </CardContent>
       </Card>

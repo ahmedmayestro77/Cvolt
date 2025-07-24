@@ -1,5 +1,11 @@
 {
   "brand": "CVOLT",
+  "index": {
+    "title": "Build Your Professional Resume in Minutes",
+    "subtitle": "Create a standout resume with our easy-to-use builder and professionally designed templates. Land your dream job faster.",
+    "ctaPrimary": "Get Started for Free",
+    "ctaSecondary": "Browse Templates"
+  },
   "header": {
     "dashboard": "Dashboard",
     "templates": "Templates",
@@ -8,203 +14,201 @@
     "pricing": "Pricing",
     "toggleMenu": "Toggle navigation menu"
   },
-  "index": {
-    "title": "CVOLT: Your Professional CV, Powered by AI",
-    "subtitle": "Create stunning resumes, optimize them for ATS, and track your job applications with ease.",
-    "ctaPrimary": "Get Started Now",
-    "ctaSecondary": "Browse Templates"
-  },
   "dashboard": {
     "title": "Dashboard",
+    "welcome": "Welcome back, {{name}}!",
+    "subtitle": "Here's your resume-building command center.",
+    "getStarted": "Ready to Get Started?",
     "create": "Create New Resume",
-    "createDescription": "Start building your resume from scratch or with a template.",
-    "startNow": "Start Now",
+    "createDescription": "Start from scratch or choose a template to begin your journey.",
+    "startNow": "Create a New Resume",
     "browseTemplates": "Browse Templates",
-    "browseTemplatesDescription": "Discover our wide range of professional templates.",
+    "browseTemplatesDescription": "Explore our library of professional resume templates.",
     "viewTemplates": "View Templates",
     "myResumes": "My Resumes",
-    "myResumesDescription": "Manage and edit your existing resumes.",
-    "viewResumes": "View Resumes",
-    "atsAnalyzer": "ATS & CVOLT-Score Analysis",
-    "atsAnalyzerDescription": "Optimize your resume to get past applicant tracking systems.",
-    "analyzeNow": "Analyze Now"
-  },
-  "myResumes": {
-    "title": "My Resumes",
-    "description": "Here you can manage all the resumes you have created.",
-    "noResumes": "You haven't created any resumes yet.",
-    "createFirst": "Start by creating a new resume",
-    "createNew": "Create a new resume",
-    "lastModified": "Last modified: {{date}}",
-    "edit": "Edit",
-    "download": "Download",
-    "delete": "Delete",
-    "deleteConfirm": "Are you sure you want to delete this resume?",
-    "deleteSuccess": "Resume deleted successfully!",
-    "deleteError": "Failed to delete resume. Please try again."
-  },
-  "resumeForm": {
-    "fullName": "Full Name",
-    "fullNamePlaceholder": "e.g., John Doe",
-    "email": "Email Address",
-    "emailPlaceholder": "example@domain.com",
-    "phone": "Phone Number (Optional)",
-    "phonePlaceholder": "+1 123 456 7890",
-    "linkedin": "LinkedIn Profile (Optional)",
-    "linkedinPlaceholder": "https://www.linkedin.com/in/yourprofile",
-    "summary": "Professional Summary",
-    "summaryPlaceholder": "Write a brief summary of your experience and career goals...",
-    "experience": "Work Experience",
-    "experiencePlaceholder": "List your work experience, starting with the most recent. (Company, Job Title, Dates, Responsibilities & Achievements)...",
-    "education": "Education",
-    "educationPlaceholder": "List your educational qualifications. (University, Major, Degree, Dates)...",
-    "skills": "Skills",
-    "skillsPlaceholder": "List your key skills, separated by a comma. (e.g., Project Management, Digital Marketing, Data Analysis)...",
-    "createButton": "Create Resume",
-    "updateButton": "Save Changes",
-    "validation": {
-      "fullNameRequired": "Full name is required.",
-      "invalidEmail": "Invalid email address.",
-      "invalidUrl": "Invalid LinkedIn URL.",
-      "summaryMin": "Summary must be at least 50 characters.",
-      "experienceMin": "Experience must be at least 50 characters.",
-      "educationMin": "Education must be at least 50 characters.",
-      "skillsRequired": "Skills are required."
-    }
-  },
-  "createResume": {
-    "title": "Create a New Resume",
-    "description": "Fill in the information below to create your resume.",
-    "cardTitle": "Your Information",
-    "cardDescription": "Start by filling in the basic details.",
-    "createSuccess": "Resume created successfully!",
-    "createError": "Failed to create resume. Please try again."
-  },
-  "editResume": {
-    "title": "Edit Resume",
-    "description": "Update your resume information.",
-    "cardTitle": "Your Information",
-    "cardDescription": "Edit the details as needed.",
-    "updateSuccess": "Resume updated successfully!",
-    "updateError": "Failed to update resume. Please try again.",
-    "notFound": "Resume not found.",
-    "loading": "Loading resume..."
-  },
-  "templates": {
-    "title": "Browse Templates",
-    "description": "Choose the template that best fits your style and industry.",
-    "proBadge": "Pro",
-    "useButton": "Use This Template",
-    "proUpsell": {
-      "title": "Want More Professional Templates?",
-      "description": "Upgrade to a Pro subscription to access over 20 exclusive templates and advanced features!",
-      "cta": "Explore Pro Plans"
-    },
-    "modernMinimalist": {
-      "name": "Modern Minimalist",
-      "description": "A clean, modern design that focuses on content."
-    },
-    "professionalClassic": {
-      "name": "Professional Classic",
-      "description": "A traditional, professional design suitable for all industries."
-    },
-    "creativePortfolio": {
-      "name": "Creative Portfolio",
-      "description": "Perfect for designers and artists to showcase their work."
-    },
-    "techSavvy": {
-      "name": "Tech Savvy",
-      "description": "A design that highlights technical skills and experience."
-    },
-    "academicResearch": {
-      "name": "Academic Research",
-      "description": "Structured for researchers and academics."
-    },
-    "executiveSummary": {
-      "name": "Executive Summary",
-      "description": "A concise and impactful executive summary."
-    }
+    "myResumesDescription": "View, edit, and manage all your saved resumes.",
+    "viewResumes": "Manage Resumes",
+    "viewAllResumes": "View All Resumes",
+    "atsAnalyzer": "ATS Analyzer",
+    "atsAnalyzerDescription": "Optimize your resume for Applicant Tracking Systems.",
+    "analyzeNow": "Analyze Resume",
+    "accountStatus": "Account Status",
+    "plan": "Current Plan",
+    "upgradeToPro": "Upgrade to Pro"
   },
   "ats": {
-    "title": "ATS & CVOLT-Score Analysis",
-    "description": "Optimize your resume to get past Applicant Tracking Systems (ATS) and increase your interview chances.",
+    "title": "ATS Resume Analyzer",
+    "description": "Paste your resume content below to see how it scores against Applicant Tracking Systems and get tips for improvement.",
     "uploadCard": {
-      "title": "Upload Your Resume",
-      "description": "Paste your resume text below or upload a file to get started.",
-      "placeholder": "Paste your resume text here...",
-      "button": "Analyze Resume"
+      "title": "Analyze Your Resume",
+      "description": "Paste your resume content into the text area below.",
+      "placeholder": "Paste your full resume text here...",
+      "button": "Analyze for ATS Compatibility"
     },
     "tipsCard": {
-      "title": "ATS Optimization Tips",
-      "description": "Learn how to make your resume ATS-friendly.",
-      "tip1": "Use relevant keywords from the job description.",
-      "tip2": "Keep the formatting simple and clean.",
-      "tip3": "Avoid complex graphics or tables that an ATS may not read.",
-      "tip4": "Use standard section headings (e.g., 'Experience', 'Education', 'Skills').",
-      "tip5": "Ensure your resume is free of spelling and grammatical errors."
-    }
-  },
-  "pricing": {
-    "title": "Our Pricing Plans",
-    "description": "Choose the plan that fits your needs, whether you're just starting out or looking for advanced solutions.",
-    "free": {
-      "title": "Free",
-      "price": "$0",
-      "frequency": "per month",
-      "features": [
-        "1 Resume",
-        "Basic Templates",
-        "PDF Download",
-        "Limited Support"
-      ],
-      "button": "Start for Free"
-    },
-    "pro": {
-      "title": "Pro",
-      "popular": "Most Popular",
-      "price": "$12",
-      "frequency": "per month",
-      "features": [
-        "Unlimited Resumes",
-        "All Pro Templates",
-        "Advanced ATS Analysis",
-        "Job Application Tracking",
-        "Priority Support"
-      ],
-      "button": "Subscribe Now"
-    },
-    "enterprise": {
-      "title": "Enterprise",
-      "price": "Contact Us",
-      "frequency": "for organizations",
-      "features": [
-        "All Pro features",
-        "Custom solutions for companies",
-        "Team management",
-        "24/7 dedicated support",
-        "Custom training"
-      ],
-      "button": "Contact Us"
-    },
-    "questions": {
-      "title": "Have Questions?",
-      "description": "Feel free to reach out if you have any questions about our plans.",
-      "button": "Contact Us"
+      "title": "Tips for an ATS-Friendly Resume",
+      "description": "Follow these best practices to improve your score.",
+      "tip1": "Use standard fonts like Arial, Calibri, or Times New Roman.",
+      "tip2": "Avoid using tables, columns, headers, or footers.",
+      "tip3": "Include keywords from the job description.",
+      "tip4": "Use standard section headings like 'Work Experience', 'Education', 'Skills'.",
+      "tip5": "Save and submit your resume as a .pdf or .docx file."
     }
   },
   "contact": {
     "title": "Contact Us",
-    "description": "We're here to help. Fill out the form below and we'll get back to you as soon as possible.",
-    "form": {
-      "name": "Your Name",
-      "namePlaceholder": "Enter your name",
-      "email": "Your Email",
-      "emailPlaceholder": "Enter your email address",
-      "message": "Your Message",
-      "messagePlaceholder": "How can we help you?",
-      "button": "Send Message"
-    },
+    "description": "Have questions or feedback? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.",
     "success": "Your message has been sent successfully!",
-    "error": "Failed to send message. Please try again later."
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your Name",
+      "email": "Email",
+      "emailPlaceholder": "your.email@example.com",
+      "message": "Message",
+      "messagePlaceholder": "Your message...",
+      "button": "Send Message"
+    }
+  },
+  "myResumes": {
+    "title": "My Resumes",
+    "description": "Here you can manage, edit, download, or delete your saved resumes.",
+    "lastModified": "Last modified: {{date}}",
+    "edit": "Edit",
+    "download": "Download",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this resume? This action cannot be undone.",
+    "deleteSuccess": "Resume deleted successfully.",
+    "deleteError": "Failed to delete resume. Please try again.",
+    "noResumes": "You haven't created any resumes yet.",
+    "createFirst": "Create Your First Resume",
+    "createNew": "Create a New Resume"
+  },
+  "createResume": {
+    "title": "Create a New Resume",
+    "description": "Fill in the details below to generate your professional resume.",
+    "cardTitle": "Resume Details",
+    "cardDescription": "Provide your information in the fields below.",
+    "createSuccess": "Resume created successfully!",
+    "createError": "Failed to create resume. Please try again."
+  },
+  "editResume": {
+    "title": "Edit Your Resume",
+    "description": "Update your resume details below. Your changes will be saved automatically.",
+    "cardTitle": "Editing Resume",
+    "cardDescription": "Make your changes and click update.",
+    "updateSuccess": "Resume updated successfully!",
+    "updateError": "Failed to update resume. Please try again.",
+    "notFound": "The resume you are trying to edit could not be found."
+  },
+  "resumeForm": {
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "e.g., Jane Doe",
+    "email": "Email Address",
+    "emailPlaceholder": "e.g., jane.doe@example.com",
+    "phone": "Phone Number (Optional)",
+    "phonePlaceholder": "e.g., +1 (555) 123-4567",
+    "linkedin": "LinkedIn Profile (Optional)",
+    "linkedinPlaceholder": "e.g., https://linkedin.com/in/janedoe",
+    "summary": "Professional Summary",
+    "summaryPlaceholder": "A brief 2-3 sentence summary of your professional experience and goals...",
+    "experience": "Work Experience",
+    "experiencePlaceholder": "Detail your work history, responsibilities, and achievements...",
+    "education": "Education",
+    "educationPlaceholder": "List your degrees, certifications, and relevant coursework...",
+    "skills": "Skills",
+    "skillsPlaceholder": "List your relevant skills, separated by commas...",
+    "createButton": "Create Resume",
+    "updateButton": "Update Resume",
+    "validation": {
+      "fullNameRequired": "Full name is required.",
+      "invalidEmail": "Please enter a valid email address.",
+      "invalidUrl": "Please enter a valid URL.",
+      "summaryMin": "Summary must be at least 50 characters.",
+      "experienceMin": "Experience section must be at least 50 characters.",
+      "educationMin": "Education section must be at least 50 characters.",
+      "skillsRequired": "Skills section must be at least 10 characters."
+    }
+  },
+  "templates": {
+    "title": "Choose Your Resume Template",
+    "description": "Select a template that best fits your style and industry. All templates are designed to be professional and ATS-friendly.",
+    "proBadge": "PRO",
+    "useButton": "Use This Template",
+    "modernMinimalist": {
+      "name": "Modern Minimalist",
+      "description": "A clean, modern design perfect for any industry."
+    },
+    "professionalClassic": {
+      "name": "Professional Classic",
+      "description": "A timeless, traditional layout for corporate roles."
+    },
+    "creativePortfolio": {
+      "name": "Creative Portfolio",
+      "description": "A stylish template for designers and artists."
+    },
+    "techSavvy": {
+      "name": "Tech Savvy",
+      "description": "A sleek, dark-mode friendly design for tech roles."
+    },
+    "academicResearch": {
+      "name": "Academic Research",
+      "description": "A formal template suitable for CVs in academia."
+    },
+    "executiveSummary": {
+      "name": "Executive Summary",
+      "description": "A powerful layout for leadership and executive positions."
+    },
+    "proUpsell": {
+      "title": "Unlock Premium Templates",
+      "description": "Upgrade to our Pro plan to access all exclusive templates and advanced features.",
+      "cta": "Go Pro"
+    }
+  },
+  "pricing": {
+    "title": "Find the Plan That's Right for You",
+    "description": "Whether you're just starting out or a seasoned professional, we have a plan to fit your needs.",
+    "pro": {
+      "title": "Pro",
+      "popular": "Most Popular",
+      "price": "$9",
+      "frequency": "per month",
+      "features": [
+        "Unlimited Resumes",
+        "All Premium Templates",
+        "ATS Analyzer",
+        "PDF & DOCX Export",
+        "Priority Support"
+      ],
+      "button": "Upgrade to Pro"
+    },
+    "free": {
+      "title": "Free",
+      "price": "$0",
+      "frequency": "forever",
+      "features": [
+        "1 Resume",
+        "Basic Templates",
+        "Standard PDF Export",
+        "Community Support"
+      ],
+      "button": "Get Started"
+    },
+    "enterprise": {
+      "title": "Enterprise",
+      "price": "Custom",
+      "frequency": "for teams & institutions",
+      "features": [
+        "Everything in Pro",
+        "Team Management",
+        "Custom Branding",
+        "Dedicated Account Manager"
+      ],
+      "button": "Contact Sales"
+    },
+    "questions": {
+      "title": "Have Questions?",
+      "description": "Our team is here to help you choose the best plan for your needs.",
+      "button": "Contact Us"
+    }
   }
 }
