@@ -1,15 +1,8 @@
 import { useState, useEffect } from 'react';
+import { ResumeFormValues } from '@/components/ResumeForm';
 
-export interface Resume {
+export interface Resume extends ResumeFormValues {
   id: string;
-  fullName: string;
-  email: string;
-  phone?: string;
-  linkedin?: string;
-  summary: string;
-  experience: string;
-  education: string;
-  skills: string;
   lastModified: string;
 }
 
@@ -30,7 +23,7 @@ export const useResumeStore = () => {
     }
   }, [resumes]);
 
-  const addResume = (newResume: Omit<Resume, 'id' | 'lastModified'>) => {
+  const addResume = (newResume: ResumeFormValues) => {
     const id = Date.now().toString(); // Simple unique ID
     const lastModified = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
     const resumeWithId: Resume = { ...newResume, id, lastModified };
@@ -41,7 +34,7 @@ export const useResumeStore = () => {
   const updateResume = (updatedResume: Resume) => {
     setResumes((prevResumes) =>
       prevResumes.map((resume) =>
-        resume.id === updatedResume.id ? { ...updatedResume, lastModified: new Date().toISOString().split('T')[0] } : resume
+        resume.id === updatedResume.id ? updatedResume : resume
       )
     );
   };
