@@ -9,6 +9,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { showSuccess, showError } from '@/utils/toast';
+import { useResumeStore, Resume } from '@/hooks/use-resume-store'; // Import the new hook and Resume type
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: "الاسم الكامل مطلوب." }),
@@ -24,6 +26,9 @@ const formSchema = z.object({
 type ResumeFormValues = z.infer<typeof formSchema>;
 
 const CreateResume = () => {
+  const { addResume } = useResumeStore(); // Use the addResume function
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const form = useForm<ResumeFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,10 +44,15 @@ const CreateResume = () => {
   });
 
   const onSubmit = (values: ResumeFormValues) => {
-    console.log("Resume data submitted:", values);
-    showSuccess("تم إرسال بيانات السيرة الذاتية بنجاح!");
-    // Here you would typically send data to a backend API
-    // For now, we just log it and show a success toast.
+    try {
+      // Assert the type to match the expected Omit<Resume, 'id' | 'lastModified'>
+      addResume(values as Omit<Resume, 'id' | 'lastModified'>);
+      showSuccess("تم إنشاء السيرة الذاتية بنجاح!");
+      navigate('/my-resumes'); // Redirect to My Resumes page
+    } catch (error) {
+      console.error("Failed to create resume:", error);
+      showError("فشل في إنشاء السيرة الذاتية. يرجى المحاولة مرة أخرى.");
+    }
   };
 
   return (

@@ -4,24 +4,26 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileText, Edit, Download, Trash2 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { useResumeStore, Resume } from '@/hooks/use-resume-store'; // Import the hook and Resume type
+import { showSuccess, showError } from '@/utils/toast';
 
 interface ResumeItemProps {
-  id: string;
-  title: string;
-  lastModified: string;
+  resume: Resume; // Pass the full resume object
+  onDelete: (id: string) => void; // Add onDelete prop
 }
 
-const ResumeItem: React.FC<ResumeItemProps> = ({ id, title, lastModified }) => (
+const ResumeItem: React.FC<ResumeItemProps> = ({ resume, onDelete }) => (
   <Card className="flex flex-col md:flex-row items-center justify-between p-4 hover:shadow-md transition-shadow duration-300">
     <div className="flex items-center gap-4 mb-4 md:mb-0">
       <FileText className="h-8 w-8 text-primary" />
       <div>
-        <CardTitle className="text-lg">{title}</CardTitle>
-        <CardDescription className="text-sm">آخر تعديل: {lastModified}</CardDescription>
+        <CardTitle className="text-lg">{resume.fullName}'s Resume</CardTitle> {/* Display full name */}
+        <CardDescription className="text-sm">آخر تعديل: {resume.lastModified}</CardDescription>
       </div>
     </div>
     <div className="flex flex-wrap justify-center gap-2">
-      <Link to={`/edit-resume/${id}`}>
+      {/* Link to edit resume (future feature) */}
+      <Link to={`/edit-resume/${resume.id}`}>
         <Button variant="outline" size="sm" className="flex items-center gap-1">
           <Edit className="h-4 w-4" /> تعديل
         </Button>
@@ -29,7 +31,7 @@ const ResumeItem: React.FC<ResumeItemProps> = ({ id, title, lastModified }) => (
       <Button variant="outline" size="sm" className="flex items-center gap-1">
         <Download className="h-4 w-4" /> تحميل
       </Button>
-      <Button variant="destructive" size="sm" className="flex items-center gap-1">
+      <Button variant="destructive" size="sm" className="flex items-center gap-1" onClick={() => onDelete(resume.id)}>
         <Trash2 className="h-4 w-4" /> حذف
       </Button>
     </div>
@@ -37,12 +39,19 @@ const ResumeItem: React.FC<ResumeItemProps> = ({ id, title, lastModified }) => (
 );
 
 const MyResumes = () => {
-  // Dummy data for demonstration
-  const resumes = [
-    { id: '1', title: 'سيرة ذاتية للمهندس البرمجي', lastModified: '2023-10-26' },
-    { id: '2', title: 'سيرة ذاتية لمدير التسويق', lastModified: '2023-09-15' },
-    { id: '3', title: 'سيرة ذاتية لمحلل البيانات', lastModified: '2023-08-01' },
-  ];
+  const { resumes, deleteResume } = useResumeStore(); // Use the hook to get resumes and delete function
+
+  const handleDelete = (id: string) => {
+    if (window.confirm("هل أنت متأكد أنك تريد حذف هذه السيرة الذاتية؟")) {
+      try {
+        deleteResume(id);
+        showSuccess("تم حذف السيرة الذاتية بنجاح!");
+      } catch (error) {
+        console.error("Failed to delete resume:", error);
+        showError("فشل في حذف السيرة الذاتية. يرجى المحاولة مرة أخرى.");
+      }
+    }
+  };
 
   return (
     <div className="container mx-auto p-6 space-y-8">
@@ -63,7 +72,7 @@ const MyResumes = () => {
       ) : (
         <div className="space-y-4">
           {resumes.map((resume) => (
-            <ResumeItem key={resume.id} {...resume} />
+            <ResumeItem key={resume.id} resume={resume} onDelete={handleDelete} />
           ))}
         </div>
       )}
