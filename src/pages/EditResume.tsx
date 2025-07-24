@@ -1,20 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showSuccess, showError } from '@/utils/toast';
-import { useResumeStore, Resume } from '@/hooks/use-resume-store';
+import { useResumes } from '@/hooks/use-resumes';
 import { useNavigate, useParams } from 'react-router-dom';
 import ResumeForm, { getResumeFormSchema, ResumeFormValues } from '@/components/ResumeForm';
 import { useTranslation } from 'react-i18next';
+import { Loader2 } from 'lucide-react';
 
 const EditResume = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
-  const { getResumeById, updateResume } = useResumeStore();
+  const { getResumeById, updateResume } = useResumes();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
-  const resumeToEdit = id ? getResumeById(id) : undefined;
   const resumeFormSchema = getResumeFormSchema(t);
 
   const form = useForm<ResumeFormValues>({
@@ -32,19 +33,30 @@ const EditResume = () => {
   });
 
   useEffect(() => {
-    if (resumeToEdit) {
-      form.reset(resumeToEdit);
-    } else if (id) {
-      showError(t('editResume.notFound'));
+    if (!id) {
       navigate('/my-resumes');
+      return;
     }
-  }, [id, resumeToEdit, form, navigate, t]);
 
-  const onSubmit = (values: ResumeFormValues) => {
+    const fetchResume = async () => {
+      setLoading(true);
+      const resumeToEdit = await getResumeById(id);
+      if (resumeToEdit) {
+        form.reset(resumeToEdit);
+      } else {
+        showError(t('editResume.notFound'));
+        navigate('/my-resumes');
+      }
+      setLoading(false);
+    };
+
+    fetchResume();
+  }, [id, getResumeById, form, navigate, t]);
+
+  const onSubmit = async (values: ResumeFormValues) => {
     if (!id) return;
     try {
-      const updatedResume: Resume = { ...values, id, lastModified: new Date().toISOString().split('T')[0] };
-      updateResume(updatedResume);
+      await updateResume(id, values);
       showSuccess(t('editResume.updateSuccess'));
       navigate('/my-resumes');
     } catch (error) {
@@ -53,11 +65,11 @@ const EditResume = () => {
     }
   };
 
-  if (!resumeToEdit) {
+  if (loading) {
     return (
-        <div className="container mx-auto p-6 text-center">
-            <p>{t('editResume.loading')}</p>
-        </div>
+      <div className="container mx-auto p-6 text-center flex justify-center items-center" style={{ minHeight: 'calc(100vh - 56px)' }}>
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
     );
   }
 
@@ -78,6 +90,7 @@ const EditResume = () => {
             form={form}
             onSubmit={onSubmit}
             buttonText={t('resumeForm.updateButton')}
+            isSubmitting={form.formState.isSubmitting}
           />
         </CardContent>
       </Card>

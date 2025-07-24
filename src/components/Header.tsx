@@ -1,13 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Languages } from 'lucide-react';
+import { Menu, Languages, User, LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { useAuth } from '@/hooks/use-auth';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { showError } from '@/utils/toast';
 
 const Header = () => {
   const { t, i18n } = useTranslation();
+  const { session, supabase } = useAuth();
+  const navigate = useNavigate();
 
   const navLinks = [
     { name: t('header.dashboard'), path: '/dashboard' },
@@ -22,6 +27,17 @@ const Header = () => {
     document.documentElement.dir = i18n.dir(lng);
     document.documentElement.lang = lng;
   };
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      showError('Error signing out. Please try again.');
+    } else {
+      navigate('/');
+    }
+  };
+
+  const userInitial = session?.user?.email?.[0].toUpperCase() ?? '?';
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -55,6 +71,35 @@ const Header = () => {
               <DropdownMenuItem onClick={() => changeLanguage('ar')}>العربية</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          {/* Auth Buttons / User Menu */}
+          {session ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={session.user.user_metadata.avatar_url} alt={session.user.email} />
+                    <AvatarFallback>{userInitial}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Dashboard</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link to="/auth">
+              <Button>Login</Button>
+            </Link>
+          )}
 
           {/* Mobile Navigation */}
           <div className="md:hidden">

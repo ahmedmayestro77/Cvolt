@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Edit, Download, Trash2 } from 'lucide-react';
+import { FileText, Edit, Download, Trash2, Loader2 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-import { useResumeStore, Resume } from '@/hooks/use-resume-store';
+import { useResumes, Resume } from '@/hooks/use-resumes';
 import { showSuccess, showError } from '@/utils/toast';
 import { useTranslation } from 'react-i18next';
 import { createRoot } from 'react-dom/client';
@@ -26,7 +26,7 @@ const ResumeItem: React.FC<ResumeItemProps> = ({ resume, onDelete, onDownload })
         <FileText className="h-8 w-8 text-primary flex-shrink-0" />
         <div>
           <CardTitle className="text-lg">{resume.fullName}'s Resume</CardTitle>
-          <CardDescription className="text-sm">{t('myResumes.lastModified', { date: resume.lastModified })}</CardDescription>
+          <CardDescription className="text-sm">{t('myResumes.lastModified', { date: new Date(resume.last_modified).toLocaleDateString() })}</CardDescription>
         </div>
       </div>
       <div className="flex flex-wrap justify-center gap-2">
@@ -48,12 +48,12 @@ const ResumeItem: React.FC<ResumeItemProps> = ({ resume, onDelete, onDownload })
 
 const MyResumes = () => {
   const { t } = useTranslation();
-  const { resumes, deleteResume } = useResumeStore();
+  const { resumes, deleteResume, loading } = useResumes();
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm(t('myResumes.deleteConfirm'))) {
       try {
-        deleteResume(id);
+        await deleteResume(id);
         showSuccess(t('myResumes.deleteSuccess'));
       } catch (error) {
         console.error("Failed to delete resume:", error);
@@ -99,7 +99,11 @@ const MyResumes = () => {
         {t('myResumes.description')}
       </p>
 
-      {resumes.length === 0 ? (
+      {loading ? (
+        <div className="flex justify-center items-center py-10">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      ) : resumes.length === 0 ? (
         <div className="text-center py-10">
           <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
             {t('myResumes.noResumes')}

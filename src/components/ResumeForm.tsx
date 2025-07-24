@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useTranslation } from 'react-i18next';
+import { Loader2 } from 'lucide-react';
 
 export const getResumeFormSchema = (t: (key: string) => string) => z.object({
   fullName: z.string().min(2, { message: t('resumeForm.validation.fullNameRequired') }),
@@ -24,9 +25,10 @@ interface ResumeFormProps {
   form: ReturnType<typeof useForm<ResumeFormValues>>;
   onSubmit: (values: ResumeFormValues) => void;
   buttonText: string;
+  isSubmitting: boolean;
 }
 
-const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText }) => {
+const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText, isSubmitting }) => {
   const { t } = useTranslation();
   return (
     <Form {...form}>
@@ -151,7 +153,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText }) =
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">{buttonText}</Button>
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {buttonText}
+        </Button>
       </form>
     </Form>
   );

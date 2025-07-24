@@ -3,14 +3,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showSuccess, showError } from '@/utils/toast';
-import { useResumeStore } from '@/hooks/use-resume-store';
+import { useResumes } from '@/hooks/use-resumes';
 import { useNavigate } from 'react-router-dom';
 import ResumeForm, { getResumeFormSchema, ResumeFormValues } from '@/components/ResumeForm';
 import { useTranslation } from 'react-i18next';
 
 const CreateResume = () => {
   const { t } = useTranslation();
-  const { addResume } = useResumeStore();
+  const { addResume } = useResumes();
   const navigate = useNavigate();
 
   const resumeFormSchema = getResumeFormSchema(t);
@@ -29,9 +29,9 @@ const CreateResume = () => {
     },
   });
 
-  const onSubmit = (values: ResumeFormValues) => {
+  const onSubmit = async (values: ResumeFormValues) => {
     try {
-      addResume(values);
+      await addResume(values);
       showSuccess(t('createResume.createSuccess'));
       navigate('/my-resumes');
     } catch (error) {
@@ -57,6 +57,7 @@ const CreateResume = () => {
             form={form}
             onSubmit={onSubmit}
             buttonText={t('resumeForm.createButton')}
+            isSubmitting={form.formState.isSubmitting}
           />
         </CardContent>
       </Card>

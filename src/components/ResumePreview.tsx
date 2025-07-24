@@ -1,5 +1,5 @@
 import React from 'react';
-import { Resume } from '@/hooks/use-resume-store';
+import { Resume } from '@/hooks/use-resumes';
 
 interface ResumePreviewProps {
   resume: Resume;
