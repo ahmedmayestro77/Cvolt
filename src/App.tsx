@@ -18,6 +18,7 @@ import EditResume from "./pages/EditResume";
 import Contact from "./pages/Contact";
 import AuthPage from "./pages/AuthPage";
 import AppLayout from "./components/AppLayout";
+import { Footer } from "./components/Footer";
 
 const queryClient = new QueryClient();
 
@@ -29,11 +30,11 @@ const App = () => (
         <AuthProvider>
           <Routes>
             {/* Public Routes */}
-            <Route path="/" element={<><Header /><Index /></>} />
+            <Route path="/" element={<><Header /><Index /><Footer /></>} />
             <Route path="/auth" element={<AuthPage />} />
             
             {/* Routes that need the header but not the full AppLayout */}
-            <Route path="/contact" element={<><Header /><Contact /></>} />
+            <Route path="/contact" element={<><Header /><Contact /><Footer /></>} />
 
             {/* Authenticated Routes with the new AppLayout */}
             <Route element={<ProtectedRoute />}>

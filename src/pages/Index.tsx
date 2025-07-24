@@ -2,132 +2,166 @@ import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Edit, FileText, Sparkles, BarChart } from "lucide-react";
+import { Edit, FileText, Sparkles, BarChart, CheckCircle, MoveRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Index = () => {
   const { t } = useTranslation();
 
-  const features = [
-    {
-      icon: <Edit className="h-8 w-8 text-primary" />,
-      title: t('index.features.easy.title'),
-      description: t('index.features.easy.description'),
-    },
-    {
-      icon: <FileText className="h-8 w-8 text-primary" />,
-      title: t('index.features.templates.title'),
-      description: t('index.features.templates.description'),
-    },
-    {
-      icon: <BarChart className="h-8 w-8 text-primary" />,
-      title: t('index.features.ats.title'),
-      description: t('index.features.ats.description'),
-    },
-    {
-      icon: <Sparkles className="h-8 w-8 text-primary" />,
-      title: t('index.features.ai.title'),
-      description: t('index.features.ai.description'),
-    },
-  ];
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
 
-  const steps = [
-    {
-      number: "01",
-      title: t('index.steps.choose.title'),
-      description: t('index.steps.choose.description'),
-    },
-    {
-      number: "02",
-      title: t('index.steps.fill.title'),
-      description: t('index.steps.fill.description'),
-    },
-    {
-      number: "03",
-      title: t('index.steps.download.title'),
-      description: t('index.steps.download.description'),
-    },
+  const testimonials = [
+    { name: "Sarah L.", role: "Marketing Manager", quote: "The fastest and most intuitive resume builder I've ever used. I created a professional CV in minutes!", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d" },
+    { name: "Ahmed K.", role: "Software Engineer", quote: "CVOLT's templates are modern and ATS-friendly. It helped me land my dream job.", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026705d" },
+    { name: "Fatima E.", role: "UX Designer", quote: "The AI suggestions are a game-changer. It's like having a career coach by your side.", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026706d" },
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="py-20 md:py-32">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300">
-            {t('index.title')}
+      <section className="relative py-24 md:py-40 text-center">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50 dark:from-blue-950/50 to-white dark:to-gray-950"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 bg-primary/10 dark:bg-primary/20 rounded-full blur-3xl -z-10"></div>
+        
+        <motion.div variants={fadeIn} initial="hidden" animate="visible" className="container mx-auto px-4">
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+            {t('index.title.part1')}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300">
+              {t('index.title.part2')}
+            </span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
             {t('index.subtitle')}
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link to="/templates">
-              <Button size="lg" className="px-10 py-6 text-lg w-full sm:w-auto">
-                {t('index.ctaPrimary')}
+              <Button size="lg" className="px-10 py-7 text-lg w-full sm:w-auto group">
+                {t('index.ctaPrimary')} <MoveRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             </Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-800">
+      {/* Showcase Section */}
+      <motion.section 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeIn}
+        className="py-16"
+      >
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">{t('index.features.title')}</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mt-4 max-w-2xl mx-auto">{t('index.features.subtitle')}</p>
+          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl shadow-primary/10 p-4 md:p-8 border border-primary/10">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-3 h-3 rounded-full bg-red-500"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <img src="https://i.imgur.com/U3A0V82.png" alt="CVOLT App Showcase" className="rounded-lg w-full h-auto" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="text-center p-6 bg-white dark:bg-gray-900 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                <div className="flex justify-center items-center mb-4 h-16 w-16 rounded-full bg-primary/10 mx-auto">
-                  {feature.icon}
+        </div>
+      </motion.section>
+
+      {/* How It Works Section */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold">{t('index.steps.title')}</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mt-4 max-w-2xl mx-auto">{t('index.steps.subtitle')}</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: <FileText className="h-10 w-10 text-primary" />, title: t('index.steps.choose.title'), description: t('index.steps.choose.description') },
+              { icon: <Edit className="h-10 w-10 text-primary" />, title: t('index.steps.fill.title'), description: t('index.steps.fill.description') },
+              { icon: <Sparkles className="h-10 w-10 text-primary" />, title: t('index.steps.download.title'), description: t('index.steps.download.description') },
+            ].map((step, index) => (
+              <motion.div
+                key={index}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.5 }}
+                variants={fadeIn}
+                transition={{ delay: index * 0.1 }}
+                className="text-center p-6"
+              >
+                <div className="flex justify-center items-center mb-6 h-20 w-20 rounded-full bg-primary/10 mx-auto">
+                  {step.icon}
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
-              </div>
+                <h3 className="text-2xl font-semibold mb-3">{step.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
+      {/* Testimonials Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">{t('index.steps.title')}</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mt-4 max-w-2xl mx-auto">{t('index.steps.subtitle')}</p>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold">{t('testimonials.title')}</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mt-4 max-w-2xl mx-auto">{t('testimonials.subtitle')}</p>
           </div>
-          <div className="relative max-w-4xl mx-auto">
-            <div className="hidden md:block absolute top-8 left-0 w-full h-0.5 bg-gray-200 dark:bg-gray-700"></div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-              {steps.map((step) => (
-                <div key={step.number} className="text-center">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold z-10">
-                      {step.number}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.5 }}
+                variants={fadeIn}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className="h-full flex flex-col">
+                  <CardContent className="pt-6 flex-grow">
+                    <p className="text-gray-700 dark:text-gray-300 italic">"{testimonial.quote}"</p>
+                  </CardContent>
+                  <CardHeader>
+                    <div className="flex items-center gap-4">
+                      <Avatar>
+                        <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                        <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <CardTitle className="text-base">{testimonial.name}</CardTitle>
+                        <p className="text-sm text-gray-500">{testimonial.role}</p>
+                      </div>
                     </div>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
-                </div>
-              ))}
-            </div>
+                  </CardHeader>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('index.finalCta.title')}</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            {t('index.finalCta.subtitle')}
-          </p>
-          <Link to="/templates">
-            <Button size="lg" className="px-10 py-6 text-lg">
-              {t('index.ctaPrimary')}
-            </Button>
-          </Link>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+            variants={fadeIn}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">{t('index.finalCta.title')}</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+              {t('index.finalCta.subtitle')}
+            </p>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link to="/templates">
+                <Button size="lg" className="px-10 py-7 text-lg w-full sm:w-auto group">
+                  {t('index.ctaPrimary')} <MoveRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 

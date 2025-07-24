@@ -19,7 +19,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'Cairo', 'sans-serif'],
+        sans: ['Manrope', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
