@@ -47,16 +47,16 @@ const MyCoverLetters = () => {
   const deleteCoverLetterMutation = useDeleteCoverLetter();
 
   const handleDelete = (id: string) => {
-    if (window.confirm(t('myCoverLetters.deleteConfirm', 'Are you sure you want to delete this cover letter?'))) {
+    if (window.confirm(t('myCoverLetters.deleteConfirm'))) {
       deleteCoverLetterMutation.mutate(id);
     }
   };
 
   return (
     <div className="container mx-auto p-6 space-y-8">
-      <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">{t('myCoverLetters.title', 'My Cover Letters')}</h1>
+      <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">{t('myCoverLetters.title')}</h1>
       <p className="text-center text-lg text-gray-600 dark:text-gray-300 mb-10">
-        {t('myCoverLetters.description', 'Manage all your cover letters in one place.')}
+        {t('myCoverLetters.description')}
       </p>
 
       {isLoading ? (
@@ -66,10 +66,10 @@ const MyCoverLetters = () => {
       ) : !coverLetters || coverLetters.length === 0 ? (
         <div className="text-center py-10">
           <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
-            {t('myCoverLetters.noCoverLetters', 'You haven\'t created any cover letters yet.')}
+            {t('myCoverLetters.noCoverLetters')}
           </p>
           <Link to="/cover-letter/create">
-            <Button size="lg">{t('myCoverLetters.createFirst', 'Create Your First Cover Letter')}</Button>
+            <Button size="lg">{t('myCoverLetters.createFirst')}</Button>
           </Link>
         </div>
       ) : (
@@ -88,10 +88,10 @@ const MyCoverLetters = () => {
 
       <div className="text-center">
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
-          {t('myCoverLetters.createNew', 'Create a New Cover Letter')}
+          {t('myCoverLetters.createNew')}
         </h2>
         <Link to="/cover-letter/create">
-          <Button size="lg">{t('myCoverLetters.createNewButton', 'Create New')}</Button>
+          <Button size="lg">{t('myCoverLetters.createNewButton')}</Button>
         </Link>
       </div>
     </div>

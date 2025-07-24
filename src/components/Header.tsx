@@ -63,7 +63,7 @@ const Header = () => {
               <Languages className="h-5 w-5" />
             </Button>
             <Link to="/auth">
-              <Button>Login</Button>
+              <Button>{t('header.login')}</Button>
             </Link>
           </div>
         </div>

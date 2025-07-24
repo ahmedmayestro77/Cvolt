@@ -75,7 +75,7 @@ const TemplateSwitcherModal: React.FC<TemplateSwitcherModalProps> = ({ isOpen, o
                           <img src={template.imageUrl} alt={template.name} className="w-16 h-20 object-cover rounded-sm border" />
                           <div>
                             <h4 className="font-semibold">{t(`templates.${template.slug}.name`, template.name)}</h4>
-                            {template.isPro && <Badge variant="secondary" className="bg-yellow-400 text-yellow-900 text-xs">Pro</Badge>}
+                            {template.isPro && <Badge variant="secondary" className="bg-yellow-400 text-yellow-900 text-xs">{t('templates.proBadge')}</Badge>}
                           </div>
                         </div>
                         {isSelected && <CheckCircle className="h-6 w-6 text-primary" />}

@@ -49,14 +49,14 @@ const AIResumePromptDialog: React.FC<AIResumePromptDialogProps> = ({ isOpen, onC
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>{t('aiGenerator.title', 'AI Resume Generator')}</DialogTitle>
-          <DialogDescription>{t('aiGenerator.prompt.description', 'Example: "Create a resume for a senior frontend developer with 8 years of experience in React, TypeScript, and Next.js. I want to apply for jobs at innovative tech startups."')}</DialogDescription>
+          <DialogTitle>{t('aiGenerator.title')}</DialogTitle>
+          <DialogDescription>{t('aiGenerator.prompt.description')}</DialogDescription>
         </DialogHeader>
         <div className="py-4">
-          <Label htmlFor="ai-prompt">{t('aiGenerator.prompt.title', 'Your Resume Prompt')}</Label>
+          <Label htmlFor="ai-prompt">{t('aiGenerator.prompt.title')}</Label>
           <Textarea
             id="ai-prompt"
-            placeholder={t('aiGenerator.prompt.placeholder', 'Enter your resume description here...')}
+            placeholder={t('aiGenerator.prompt.placeholder')}
             className="min-h-[150px] mt-2"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
@@ -70,7 +70,7 @@ const AIResumePromptDialog: React.FC<AIResumePromptDialogProps> = ({ isOpen, onC
             ) : (
               <Wand2 className="mr-2 h-4 w-4" />
             )}
-            {t('aiGenerator.generateButton', 'Generate with AI')}
+            {t('aiGenerator.generateButton')}
           </Button>
         </DialogFooter>
       </DialogContent>

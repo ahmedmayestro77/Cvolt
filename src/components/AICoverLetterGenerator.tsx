@@ -58,7 +58,7 @@ const AICoverLetterGenerator: React.FC<AICoverLetterGeneratorProps> = ({ onGener
         <AccordionTrigger>
           <div className="flex items-center gap-2 text-lg font-semibold text-primary">
             <Wand2 className="h-5 w-5" />
-            {t('coverLetterGenerator.accordionTitle', 'Generate with AI')}
+            {t('coverLetterGenerator.accordionTitle')}
           </div>
         </AccordionTrigger>
         <AccordionContent className="space-y-6 pt-4">

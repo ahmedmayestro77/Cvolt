@@ -4,170 +4,125 @@
     "dashboard": "Dashboard",
     "templates": "Templates",
     "myResumes": "My Resumes",
+    "coverLetters": "My Cover Letters",
     "atsAnalyzer": "ATS Analyzer",
     "pricing": "Pricing",
     "contact": "Contact",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle navigation menu",
+    "login": "Login"
   },
   "footer": {
     "rights": "All rights reserved."
   },
+  "theme": {
+    "toggle": "Toggle theme"
+  },
   "index": {
     "title": {
-      "part1": "Build Your Future,",
-      "part2": " with CVOLT"
+      "part1": "Build a Job-Winning ",
+      "part2": "Resume, Faster."
     },
-    "subtitle": "Create a professional, attention-grabbing resume that helps you land your dream job. Our AI-powered tools make it fast and easy.",
-    "ctaPrimary": "Get Started for Free",
+    "subtitle": "Create a professional resume that stands out to recruiters and lands you more interviews. Our AI-powered tools make it easy.",
+    "ctaPrimary": "Create My Resume",
     "steps": {
-      "title": "How It Works",
-      "subtitle": "Create your perfect resume in three simple steps.",
+      "title": "Get Hired in 3 Easy Steps",
+      "subtitle": "Our intuitive process makes resume building a breeze.",
       "choose": {
-        "title": "1. Choose a Template",
-        "description": "Select from our library of professionally designed, ATS-friendly templates."
+        "title": "Choose a Template",
+        "description": "Select from a variety of professional, ATS-friendly templates."
       },
       "fill": {
-        "title": "2. Fill in Your Details",
-        "description": "Use our intuitive editor and AI assistant to fill out your information effortlessly."
+        "title": "Fill in Your Details",
+        "description": "Use our AI assistant to write compelling, professional content."
       },
       "download": {
-        "title": "3. Download & Apply",
-        "description": "Export your resume as a PDF and start applying for jobs with confidence."
+        "title": "Download & Apply",
+        "description": "Export your resume as a pixel-perfect PDF and start applying."
+      }
+    },
+    "features": {
+      "title": "Everything You Need to Succeed",
+      "subtitle": "Our platform is packed with features designed to help you create a standout application and land your dream job.",
+      "aiWriter": {
+        "title": "AI-Powered Writer",
+        "description": "Generate professional resume sections and cover letters in seconds."
+      },
+      "atsFriendly": {
+        "title": "ATS-Friendly Templates",
+        "description": "Beat the bots with templates designed to pass through applicant tracking systems."
+      },
+      "templateSwitcher": {
+        "title": "Dynamic Template Switching",
+        "description": "Change your resume's look instantly without re-typing any content."
+      },
+      "atsAnalyzer": {
+        "title": "ATS Match Score",
+        "description": "Analyze your resume against a job description to see how well you match."
+      },
+      "coverLetters": {
+        "title": "Cover Letter Builder",
+        "description": "Create tailored cover letters that complement your resume perfectly."
+      },
+      "pdfExport": {
+        "title": "Easy PDF Export",
+        "description": "Download a pixel-perfect PDF of your resume, ready to be sent to employers."
       }
     },
     "finalCta": {
-      "title": "Ready to Stand Out?",
-      "subtitle": "Join thousands of successful professionals who built their careers with CVOLT."
+      "title": "Ready to Land Your Dream Job?",
+      "subtitle": "Join thousands of successful professionals who built their resumes with CVOLT."
     }
   },
   "testimonials": {
-    "title": "What Our Users Say",
-    "subtitle": "Trusted by professionals worldwide."
-  },
-  "contact": {
-    "title": "Contact Us",
-    "description": "Have questions? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.",
-    "success": "Your message has been sent successfully!",
-    "form": {
-      "name": "Name",
-      "namePlaceholder": "Enter your name",
-      "email": "Email",
-      "emailPlaceholder": "Enter your email address",
-      "message": "Message",
-      "messagePlaceholder": "How can we help you?",
-      "button": "Send Message"
-    }
-  },
-  "templates": {
-    "title": "Choose Your Perfect Template",
-    "description": "Every template is designed to be ATS-friendly and fully customizable.",
-    "proBadge": "PRO",
-    "useButton": "Use Template",
-    "proUpsell": {
-      "title": "Unlock All Premium Templates",
-      "description": "Upgrade to Pro to access our exclusive collection of creative and executive templates.",
-      "cta": "Go Pro"
-    },
-    "modernMinimalist": {
-      "name": "Modern Minimalist",
-      "description": "A clean, modern design perfect for any industry."
-    },
-    "professionalClassic": {
-      "name": "Professional Classic",
-      "description": "A timeless, elegant template for corporate roles."
-    },
-    "creativePortfolio": {
-      "name": "Creative Portfolio",
-      "description": "Showcase your creativity with this stylish, visual template."
-    },
-    "techSavvy": {
-      "name": "Tech Savvy",
-      "description": "A developer-focused design that highlights your technical skills."
-    },
-    "academicResearch": {
-      "name": "Academic Research",
-      "description": "Ideal for academics, researchers, and PhD candidates."
-    },
-    "executiveSummary": {
-      "name": "Executive Summary",
-      "description": "A powerful, concise template for senior-level executives."
-    }
-  },
-  "pricing": {
-    "title": "Find the Plan That's Right for You",
-    "description": "Start for free, or unlock powerful features with our Pro plan.",
-    "free": {
-      "title": "Free",
-      "price": "$0",
-      "frequency": "Forever",
-      "features": [
-        "1 Resume",
-        "2 Free Templates",
-        "PDF Download"
-      ],
-      "button": "Get Started"
-    },
-    "pro": {
-      "title": "Pro",
-      "frequency": "per month",
-      "features": [
-        "Unlimited Resumes",
-        "All Premium Templates",
-        "AI-Powered Suggestions",
-        "ATS Analyzer",
-        "Priority Support"
-      ],
-      "button": "Upgrade to Pro"
-    },
-    "enterprise": {
-      "title": "Enterprise",
-      "price": "Custom",
-      "frequency": "for teams",
-      "features": [
-        "Team Management",
-        "Custom Branding",
-        "Bulk Resume Creation",
-        "Dedicated Support"
-      ],
-      "button": "Contact Sales"
-    },
-    "questions": {
-      "title": "Have Questions?",
-      "description": "Contact our team for more information about our plans.",
-      "button": "Contact Us"
-    }
+    "title": "Loved by Professionals Worldwide",
+    "subtitle": "Don't just take our word for it. Here's what our users are saying."
   },
   "dashboard": {
     "welcome": "Welcome back, {{name}}!",
-    "subtitle": "Here's what's happening with your account today.",
+    "subtitle": "Here's a quick overview of your account.",
+    "newUserSubtitle": "Ready to build your career? Let's start.",
     "myResumes": "My Resumes",
     "totalResumes": "Total resumes created",
+    "myCoverLetters": "My Cover Letters",
+    "totalCoverLetters": "Total cover letters",
     "accountStatus": "Account Status",
     "upgradeToPro": "Upgrade to Pro",
     "atsAnalyzer": "ATS Analyzer",
     "recentResumes": "Recent Resumes",
-    "viewAllResumes": "View All Resumes"
+    "viewAllResumes": "View All Resumes",
+    "recentCoverLetters": "Recent Cover Letters",
+    "viewAllCoverLetters": "View All Cover Letters"
   },
   "myResumes": {
     "title": "My Resumes",
-    "description": "Manage, edit, and download all your created resumes from here.",
+    "description": "Manage, edit, and download all your resumes from one place.",
+    "createNew": "Create New Resume",
+    "noResumes": "No resumes found",
+    "getStarted": "Get started by creating a new resume.",
+    "createFirst": "Create Your First Resume",
     "lastModified": "Last modified: {{date}}",
     "edit": "Edit",
     "download": "Download",
     "delete": "Delete",
-    "deleteConfirm": "Are you sure you want to delete this resume? This action cannot be undone.",
-    "noResumes": "You haven't created any resumes yet.",
-    "createFirst": "Create Your First Resume",
-    "createNew": "Create New Resume"
+    "changeTemplate": "Change Template",
+    "deleteConfirm": "Are you sure you want to delete this resume?",
+    "downloadError": "Failed to download PDF. Please try again."
   },
-  "editResume": {
-    "notFound": "Resume not found. It might have been deleted."
+  "myCoverLetters": {
+    "title": "My Cover Letters",
+    "description": "Manage all your cover letters in one place.",
+    "noCoverLetters": "You haven't created any cover letters yet.",
+    "createFirst": "Create Your First Cover Letter",
+    "forCompany": "For: {{company}}",
+    "createNew": "Create a New Cover Letter",
+    "createNewButton": "Create New",
+    "deleteConfirm": "Are you sure you want to delete this cover letter?"
   },
   "resumeForm": {
     "steps": {
       "personal": "Personal Details",
-      "summary": "Summary",
-      "experience": "Experience",
+      "summary": "Professional Summary",
+      "experience": "Work Experience",
       "education": "Education",
       "skills": "Skills"
     },
@@ -176,17 +131,17 @@
     "email": "Email Address",
     "emailPlaceholder": "e.g., john.doe@example.com",
     "phone": "Phone Number (Optional)",
-    "phonePlaceholder": "e.g., +1 234 567 890",
+    "phonePlaceholder": "e.g., +1 123-456-7890",
     "linkedin": "LinkedIn Profile (Optional)",
     "linkedinPlaceholder": "e.g., https://linkedin.com/in/johndoe",
     "summary": "Professional Summary",
     "summaryPlaceholder": "Write a brief summary about your professional background and career goals...",
     "experience": "Work Experience",
-    "experiencePlaceholder": "List your previous roles, responsibilities, and achievements...",
+    "experiencePlaceholder": "List your work experience, starting with the most recent. Include job title, company, dates, and key responsibilities/achievements.",
     "education": "Education",
-    "educationPlaceholder": "List your degrees, certifications, and relevant coursework...",
+    "educationPlaceholder": "List your educational background, including degree, university, and graduation dates.",
     "skills": "Skills",
-    "skillsPlaceholder": "List your relevant skills, separated by commas (e.g., Project Management, React, Public Speaking...)",
+    "skillsPlaceholder": "List your key skills, separated by commas (e.g., JavaScript, React, Project Management).",
     "previousButton": "Previous",
     "nextButton": "Next",
     "createButton": "Create Resume",
@@ -197,14 +152,111 @@
       "invalidEmail": "Please enter a valid email address.",
       "invalidUrl": "Please enter a valid URL.",
       "summaryMin": "Summary must be at least 50 characters.",
-      "experienceMin": "Experience section must be at least 50 characters.",
-      "educationMin": "Education section must be at least 50 characters.",
+      "experienceMin": "Experience must be at least 50 characters.",
+      "educationMin": "Education must be at least 50 characters.",
       "skillsRequired": "Skills section must be at least 10 characters.",
-      "loginRequired": "Please log in to use AI features.",
-      "proRequired": "This is a Pro feature. Please upgrade to use it.",
-      "improveError": "Please write at least 20 characters to improve.",
-      "improveFailed": "Failed to improve text. Please try again later."
+      "loginRequired": "You must be logged in to use this feature.",
+      "improveError": "Please write at least 20 characters to use the AI improvement feature.",
+      "improveFailed": "Failed to improve text with AI. Please try again."
     }
+  },
+  "editResume": {
+    "notFound": "Resume not found. Redirecting you to your resumes."
+  },
+  "templates": {
+    "title": "Choose Your Template",
+    "description": "Select a professionally designed template to get started. All templates are ATS-friendly.",
+    "proBadge": "PRO",
+    "useButton": "Use This Template",
+    "proUpsell": {
+      "title": "Unlock All Templates",
+      "description": "Upgrade to Pro to access all premium templates and features.",
+      "cta": "Go Pro"
+    },
+    "modern-minimalist": {
+      "name": "Modern Minimalist",
+      "description": "Clean, modern, and perfect for any industry."
+    },
+    "professional-classic": {
+      "name": "Professional Classic",
+      "description": "A timeless, elegant design for corporate roles."
+    },
+    "creative-portfolio": {
+      "name": "Creative Portfolio",
+      "description": "A stylish layout for designers and artists."
+    },
+    "tech-savvy": {
+      "name": "Tech Savvy",
+      "description": "A dark-mode, monospace font template for tech roles."
+    },
+    "academic-research": {
+      "name": "Academic Research",
+      "description": "Structured for academics, researchers, and PhDs."
+    },
+    "executive-summary": {
+      "name": "Executive Summary",
+      "description": "A bold, impactful design for leadership positions."
+    }
+  },
+  "pricing": {
+    "title": "Find the Plan That's Right for You",
+    "description": "Whether you're just starting out or a seasoned professional, we have a plan to fit your needs.",
+    "free": {
+      "title": "Free",
+      "price": "$0",
+      "frequency": "Forever",
+      "features": [
+        "1 Resume",
+        "1 Cover Letter",
+        "Access to free templates",
+        "PDF Downloads"
+      ],
+      "button": "Get Started"
+    },
+    "pro": {
+      "title": "Pro",
+      "frequency": "per month",
+      "features": [
+        "Unlimited Resumes",
+        "Unlimited Cover Letters",
+        "Access to all premium templates",
+        "AI-Powered Content Writer",
+        "ATS Match Score Analyzer",
+        "Priority Support"
+      ],
+      "button": "Upgrade to Pro"
+    },
+    "enterprise": {
+      "title": "Enterprise",
+      "price": "Custom",
+      "frequency": "for teams & institutions",
+      "features": [
+        "Volume licensing",
+        "Team management dashboard",
+        "Custom branding",
+        "Dedicated account manager"
+      ],
+      "button": "Contact Sales"
+    },
+    "questions": {
+      "title": "Have Questions?",
+      "description": "Our team is here to help you choose the best plan for your career goals.",
+      "button": "Contact Us"
+    }
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "description": "We'd love to hear from you. Whether you have a question about features, pricing, or anything else, our team is ready to answer all your questions.",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your Name",
+      "email": "Email",
+      "emailPlaceholder": "Your Email Address",
+      "message": "Message",
+      "messagePlaceholder": "Your Message...",
+      "button": "Send Message"
+    },
+    "success": "Your message has been sent successfully! We'll get back to you soon."
   },
   "ats": {
     "title": "ATS Resume Analyzer",
@@ -216,7 +268,7 @@
     },
     "jobInput": {
       "title": "Job Description",
-      "description": "Paste the full job description here.",
+      "description": "Paste the job description you're applying for.",
       "placeholder": "Paste the job description text..."
     },
     "analyzeButton": "Analyze Resume",
@@ -228,9 +280,77 @@
     "results": {
       "title": "Analysis Results",
       "matchScore": "Match Score",
-      "matchCount": "Matched {{count}} of {{total}} keywords.",
+      "matchCount": "{{count}} of {{total}} keywords matched",
       "matchedKeywords": "Matched Keywords",
       "missingKeywords": "Missing Keywords"
+    }
+  },
+  "aiGenerator": {
+    "title": "AI Resume Generator",
+    "prompt": {
+      "title": "Your Resume Prompt",
+      "description": "Example: \"Create a resume for a senior frontend developer with 8 years of experience in React, TypeScript, and Next.js. I want to apply for jobs at innovative tech startups.\"",
+      "placeholder": "Enter your resume description here..."
+    },
+    "generateButton": "Generate with AI",
+    "validation": {
+      "promptRequired": "A prompt is required to generate a resume.",
+      "generationFailed": "Failed to generate resume with AI. Please try again."
+    }
+  },
+  "coverLetterGenerator": {
+    "accordionTitle": "Generate with AI",
+    "jobDescription": "Job Description",
+    "jobDescriptionPlaceholder": "Paste the job description here...",
+    "resumeText": "Your Resume Text (for context)",
+    "resumeTextPlaceholder": "Paste the full text of your resume here...",
+    "validation": {
+      "required": "Both job description and resume text are required to generate a cover letter."
+    }
+  },
+  "auth": {
+    "welcome": "Welcome to CVOLT"
+  },
+  "common": {
+    "actions": "Actions",
+    "cancel": "Cancel",
+    "saveChanges": "Save Changes",
+    "create": "Create"
+  },
+  "templateSwitcher": {
+    "title": "Switch Resume Template",
+    "description": "Choose a new look for your resume. Your content will be automatically transferred."
+  },
+  "coverLetterForm": {
+    "jobTitle": "Job Title",
+    "jobTitlePlaceholder": "e.g., Senior Software Engineer",
+    "companyName": "Company Name",
+    "companyNamePlaceholder": "e.g., Tech Innovations Inc.",
+    "content": "Content",
+    "validation": {
+      "jobTitleRequired": "Job title is required.",
+      "contentMin": "Content must be at least 100 characters."
+    }
+  },
+  "createCoverLetter": {
+    "title": "Create Cover Letter"
+  },
+  "editCoverLetter": {
+    "title": "Edit Cover Letter",
+    "notFound": "Cover letter not found."
+  },
+  "gettingStarted": {
+    "title": "Welcome! Let's Get Started",
+    "description": "Follow these steps to land your next job.",
+    "step1": {
+      "title": "Create Your First Resume",
+      "description": "Choose a template and fill in your details. Our AI can help you write it!",
+      "cta": "Create Resume"
+    },
+    "step2": {
+      "title": "Generate a Cover Letter",
+      "description": "Let our AI write a tailored cover letter for your dream job in seconds.",
+      "cta": "Generate Cover Letter"
     }
   }
 }
