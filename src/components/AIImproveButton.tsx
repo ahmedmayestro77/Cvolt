@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2, Star } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { showError } from '@/utils/toast';
-import { ResumeFormValues } from './ResumeForm';
+import { ResumeFormValues } from '@/lib/resumeSchema';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 

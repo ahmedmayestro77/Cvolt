@@ -1,19 +1,27 @@
-import React, { useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useForm } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useResumes } from '@/hooks/use-resumes';
 import { useNavigate, useParams } from 'react-router-dom';
-import ResumeForm, { getResumeFormSchema, ResumeFormValues } from '@/components/ResumeForm';
+import { getResumeFormSchema, ResumeFormValues } from '@/lib/resumeSchema';
 import { useTranslation } from 'react-i18next';
 import { Loader2 } from 'lucide-react';
 import { showError } from '@/utils/toast';
+import { Button } from '@/components/ui/button';
+import ResumeStepper from '@/components/ResumeStepper';
+import PersonalDetailsStep from '@/components/resumeFormSteps/PersonalDetailsStep';
+import SummaryStep from '@/components/resumeFormSteps/SummaryStep';
+import ExperienceStep from '@/components/resumeFormSteps/ExperienceStep';
+import EducationStep from '@/components/resumeFormSteps/EducationStep';
+import SkillsStep from '@/components/resumeFormSteps/SkillsStep';
 
 const EditResume = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { useGetResumeById, useUpdateResume } = useResumes();
+  const [currentStep, setCurrentStep] = useState(0);
 
   const { data: resumeToEdit, isLoading: loading } = useGetResumeById(id);
   const updateResumeMutation = useUpdateResume();
@@ -26,6 +34,7 @@ const EditResume = () => {
       fullName: "", email: "", phone: "", linkedin: "",
       summary: "", experience: "", education: "", skills: "",
     },
+    mode: 'onChange',
   });
 
   useEffect(() => {
@@ -40,6 +49,26 @@ const EditResume = () => {
       navigate('/my-resumes');
     }
   }, [loading, resumeToEdit, navigate, t]);
+
+  const steps = [
+    { name: t('resumeForm.steps.personal'), fields: ['fullName', 'email', 'phone', 'linkedin'], component: <PersonalDetailsStep /> },
+    { name: t('resumeForm.steps.summary'), fields: ['summary'], component: <SummaryStep /> },
+    { name: t('resumeForm.steps.experience'), fields: ['experience'], component: <ExperienceStep /> },
+    { name: t('resumeForm.steps.education'), fields: ['education'], component: <EducationStep /> },
+    { name: t('resumeForm.steps.skills'), fields: ['skills'], component: <SkillsStep /> },
+  ];
+
+  const handleNextStep = async () => {
+    const fields = steps[currentStep].fields as (keyof ResumeFormValues)[];
+    const isValid = await form.trigger(fields);
+    if (isValid) {
+      setCurrentStep(prev => prev + 1);
+    }
+  };
+
+  const handlePrevStep = () => {
+    setCurrentStep(prev => prev - 1);
+  };
 
   const onSubmit = async (values: ResumeFormValues) => {
     if (!id) return;
@@ -61,22 +90,43 @@ const EditResume = () => {
   return (
     <div className="container mx-auto p-6 space-y-8">
       <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">{t('editResume.title')}</h1>
-      <p className="text-center text-lg text-gray-600 dark:text-gray-300 mb-10">
-        {t('editResume.description')}
-      </p>
-
-      <Card className="max-w-3xl mx-auto">
+      <Card className="max-w-4xl mx-auto">
         <CardHeader>
-          <CardTitle>{t('editResume.cardTitle')}</CardTitle>
-          <CardDescription>{t('editResume.cardDescription')}</CardDescription>
+          <div className="flex justify-center mb-8 pt-4">
+            <ResumeStepper steps={steps} currentStep={currentStep} />
+          </div>
+          <CardTitle className="text-center text-2xl">{steps[currentStep].name}</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResumeForm
-            form={form}
-            onSubmit={onSubmit}
-            buttonText={t('resumeForm.updateButton')}
-            isSubmitting={updateResumeMutation.isPending}
-          />
+          <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <div className="min-h-[300px]">
+                {steps[currentStep].component}
+              </div>
+              <div className="flex justify-between items-center pt-4 border-t">
+                <div>
+                  {currentStep > 0 && (
+                    <Button type="button" variant="outline" onClick={handlePrevStep}>
+                      {t('resumeForm.previousButton')}
+                    </Button>
+                  )}
+                </div>
+                <div>
+                  {currentStep < steps.length - 1 && (
+                    <Button type="button" onClick={handleNextStep}>
+                      {t('resumeForm.nextButton')}
+                    </Button>
+                  )}
+                  {currentStep === steps.length - 1 && (
+                    <Button type="submit" disabled={updateResumeMutation.isPending}>
+                      {updateResumeMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                      {t('resumeForm.updateButton')}
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </form>
+          </FormProvider>
         </CardContent>
       </Card>
     </div>

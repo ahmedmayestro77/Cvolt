@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ResumeFormValues } from '@/components/ResumeForm';
+import { ResumeFormValues } from '@/lib/resumeSchema';
 import { useAuth } from './use-auth';
 import { showError, showSuccess } from '@/utils/toast';
 
