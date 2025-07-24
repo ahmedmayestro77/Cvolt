@@ -1,3 +1,5 @@
+/// <reference types="https://esm.sh/@supabase/functions-js@2/src/edge-runtime.d.ts" />
+
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import Stripe from "https://esm.sh/stripe@16.2.0?target=deno";
@@ -12,7 +14,6 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   httpClient: Stripe.createFetchHttpClient(),
 });
 
-const PRO_PRICE_ID = Deno.env.get("STRIPE_PRO_PRICE_ID")!;
 const SITE_URL = Deno.env.get("SITE_URL")!;
 
 serve(async (req) => {
@@ -21,6 +22,12 @@ serve(async (req) => {
   }
 
   try {
+    // Get the priceId from the request body
+    const { priceId } = await req.json();
+    if (!priceId) {
+      throw new Error("priceId is required.");
+    }
+
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_ANON_KEY")!,
@@ -56,9 +63,9 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       customer: stripeCustomerId,
-      line_items: [{ price: PRO_PRICE_ID, quantity: 1 }],
+      line_items: [{ price: priceId, quantity: 1 }], // Use the dynamic priceId
       mode: "subscription",
-      success_url: `${SITE_URL}/dashboard`,
+      success_url: `${SITE_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${SITE_URL}/pricing`,
     });
 
