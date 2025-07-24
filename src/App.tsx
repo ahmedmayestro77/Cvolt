@@ -10,7 +10,8 @@ import Templates from "./pages/Templates";
 import CreateResume from "./pages/CreateResume";
 import MyResumes from "./pages/MyResumes";
 import ATSAnalyzer from "./pages/ATSAnalyzer";
-import Pricing from "./pages/Pricing"; // Import the new Pricing page
+import Pricing from "./pages/Pricing";
+import Header from "./components/Header"; // Import the new Header component
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <Header /> {/* Add the Header component here */}
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -27,7 +29,7 @@ const App = () => (
           <Route path="/create" element={<CreateResume />} />
           <Route path="/my-resumes" element={<MyResumes />} />
           <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
-          <Route path="/pricing" element={<Pricing />} /> {/* New Pricing route */}
+          <Route path="/pricing" element={<Pricing />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
