@@ -11,8 +11,13 @@ const LOCAL_STORAGE_KEY = 'cvolt_resumes';
 export const useResumeStore = () => {
   const [resumes, setResumes] = useState<Resume[]>(() => {
     if (typeof window !== 'undefined') {
-      const savedResumes = localStorage.getItem(LOCAL_STORAGE_KEY);
-      return savedResumes ? JSON.parse(savedResumes) : [];
+      try {
+        const savedResumes = localStorage.getItem(LOCAL_STORAGE_KEY);
+        return savedResumes ? JSON.parse(savedResumes) : [];
+      } catch (error) {
+        console.error("Failed to parse resumes from localStorage", error);
+        return [];
+      }
     }
     return [];
   });

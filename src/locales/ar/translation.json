@@ -1,0 +1,93 @@
+{
+  "brand": "CVOLT",
+  "header": {
+    "dashboard": "لوحة التحكم",
+    "templates": "القوالب",
+    "myResumes": "سيرتي الذاتية",
+    "atsAnalyzer": "تحليل ATS",
+    "pricing": "الأسعار",
+    "toggleMenu": "تبديل قائمة التنقل"
+  },
+  "index": {
+    "title": "CVOLT: سيرتك الذاتية الاحترافية بلمسة ذكاء اصطناعي",
+    "subtitle": "أنشئ سيرًا ذاتية مذهلة، حسّنها للـ ATS، وتتبع طلبات وظائفك بكل سهولة.",
+    "ctaPrimary": "ابدأ الآن",
+    "ctaSecondary": "تصفح القوالب"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "create": "إنشاء سيرة ذاتية جديدة",
+    "createDescription": "ابدأ في بناء سيرتك الذاتية من الصفر أو باستخدام قالب.",
+    "startNow": "ابدأ الآن",
+    "browseTemplates": "تصفح القوالب",
+    "browseTemplatesDescription": "اكتشف مجموعتنا الواسعة من القوالب الاحترافية.",
+    "viewTemplates": "عرض القوالب",
+    "myResumes": "سيرتي الذاتية",
+    "myResumesDescription": "إدارة وتعديل سيرك الذاتية الموجودة.",
+    "viewResumes": "عرض السير",
+    "atsAnalyzer": "تحليل ATS و CVOLT-Score",
+    "atsAnalyzerDescription": "حسّن سيرتك الذاتية لتجاوز أنظمة تتبع المتقدمين.",
+    "analyzeNow": "تحليل الآن"
+  },
+  "myResumes": {
+    "title": "سيرتي الذاتية",
+    "description": "هنا يمكنك إدارة جميع سيرك الذاتية التي قمت بإنشائها.",
+    "noResumes": "لم تقم بإنشاء أي سيرة ذاتية بعد.",
+    "createFirst": "ابدأ بإنشاء سيرة ذاتية جديدة",
+    "createNew": "إنشاء سيرة ذاتية جديدة",
+    "lastModified": "آخر تعديل: {{date}}",
+    "edit": "تعديل",
+    "download": "تحميل",
+    "delete": "حذف",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذه السيرة الذاتية؟",
+    "deleteSuccess": "تم حذف السيرة الذاتية بنجاح!",
+    "deleteError": "فشل في حذف السيرة الذاتية. يرجى المحاولة مرة أخرى."
+  },
+  "resumeForm": {
+    "fullName": "الاسم الكامل",
+    "fullNamePlaceholder": "مثال: أحمد محمد",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "example@domain.com",
+    "phone": "رقم الهاتف (اختياري)",
+    "phonePlaceholder": "+966 50 123 4567",
+    "linkedin": "رابط LinkedIn (اختياري)",
+    "linkedinPlaceholder": "https://www.linkedin.com/in/yourprofile",
+    "summary": "ملخص احترافي",
+    "summaryPlaceholder": "اكتب ملخصًا موجزًا عن خبراتك وأهدافك المهنية...",
+    "experience": "الخبرة العملية",
+    "experiencePlaceholder": "اذكر خبراتك العملية، بدءًا من الأحدث. (الشركة، المسمى الوظيفي، التواريخ، المسؤوليات والإنجازات)...",
+    "education": "التعليم",
+    "educationPlaceholder": "اذكر مؤهلاتك التعليمية. (الجامعة، التخصص، الدرجة، التواريخ)...",
+    "skills": "المهارات",
+    "skillsPlaceholder": "اذكر مهاراتك الأساسية، مفصولة بفاصلة. (مثال: إدارة المشاريع، التسويق الرقمي، تحليل البيانات)...",
+    "createButton": "إنشاء السيرة الذاتية",
+    "updateButton": "حفظ التغييرات",
+    "validation": {
+      "fullNameRequired": "الاسم الكامل مطلوب.",
+      "invalidEmail": "بريد إلكتروني غير صالح.",
+      "invalidUrl": "رابط LinkedIn غير صالح.",
+      "summaryMin": "الملخص يجب أن يكون 50 حرفًا على الأقل.",
+      "experienceMin": "الخبرة يجب أن تكون 50 حرفًا على الأقل.",
+      "educationMin": "التعليم يجب أن يكون 50 حرفًا على الأقل.",
+      "skillsRequired": "المهارات مطلوبة."
+    }
+  },
+  "createResume": {
+    "title": "إنشاء سيرة ذاتية جديدة",
+    "description": "املأ المعلومات التالية لإنشاء سيرتك الذاتية.",
+    "cardTitle": "معلوماتك الشخصية",
+    "cardDescription": "ابدأ بملء التفاصيل الأساسية.",
+    "createSuccess": "تم إنشاء السيرة الذاتية بنجاح!",
+    "createError": "فشل في إنشاء السيرة الذاتية. يرجى المحاولة مرة أخرى."
+  },
+  "editResume": {
+    "title": "تعديل السيرة الذاتية",
+    "description": "قم بتحديث معلومات سيرتك الذاتية.",
+    "cardTitle": "معلوماتك الشخصية",
+    "cardDescription": "عدّل التفاصيل حسب الحاجة.",
+    "updateSuccess": "تم تحديث السيرة الذاتية بنجاح!",
+    "updateError": "فشل في تحديث السيرة الذاتية. يرجى المحاولة مرة أخرى.",
+    "notFound": "لم يتم العثور على السيرة الذاتية.",
+    "loading": "جاري تحميل السيرة الذاتية..."
+  }
+}

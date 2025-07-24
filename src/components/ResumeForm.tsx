@@ -5,19 +5,20 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useTranslation } from 'react-i18next';
 
-export const resumeFormSchema = z.object({
-  fullName: z.string().min(2, { message: "الاسم الكامل مطلوب." }),
-  email: z.string().email({ message: "بريد إلكتروني غير صالح." }),
+export const getResumeFormSchema = (t: (key: string) => string) => z.object({
+  fullName: z.string().min(2, { message: t('resumeForm.validation.fullNameRequired') }),
+  email: z.string().email({ message: t('resumeForm.validation.invalidEmail') }),
   phone: z.string().optional(),
-  linkedin: z.string().url({ message: "رابط LinkedIn غير صالح." }).optional().or(z.literal('')),
-  summary: z.string().min(50, { message: "الملخص يجب أن يكون 50 حرفًا على الأقل." }),
-  experience: z.string().min(50, { message: "الخبرة يجب أن تكون 50 حرفًا على الأقل." }),
-  education: z.string().min(50, { message: "التعليم يجب أن يكون 50 حرفًا على الأقل." }),
-  skills: z.string().min(10, { message: "المهارات مطلوبة." }),
+  linkedin: z.string().url({ message: t('resumeForm.validation.invalidUrl') }).optional().or(z.literal('')),
+  summary: z.string().min(50, { message: t('resumeForm.validation.summaryMin') }),
+  experience: z.string().min(50, { message: t('resumeForm.validation.experienceMin') }),
+  education: z.string().min(50, { message: t('resumeForm.validation.educationMin') }),
+  skills: z.string().min(10, { message: t('resumeForm.validation.skillsRequired') }),
 });
 
-export type ResumeFormValues = z.infer<typeof resumeFormSchema>;
+export type ResumeFormValues = z.infer<ReturnType<typeof getResumeFormSchema>>;
 
 interface ResumeFormProps {
   form: ReturnType<typeof useForm<ResumeFormValues>>;
@@ -26,6 +27,7 @@ interface ResumeFormProps {
 }
 
 const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText }) => {
+  const { t } = useTranslation();
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -34,9 +36,9 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText }) =
           name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>الاسم الكامل</FormLabel>
+              <FormLabel>{t('resumeForm.fullName')}</FormLabel>
               <FormControl>
-                <Input placeholder="مثال: أحمد محمد" {...field} />
+                <Input placeholder={t('resumeForm.fullNamePlaceholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -47,9 +49,9 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText }) =
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>البريد الإلكتروني</FormLabel>
+              <FormLabel>{t('resumeForm.email')}</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="example@domain.com" {...field} />
+                <Input type="email" placeholder={t('resumeForm.emailPlaceholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -60,9 +62,9 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText }) =
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>رقم الهاتف (اختياري)</FormLabel>
+              <FormLabel>{t('resumeForm.phone')}</FormLabel>
               <FormControl>
-                <Input type="tel" placeholder="+966 50 123 4567" {...field} />
+                <Input type="tel" placeholder={t('resumeForm.phonePlaceholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -73,9 +75,9 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText }) =
           name="linkedin"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>رابط LinkedIn (اختياري)</FormLabel>
+              <FormLabel>{t('resumeForm.linkedin')}</FormLabel>
               <FormControl>
-                <Input placeholder="https://www.linkedin.com/in/yourprofile" {...field} />
+                <Input placeholder={t('resumeForm.linkedinPlaceholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -86,10 +88,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText }) =
           name="summary"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>ملخص احترافي</FormLabel>
+              <FormLabel>{t('resumeForm.summary')}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="اكتب ملخصًا موجزًا عن خبراتك وأهدافك المهنية..."
+                  placeholder={t('resumeForm.summaryPlaceholder')}
                   className="min-h-[100px]"
                   {...field}
                 />
@@ -103,10 +105,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText }) =
           name="experience"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>الخبرة العملية</FormLabel>
+              <FormLabel>{t('resumeForm.experience')}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="اذكر خبراتك العملية، بدءًا من الأحدث. (الشركة، المسمى الوظيفي، التواريخ، المسؤوليات والإنجازات)..."
+                  placeholder={t('resumeForm.experiencePlaceholder')}
                   className="min-h-[150px]"
                   {...field}
                 />
@@ -120,10 +122,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText }) =
           name="education"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>التعليم</FormLabel>
+              <FormLabel>{t('resumeForm.education')}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="اذكر مؤهلاتك التعليمية. (الجامعة، التخصص، الدرجة، التواريخ)..."
+                  placeholder={t('resumeForm.educationPlaceholder')}
                   className="min-h-[100px]"
                   {...field}
                 />
@@ -137,10 +139,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText }) =
           name="skills"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>المهارات</FormLabel>
+              <FormLabel>{t('resumeForm.skills')}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="اذكر مهاراتك الأساسية، مفصولة بفاصلة. (مثال: إدارة المشاريع، التسويق الرقمي، تحليل البيانات)..."
+                  placeholder={t('resumeForm.skillsPlaceholder')}
                   className="min-h-[80px]"
                   {...field}
                 />

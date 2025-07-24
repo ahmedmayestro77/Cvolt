@@ -5,14 +5,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { showSuccess, showError } from '@/utils/toast';
 import { useResumeStore, Resume } from '@/hooks/use-resume-store';
 import { useNavigate, useParams } from 'react-router-dom';
-import ResumeForm, { resumeFormSchema, ResumeFormValues } from '@/components/ResumeForm';
+import ResumeForm, { getResumeFormSchema, ResumeFormValues } from '@/components/ResumeForm';
+import { useTranslation } from 'react-i18next';
 
 const EditResume = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { getResumeById, updateResume } = useResumeStore();
   const navigate = useNavigate();
 
   const resumeToEdit = id ? getResumeById(id) : undefined;
+  const resumeFormSchema = getResumeFormSchema(t);
 
   const form = useForm<ResumeFormValues>({
     resolver: zodResolver(resumeFormSchema),
@@ -32,49 +35,49 @@ const EditResume = () => {
     if (resumeToEdit) {
       form.reset(resumeToEdit);
     } else if (id) {
-      showError("لم يتم العثور على السيرة الذاتية.");
+      showError(t('editResume.notFound'));
       navigate('/my-resumes');
     }
-  }, [id, resumeToEdit, form, navigate]);
+  }, [id, resumeToEdit, form, navigate, t]);
 
   const onSubmit = (values: ResumeFormValues) => {
     if (!id) return;
     try {
       const updatedResume: Resume = { ...values, id, lastModified: new Date().toISOString().split('T')[0] };
       updateResume(updatedResume);
-      showSuccess("تم تحديث السيرة الذاتية بنجاح!");
+      showSuccess(t('editResume.updateSuccess'));
       navigate('/my-resumes');
     } catch (error) {
       console.error("Failed to update resume:", error);
-      showError("فشل في تحديث السيرة الذاتية. يرجى المحاولة مرة أخرى.");
+      showError(t('editResume.updateError'));
     }
   };
 
   if (!resumeToEdit) {
     return (
         <div className="container mx-auto p-6 text-center">
-            <p>جاري تحميل السيرة الذاتية...</p>
+            <p>{t('editResume.loading')}</p>
         </div>
     );
   }
 
   return (
     <div className="container mx-auto p-6 space-y-8">
-      <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">تعديل السيرة الذاتية</h1>
+      <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">{t('editResume.title')}</h1>
       <p className="text-center text-lg text-gray-600 dark:text-gray-300 mb-10">
-        قم بتحديث معلومات سيرتك الذاتية.
+        {t('editResume.description')}
       </p>
 
       <Card className="max-w-3xl mx-auto">
         <CardHeader>
-          <CardTitle>معلوماتك الشخصية</CardTitle>
-          <CardDescription>عدّل التفاصيل حسب الحاجة.</CardDescription>
+          <CardTitle>{t('editResume.cardTitle')}</CardTitle>
+          <CardDescription>{t('editResume.cardDescription')}</CardDescription>
         </CardHeader>
         <CardContent>
           <ResumeForm
             form={form}
             onSubmit={onSubmit}
-            buttonText="حفظ التغييرات"
+            buttonText={t('resumeForm.updateButton')}
           />
         </CardContent>
       </Card>

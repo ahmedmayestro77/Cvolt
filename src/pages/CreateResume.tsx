@@ -5,11 +5,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { showSuccess, showError } from '@/utils/toast';
 import { useResumeStore } from '@/hooks/use-resume-store';
 import { useNavigate } from 'react-router-dom';
-import ResumeForm, { resumeFormSchema, ResumeFormValues } from '@/components/ResumeForm';
+import ResumeForm, { getResumeFormSchema, ResumeFormValues } from '@/components/ResumeForm';
+import { useTranslation } from 'react-i18next';
 
 const CreateResume = () => {
+  const { t } = useTranslation();
   const { addResume } = useResumeStore();
   const navigate = useNavigate();
+
+  const resumeFormSchema = getResumeFormSchema(t);
 
   const form = useForm<ResumeFormValues>({
     resolver: zodResolver(resumeFormSchema),
@@ -28,31 +32,31 @@ const CreateResume = () => {
   const onSubmit = (values: ResumeFormValues) => {
     try {
       addResume(values);
-      showSuccess("تم إنشاء السيرة الذاتية بنجاح!");
+      showSuccess(t('createResume.createSuccess'));
       navigate('/my-resumes');
     } catch (error) {
       console.error("Failed to create resume:", error);
-      showError("فشل في إنشاء السيرة الذاتية. يرجى المحاولة مرة أخرى.");
+      showError(t('createResume.createError'));
     }
   };
 
   return (
     <div className="container mx-auto p-6 space-y-8">
-      <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">إنشاء سيرة ذاتية جديدة</h1>
+      <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">{t('createResume.title')}</h1>
       <p className="text-center text-lg text-gray-600 dark:text-gray-300 mb-10">
-        املأ المعلومات التالية لإنشاء سيرتك الذاتية.
+        {t('createResume.description')}
       </p>
 
       <Card className="max-w-3xl mx-auto">
         <CardHeader>
-          <CardTitle>معلوماتك الشخصية</CardTitle>
-          <CardDescription>ابدأ بملء التفاصيل الأساسية.</CardDescription>
+          <CardTitle>{t('createResume.cardTitle')}</CardTitle>
+          <CardDescription>{t('createResume.cardDescription')}</CardDescription>
         </CardHeader>
         <CardContent>
           <ResumeForm
             form={form}
             onSubmit={onSubmit}
-            buttonText="إنشاء السيرة الذاتية"
+            buttonText={t('resumeForm.createButton')}
           />
         </CardContent>
       </Card>
