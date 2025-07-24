@@ -10,6 +10,7 @@ import { createRoot } from 'react-dom/client';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import ResumePreview from '@/components/ResumePreview';
+import { ResumeFormValues } from '@/lib/resumeSchema';
 
 interface ResumeItemProps {
   resume: Resume;
@@ -57,7 +58,7 @@ const MyResumes = () => {
     }
   };
 
-  const handleDownload = async (resume: Resume) => {
+  const handleDownload = async (resume: ResumeFormValues) => {
     const tempContainer = document.createElement('div');
     tempContainer.style.position = 'absolute';
     tempContainer.style.left = '-9999px';

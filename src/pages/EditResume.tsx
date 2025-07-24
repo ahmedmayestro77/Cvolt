@@ -10,11 +10,12 @@ import { Loader2 } from 'lucide-react';
 import { showError } from '@/utils/toast';
 import { Button } from '@/components/ui/button';
 import ResumeStepper from '@/components/ResumeStepper';
-import PersonalDetailsStep from '@/components/resumeFormSteps/PersonalDetailsStep';
-import SummaryStep from '@/components/resumeFormSteps/SummaryStep';
-import ExperienceStep from '@/components/resumeFormSteps/ExperienceStep';
-import EducationStep from '@/components/resumeFormSteps/EducationStep';
-import SkillsStep from '@/components/resumeFormSteps/SkillsStep';
+import PersonalDetailsStep from '@/components/resume-form-steps/PersonalDetailsStep';
+import SummaryStep from '@/components/resume-form-steps/SummaryStep';
+import ExperienceStep from '@/components/resume-form-steps/ExperienceStep';
+import EducationStep from '@/components/resume-form-steps/EducationStep';
+import SkillsStep from '@/components/resume-form-steps/SkillsStep';
+import ResumePreview from '@/components/ResumePreview';
 
 const EditResume = () => {
   const { t } = useTranslation();
@@ -36,6 +37,8 @@ const EditResume = () => {
     },
     mode: 'onChange',
   });
+
+  const watchedValues = form.watch();
 
   useEffect(() => {
     if (resumeToEdit) {
@@ -88,47 +91,51 @@ const EditResume = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-8">
-      <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">{t('editResume.title')}</h1>
-      <Card className="max-w-4xl mx-auto">
-        <CardHeader>
-          <div className="flex justify-center mb-8 pt-4">
-            <ResumeStepper steps={steps} currentStep={currentStep} />
-          </div>
-          <CardTitle className="text-center text-2xl">{steps[currentStep].name}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <div className="min-h-[300px]">
-                {steps[currentStep].component}
-              </div>
-              <div className="flex justify-between items-center pt-4 border-t">
-                <div>
-                  {currentStep > 0 && (
-                    <Button type="button" variant="outline" onClick={handlePrevStep}>
-                      {t('resumeForm.previousButton')}
-                    </Button>
-                  )}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
+      <div className="lg:overflow-y-auto">
+        <Card className="max-w-4xl mx-auto">
+          <CardHeader>
+            <div className="flex justify-center mb-8 pt-4">
+              <ResumeStepper steps={steps} currentStep={currentStep} />
+            </div>
+            <CardTitle className="text-center text-2xl">{steps[currentStep].name}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <FormProvider {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <div className="min-h-[300px]">
+                  {steps[currentStep].component}
                 </div>
-                <div>
-                  {currentStep < steps.length - 1 && (
-                    <Button type="button" onClick={handleNextStep}>
-                      {t('resumeForm.nextButton')}
-                    </Button>
-                  )}
-                  {currentStep === steps.length - 1 && (
-                    <Button type="submit" disabled={updateResumeMutation.isPending}>
-                      {updateResumeMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                      {t('resumeForm.updateButton')}
-                    </Button>
-                  )}
+                <div className="flex justify-between items-center pt-4 border-t">
+                  <div>
+                    {currentStep > 0 && (
+                      <Button type="button" variant="outline" onClick={handlePrevStep}>
+                        {t('resumeForm.previousButton')}
+                      </Button>
+                    )}
+                  </div>
+                  <div>
+                    {currentStep < steps.length - 1 && (
+                      <Button type="button" onClick={handleNextStep}>
+                        {t('resumeForm.nextButton')}
+                      </Button>
+                    )}
+                    {currentStep === steps.length - 1 && (
+                      <Button type="submit" disabled={updateResumeMutation.isPending}>
+                        {updateResumeMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {t('resumeForm.updateButton')}
+                      </Button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </form>
-          </FormProvider>
-        </CardContent>
-      </Card>
+              </form>
+            </FormProvider>
+          </CardContent>
+        </Card>
+      </div>
+      <div className="hidden lg:flex justify-center items-start py-8">
+        <ResumePreview resume={watchedValues} />
+      </div>
     </div>
   );
 };
