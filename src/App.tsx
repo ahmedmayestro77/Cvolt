@@ -16,11 +16,13 @@ import ATSAnalyzer from "./pages/ATSAnalyzer";
 import Pricing from "./pages/Pricing";
 import Header from "./components/Header";
 import EditResume from "./pages/EditResume";
+import EditCoverLetter from "./pages/EditCoverLetter";
 import Contact from "./pages/Contact";
 import AuthPage from "./pages/AuthPage";
 import AppLayout from "./components/AppLayout";
 import { Footer } from "./components/Footer";
 import AIResumeGenerator from "./pages/AIResumeGenerator";
+import CoverLetterGenerator from "./pages/CoverLetterGenerator";
 
 const queryClient = new QueryClient();
 
@@ -47,11 +49,14 @@ const App = () => (
                 <Route path="/my-resumes" element={<MyResumes />} />
                 <Route path="/my-cover-letters" element={<MyCoverLetters />} />
                 <Route path="/edit-resume/:id" element={<EditResume />} />
+                <Route path="/cover-letter/create" element={<EditCoverLetter />} />
+                <Route path="/cover-letter/edit/:id" element={<EditCoverLetter />} />
                 <Route path="/pricing" element={<Pricing />} />
                 
                 {/* Pro-only Routes inside AppLayout */}
                 <Route element={<ProRoute />}>
                   <Route path="/ai-resume-generator" element={<AIResumeGenerator />} />
+                  <Route path="/cover-letter-generator" element={<CoverLetterGenerator />} />
                   <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
                 </Route>
               </Route>

@@ -27,7 +27,7 @@ const CoverLetterItem: React.FC<CoverLetterItemProps> = ({ coverLetter, onDelete
         </div>
       </div>
       <div className="flex flex-wrap justify-center gap-2">
-        <Link to={`/edit-cover-letter/${coverLetter.id}`}>
+        <Link to={`/cover-letter/edit/${coverLetter.id}`}>
           <Button variant="outline" size="sm" className="flex items-center gap-1">
             <Edit className="h-4 w-4" /> {t('myResumes.edit')}
           </Button>
@@ -68,7 +68,7 @@ const MyCoverLetters = () => {
           <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
             {t('myCoverLetters.noCoverLetters', 'You haven\'t created any cover letters yet.')}
           </p>
-          <Link to="/create-cover-letter">
+          <Link to="/cover-letter/create">
             <Button size="lg">{t('myCoverLetters.createFirst', 'Create Your First Cover Letter')}</Button>
           </Link>
         </div>
@@ -90,7 +90,7 @@ const MyCoverLetters = () => {
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
           {t('myCoverLetters.createNew', 'Create a New Cover Letter')}
         </h2>
-        <Link to="/create-cover-letter">
+        <Link to="/cover-letter/create">
           <Button size="lg">{t('myCoverLetters.createNewButton', 'Create New')}</Button>
         </Link>
       </div>

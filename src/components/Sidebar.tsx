@@ -9,9 +9,10 @@ const Sidebar = () => {
 
   const navLinks = [
     { name: t('header.dashboard'), path: '/dashboard', icon: Home },
-    { name: t('header.aiGenerator', 'AI Generator'), path: '/ai-resume-generator', icon: Wand2 },
+    { name: t('header.aiGenerator', 'AI Resume Generator'), path: '/ai-resume-generator', icon: Wand2 },
+    { name: t('header.aiCoverLetterGenerator', 'AI Cover Letter Generator'), path: '/cover-letter-generator', icon: Wand2 },
     { name: t('header.myResumes'), path: '/my-resumes', icon: FileText },
-    { name: t('header.coverLetters', 'Cover Letters'), path: '/my-cover-letters', icon: FileSignature },
+    { name: t('header.coverLetters', 'My Cover Letters'), path: '/my-cover-letters', icon: FileSignature },
     { name: t('header.templates'), path: '/templates', icon: LayoutTemplate },
     { name: t('header.atsAnalyzer'), path: '/ats-analyzer', icon: BarChart },
     { name: t('header.pricing'), path: '/pricing', icon: Star },
