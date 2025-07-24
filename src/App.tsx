@@ -11,7 +11,8 @@ import CreateResume from "./pages/CreateResume";
 import MyResumes from "./pages/MyResumes";
 import ATSAnalyzer from "./pages/ATSAnalyzer";
 import Pricing from "./pages/Pricing";
-import Header from "./components/Header"; // Import the new Header component
+import Header from "./components/Header";
+import EditResume from "./pages/EditResume";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +22,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Header /> {/* Add the Header component here */}
+        <Header />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/my-resumes" element={<MyResumes />} />
           <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/edit-resume/:id" element={<EditResume />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
