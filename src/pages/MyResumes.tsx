@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Edit, Download, Trash2, Loader2 } from 'lucide-react';
+import { FileText, Edit, Download, Trash2, Loader2, LayoutTemplate } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useResumes, Resume } from '@/hooks/use-resumes';
 import { useTranslation } from 'react-i18next';
@@ -11,16 +11,18 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import ResumePreview from '@/components/ResumePreview';
 import { showError } from '@/utils/toast';
+import TemplateSwitcherModal from '@/components/TemplateSwitcherModal';
 
 interface ResumeItemProps {
   resume: Resume;
   onDelete: (id: string) => void;
   onDownload: (resume: Resume) => Promise<void>;
+  onOpenTemplateSwitcher: (resume: Resume) => void;
   isDownloading: boolean;
   currentDownloadId: string | null;
 }
 
-const ResumeItem: React.FC<ResumeItemProps> = ({ resume, onDelete, onDownload, isDownloading, currentDownloadId }) => {
+const ResumeItem: React.FC<ResumeItemProps> = ({ resume, onDelete, onDownload, onOpenTemplateSwitcher, isDownloading, currentDownloadId }) => {
   const { t } = useTranslation();
   const isThisDownloading = isDownloading && currentDownloadId === resume.id;
 
@@ -39,6 +41,9 @@ const ResumeItem: React.FC<ResumeItemProps> = ({ resume, onDelete, onDownload, i
             <Edit className="h-4 w-4" /> {t('myResumes.edit')}
           </Button>
         </Link>
+        <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={() => onOpenTemplateSwitcher(resume)}>
+          <LayoutTemplate className="h-4 w-4" /> {t('myResumes.changeTemplate')}
+        </Button>
         <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={() => onDownload(resume)} disabled={isThisDownloading}>
           {isThisDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
           {isThisDownloading ? t('myResumes.downloading') : t('myResumes.download')}
@@ -56,13 +61,22 @@ const MyResumes = () => {
   const { useGetResumes, useDeleteResume } = useResumes();
   const { data: resumes, isLoading } = useGetResumes();
   const deleteResumeMutation = useDeleteResume();
+  
   const [isDownloading, setIsDownloading] = useState(false);
   const [currentDownloadId, setCurrentDownloadId] = useState<string | null>(null);
+  
+  const [isSwitcherOpen, setIsSwitcherOpen] = useState(false);
+  const [selectedResume, setSelectedResume] = useState<Resume | null>(null);
 
   const handleDelete = (id: string) => {
     if (window.confirm(t('myResumes.deleteConfirm'))) {
       deleteResumeMutation.mutate(id);
     }
+  };
+
+  const handleOpenTemplateSwitcher = (resume: Resume) => {
+    setSelectedResume(resume);
+    setIsSwitcherOpen(true);
   };
 
   const handleDownload = async (resume: Resume) => {
@@ -85,13 +99,8 @@ const MyResumes = () => {
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
-      const canvasWidth = canvas.width;
-      const canvasHeight = canvas.height;
-      const ratio = canvasWidth / canvasHeight;
-      const width = pdfWidth;
-      const height = width / ratio;
-
-      pdf.addImage(imgData, 'PNG', 0, 0, width, height > pdfHeight ? pdfHeight : height);
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save(`CV_${resume.fullName.replace(/\s/g, '_')}.pdf`);
 
       root.unmount();
@@ -106,51 +115,61 @@ const MyResumes = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-8">
-      <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">{t('myResumes.title')}</h1>
-      <p className="text-center text-lg text-gray-600 dark:text-gray-300 mb-10">
-        {t('myResumes.description')}
-      </p>
+    <>
+      <div className="container mx-auto p-6 space-y-8">
+        <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">{t('myResumes.title')}</h1>
+        <p className="text-center text-lg text-gray-600 dark:text-gray-300 mb-10">
+          {t('myResumes.description')}
+        </p>
 
-      {isLoading ? (
-        <div className="flex justify-center items-center py-10">
-          <Loader2 className="h-8 w-8 animate-spin" />
-        </div>
-      ) : !resumes || resumes.length === 0 ? (
-        <div className="text-center py-10">
-          <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
-            {t('myResumes.noResumes')}
-          </p>
+        {isLoading ? (
+          <div className="flex justify-center items-center py-10">
+            <Loader2 className="h-8 w-8 animate-spin" />
+          </div>
+        ) : !resumes || resumes.length === 0 ? (
+          <div className="text-center py-10">
+            <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
+              {t('myResumes.noResumes')}
+            </p>
+            <Link to="/create">
+              <Button size="lg">{t('myResumes.createFirst')}</Button>
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {resumes.map((resume) => (
+              <ResumeItem
+                key={resume.id}
+                resume={resume}
+                onDelete={handleDelete}
+                onDownload={handleDownload}
+                onOpenTemplateSwitcher={handleOpenTemplateSwitcher}
+                isDownloading={isDownloading}
+                currentDownloadId={currentDownloadId}
+              />
+            ))}
+          </div>
+        )}
+
+        <Separator className="my-12" />
+
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+            {t('myResumes.createNew')}
+          </h2>
           <Link to="/create">
-            <Button size="lg">{t('myResumes.createFirst')}</Button>
+            <Button size="lg">{t('myResumes.createNew')}</Button>
           </Link>
         </div>
-      ) : (
-        <div className="space-y-4">
-          {resumes.map((resume) => (
-            <ResumeItem
-              key={resume.id}
-              resume={resume}
-              onDelete={handleDelete}
-              onDownload={handleDownload}
-              isDownloading={isDownloading}
-              currentDownloadId={currentDownloadId}
-            />
-          ))}
-        </div>
-      )}
-
-      <Separator className="my-12" />
-
-      <div className="text-center">
-        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
-          {t('myResumes.createNew')}
-        </h2>
-        <Link to="/create">
-          <Button size="lg">{t('myResumes.createNew')}</Button>
-        </Link>
       </div>
-    </div>
+      {selectedResume && (
+        <TemplateSwitcherModal
+          isOpen={isSwitcherOpen}
+          onClose={() => setIsSwitcherOpen(false)}
+          resume={selectedResume}
+        />
+      )}
+    </>
   );
 };
 
