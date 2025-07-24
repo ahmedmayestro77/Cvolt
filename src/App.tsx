@@ -24,6 +24,7 @@ import AdminRoute from "./components/AdminRoute";
 import AdminLayout from "./components/AdminLayout";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import UsersPage from "@/pages/admin/Users";
+import CoverLetterGenerator from "./pages/CoverLetterGenerator";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
                 <Route path="/edit-resume/:id" element={<EditResume />} />
                 <Route path="/cover-letter/create" element={<EditCoverLetter />} />
                 <Route path="/cover-letter/edit/:id" element={<EditCoverLetter />} />
+                <Route path="/cover-letter-generator" element={<CoverLetterGenerator />} />
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
               </Route>

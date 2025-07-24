@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Languages, User, LogOut } from 'lucide-react';
+import { Menu, Languages, User, LogOut, Wand2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/use-auth';
@@ -19,7 +19,8 @@ const Header = () => {
     { name: t('header.dashboard'), path: '/dashboard' },
     { name: t('header.templates'), path: '/templates' },
     { name: t('header.myResumes'), path: '/my-resumes' },
-    { name: t('header.coverLetters', 'Cover Letters'), path: '/my-cover-letters' },
+    { name: t('header.coverLetters', 'My Cover Letters'), path: '/my-cover-letters' },
+    { name: t('header.coverLetterGenerator', 'AI Cover Letter'), path: '/cover-letter-generator' },
     { name: t('header.atsAnalyzer'), path: '/ats-analyzer' },
     { name: t('header.pricing'), path: '/pricing' },
   ];

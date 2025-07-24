@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Wand2, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/use-auth';
 import { showError } from '@/utils/toast';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { useNavigate } from 'react-router-dom';
 
-interface AICoverLetterGeneratorProps {
-  onGenerate: (content: string, jobTitle: string, companyName: string) => void;
-}
-
-const AICoverLetterGenerator: React.FC<AICoverLetterGeneratorProps> = ({ onGenerate }) => {
+const CoverLetterGenerator = () => {
   const { t } = useTranslation();
   const { supabase, session } = useAuth();
   const navigate = useNavigate();
@@ -43,7 +39,15 @@ const AICoverLetterGenerator: React.FC<AICoverLetterGeneratorProps> = ({ onGener
       if (error) throw error;
       if (data.error) throw new Error(data.error);
 
-      onGenerate(data.coverLetterContent, jobTitle, companyName);
+      navigate('/cover-letter/create', {
+        state: {
+          aiGeneratedData: {
+            job_title: jobTitle,
+            company_name: companyName,
+            content: data.coverLetterContent,
+          },
+        },
+      });
     } catch (err) {
       console.error(err);
       showError(t('aiGenerator.validation.generationFailed'));
@@ -53,15 +57,18 @@ const AICoverLetterGenerator: React.FC<AICoverLetterGeneratorProps> = ({ onGener
   };
 
   return (
-    <Accordion type="single" collapsible className="w-full mb-8">
-      <AccordionItem value="item-1">
-        <AccordionTrigger>
-          <div className="flex items-center gap-2 text-lg font-semibold text-primary">
-            <Wand2 className="h-5 w-5" />
-            {t('coverLetterGenerator.accordionTitle')}
-          </div>
-        </AccordionTrigger>
-        <AccordionContent className="space-y-6 pt-4">
+    <div className="container mx-auto p-6 space-y-8">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-4">{t('coverLetterGenerator.title', 'AI Cover Letter Generator')}</h1>
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">{t('coverLetterGenerator.description', 'Provide your resume and a job description, and let our AI write a compelling cover letter for you.')}</p>
+      </div>
+
+      <Card className="max-w-4xl mx-auto">
+        <CardHeader>
+          <CardTitle>{t('coverLetterGenerator.formTitle', 'Enter Details')}</CardTitle>
+          <CardDescription>{t('coverLetterGenerator.formDescription', 'The more detail you provide, the better the result.')}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="ai-job-title">{t('coverLetterForm.jobTitle')}</Label>
@@ -77,7 +84,7 @@ const AICoverLetterGenerator: React.FC<AICoverLetterGeneratorProps> = ({ onGener
             <Textarea
               id="ai-job-description"
               placeholder={t('coverLetterGenerator.jobDescriptionPlaceholder')}
-              className="min-h-[150px]"
+              className="min-h-[200px]"
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
             />
@@ -87,13 +94,13 @@ const AICoverLetterGenerator: React.FC<AICoverLetterGeneratorProps> = ({ onGener
             <Textarea
               id="ai-resume-text"
               placeholder={t('coverLetterGenerator.resumeTextPlaceholder')}
-              className="min-h-[150px]"
+              className="min-h-[200px]"
               value={resumeText}
               onChange={(e) => setResumeText(e.target.value)}
             />
           </div>
           <div className="text-right">
-            <Button onClick={handleGenerate} disabled={isLoading}>
+            <Button size="lg" onClick={handleGenerate} disabled={isLoading}>
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
@@ -102,10 +109,10 @@ const AICoverLetterGenerator: React.FC<AICoverLetterGeneratorProps> = ({ onGener
               {t('aiGenerator.generateButton')}
             </Button>
           </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
-export default AICoverLetterGenerator;
+export default CoverLetterGenerator;

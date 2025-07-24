@@ -20,7 +20,7 @@ const GettingStarted = () => {
       title: t('gettingStarted.step2.title', 'Generate a Cover Letter'),
       description: t('gettingStarted.step2.description', 'Let our AI write a tailored cover letter for your dream job in seconds.'),
       cta: t('gettingStarted.step2.cta', 'Generate Cover Letter'),
-      link: '/cover-letter/create',
+      link: '/cover-letter-generator',
       icon: <Wand2 className="h-8 w-8 text-primary" />,
     },
   ];
