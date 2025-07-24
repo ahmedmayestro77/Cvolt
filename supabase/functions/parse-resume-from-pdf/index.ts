@@ -1,3 +1,4 @@
+// @ts-nocheck
 /// <reference types="https://esm.sh/@supabase/functions-js@2" />
 
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
@@ -43,7 +44,7 @@ serve(async (req) => {
     let extractedText: string;
     try {
       extractedText = await extract(pdfBuffer, { splitPages: false });
-    } catch (e) { {
+    } catch (e) {
       throw new Error(`Failed to extract text from PDF: ${e.message}`);
     }
 
