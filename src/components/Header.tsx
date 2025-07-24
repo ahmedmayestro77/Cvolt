@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useAuth } from '@/hooks/use-auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { showError } from '@/utils/toast';
+import { ThemeToggle } from './ThemeToggle';
 
 const Header = () => {
   const { t, i18n } = useTranslation();
@@ -48,6 +49,7 @@ const Header = () => {
             <span className="font-bold text-xl text-primary">{t('brand')}</span>
           </Link>
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Link to="/auth">
               <Button>Login</Button>
             </Link>
@@ -107,6 +109,9 @@ const Header = () => {
             <DropdownMenuItem onClick={() => changeLanguage('ar')}>العربية</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {/* Theme Toggle */}
+        <ThemeToggle />
 
         {/* User Menu */}
         <DropdownMenu>
