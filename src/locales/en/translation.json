@@ -1,37 +1,5 @@
 {
   "brand": "CVOLT",
-  "index": {
-    "title": {
-      "part1": "Your CV. ",
-      "part2": "In seconds."
-    },
-    "subtitle": "Build a professional, modern resume that stands out. Fast, easy, and free.",
-    "ctaPrimary": "Create Your CV Now",
-    "steps": {
-      "title": "How It Works",
-      "subtitle": "Get your resume ready in three simple steps.",
-      "choose": {
-        "title": "Choose a Template",
-        "description": "Select from our library of professionally designed, ATS-friendly templates."
-      },
-      "fill": {
-        "title": "Fill Your Details",
-        "description": "Use our intuitive editor and AI assistant to fill in your information effortlessly."
-      },
-      "download": {
-        "title": "Download & Share",
-        "description": "Export your resume as a PDF and start applying for your dream job."
-      }
-    },
-    "finalCta": {
-      "title": "Ready to Build Your Future?",
-      "subtitle": "Join thousands of successful professionals. Start building your free resume today."
-    }
-  },
-  "testimonials": {
-    "title": "Loved by Professionals",
-    "subtitle": "See what our users are saying about their experience with CVOLT."
-  },
   "header": {
     "dashboard": "Dashboard",
     "templates": "Templates",
@@ -39,26 +7,170 @@
     "atsAnalyzer": "ATS Analyzer",
     "pricing": "Pricing",
     "contact": "Contact",
-    "toggleMenu": "Toggle navigation menu"
+    "toggleMenu": "Toggle menu"
   },
   "footer": {
     "rights": "All rights reserved."
   },
+  "index": {
+    "title": {
+      "part1": "Build Your Future,",
+      "part2": " with CVOLT"
+    },
+    "subtitle": "Create a professional, attention-grabbing resume that helps you land your dream job. Our AI-powered tools make it fast and easy.",
+    "ctaPrimary": "Get Started for Free",
+    "steps": {
+      "title": "How It Works",
+      "subtitle": "Create your perfect resume in three simple steps.",
+      "choose": {
+        "title": "1. Choose a Template",
+        "description": "Select from our library of professionally designed, ATS-friendly templates."
+      },
+      "fill": {
+        "title": "2. Fill in Your Details",
+        "description": "Use our intuitive editor and AI assistant to fill out your information effortlessly."
+      },
+      "download": {
+        "title": "3. Download & Apply",
+        "description": "Export your resume as a PDF and start applying for jobs with confidence."
+      }
+    },
+    "finalCta": {
+      "title": "Ready to Stand Out?",
+      "subtitle": "Join thousands of successful professionals who built their careers with CVOLT."
+    }
+  },
+  "testimonials": {
+    "title": "What Our Users Say",
+    "subtitle": "Trusted by professionals worldwide."
+  },
   "contact": {
     "title": "Contact Us",
-    "description": "Have questions? We'd love to hear from you.",
+    "description": "Have questions? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.",
     "success": "Your message has been sent successfully!",
     "form": {
       "name": "Name",
       "namePlaceholder": "Enter your name",
       "email": "Email",
-      "emailPlaceholder": "Enter your email",
+      "emailPlaceholder": "Enter your email address",
       "message": "Message",
-      "messagePlaceholder": "Your message...",
+      "messagePlaceholder": "How can we help you?",
       "button": "Send Message"
     }
   },
+  "templates": {
+    "title": "Choose Your Perfect Template",
+    "description": "Every template is designed to be ATS-friendly and fully customizable.",
+    "proBadge": "PRO",
+    "useButton": "Use Template",
+    "proUpsell": {
+      "title": "Unlock All Premium Templates",
+      "description": "Upgrade to Pro to access our exclusive collection of creative and executive templates.",
+      "cta": "Go Pro"
+    },
+    "modernMinimalist": {
+      "name": "Modern Minimalist",
+      "description": "A clean, modern design perfect for any industry."
+    },
+    "professionalClassic": {
+      "name": "Professional Classic",
+      "description": "A timeless, elegant template for corporate roles."
+    },
+    "creativePortfolio": {
+      "name": "Creative Portfolio",
+      "description": "Showcase your creativity with this stylish, visual template."
+    },
+    "techSavvy": {
+      "name": "Tech Savvy",
+      "description": "A developer-focused design that highlights your technical skills."
+    },
+    "academicResearch": {
+      "name": "Academic Research",
+      "description": "Ideal for academics, researchers, and PhD candidates."
+    },
+    "executiveSummary": {
+      "name": "Executive Summary",
+      "description": "A powerful, concise template for senior-level executives."
+    }
+  },
+  "pricing": {
+    "title": "Find the Plan That's Right for You",
+    "description": "Start for free, or unlock powerful features with our Pro plan.",
+    "free": {
+      "title": "Free",
+      "price": "$0",
+      "frequency": "Forever",
+      "features": [
+        "1 Resume",
+        "2 Free Templates",
+        "PDF Download"
+      ],
+      "button": "Get Started"
+    },
+    "pro": {
+      "title": "Pro",
+      "frequency": "per month",
+      "features": [
+        "Unlimited Resumes",
+        "All Premium Templates",
+        "AI-Powered Suggestions",
+        "ATS Analyzer",
+        "Priority Support"
+      ],
+      "button": "Upgrade to Pro"
+    },
+    "enterprise": {
+      "title": "Enterprise",
+      "price": "Custom",
+      "frequency": "for teams",
+      "features": [
+        "Team Management",
+        "Custom Branding",
+        "Bulk Resume Creation",
+        "Dedicated Support"
+      ],
+      "button": "Contact Sales"
+    },
+    "questions": {
+      "title": "Have Questions?",
+      "description": "Contact our team for more information about our plans.",
+      "button": "Contact Us"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {{name}}!",
+    "subtitle": "Here's what's happening with your account today.",
+    "myResumes": "My Resumes",
+    "totalResumes": "Total resumes created",
+    "accountStatus": "Account Status",
+    "upgradeToPro": "Upgrade to Pro",
+    "atsAnalyzer": "ATS Analyzer",
+    "recentResumes": "Recent Resumes",
+    "viewAllResumes": "View All Resumes"
+  },
+  "myResumes": {
+    "title": "My Resumes",
+    "description": "Manage, edit, and download all your created resumes from here.",
+    "lastModified": "Last modified: {{date}}",
+    "edit": "Edit",
+    "download": "Download",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this resume? This action cannot be undone.",
+    "noResumes": "You haven't created any resumes yet.",
+    "createFirst": "Create Your First Resume",
+    "createNew": "Create New Resume"
+  },
+  "editResume": {
+    "notFound": "Resume not found. It might have been deleted."
+  },
   "resumeForm": {
+    "steps": {
+      "personal": "Personal Details",
+      "summary": "Summary",
+      "experience": "Experience",
+      "education": "Education",
+      "skills": "Skills"
+    },
     "fullName": "Full Name",
     "fullNamePlaceholder": "e.g., John Doe",
     "email": "Email Address",
@@ -68,136 +180,57 @@
     "linkedin": "LinkedIn Profile (Optional)",
     "linkedinPlaceholder": "e.g., https://linkedin.com/in/johndoe",
     "summary": "Professional Summary",
-    "summaryPlaceholder": "Write a brief summary about your professional background...",
+    "summaryPlaceholder": "Write a brief summary about your professional background and career goals...",
     "experience": "Work Experience",
-    "experiencePlaceholder": "Describe your work experience, roles, and achievements...",
+    "experiencePlaceholder": "List your previous roles, responsibilities, and achievements...",
     "education": "Education",
-    "educationPlaceholder": "List your degrees, universities, and graduation dates...",
+    "educationPlaceholder": "List your degrees, certifications, and relevant coursework...",
     "skills": "Skills",
-    "skillsPlaceholder": "List your relevant skills, separated by commas...",
-    "improveWithAI": "Improve with AI",
+    "skillsPlaceholder": "List your relevant skills, separated by commas (e.g., Project Management, React, Public Speaking...)",
     "previousButton": "Previous",
     "nextButton": "Next",
     "createButton": "Create Resume",
     "updateButton": "Update Resume",
-    "steps": {
-      "personal": "Personal Details",
-      "summary": "Summary",
-      "experience": "Experience",
-      "education": "Education",
-      "skills": "Skills"
-    },
+    "improveWithAI": "Improve with AI",
     "validation": {
-      "fullNameRequired": "Full name is required",
-      "invalidEmail": "Invalid email address",
-      "invalidUrl": "Please enter a valid URL",
-      "summaryMin": "Summary must be at least 50 characters",
-      "experienceMin": "Experience must be at least 50 characters",
-      "educationMin": "Education must be at least 50 characters",
-      "skillsRequired": "Skills section cannot be empty",
-      "loginRequired": "You must be logged in to use this feature.",
+      "fullNameRequired": "Full name is required.",
+      "invalidEmail": "Please enter a valid email address.",
+      "invalidUrl": "Please enter a valid URL.",
+      "summaryMin": "Summary must be at least 50 characters.",
+      "experienceMin": "Experience section must be at least 50 characters.",
+      "educationMin": "Education section must be at least 50 characters.",
+      "skillsRequired": "Skills section must be at least 10 characters.",
+      "loginRequired": "Please log in to use AI features.",
       "proRequired": "This is a Pro feature. Please upgrade to use it.",
-      "improveError": "Please write at least 20 characters to get an AI suggestion.",
-      "improveFailed": "Failed to get AI suggestion. Please try again."
-    }
-  },
-  "myResumes": {
-    "title": "My Resumes",
-    "description": "Manage, edit, or download your created resumes.",
-    "lastModified": "Last modified: {{date}}",
-    "edit": "Edit",
-    "download": "Download",
-    "delete": "Delete",
-    "deleteConfirm": "Are you sure you want to delete this resume?",
-    "noResumes": "You haven't created any resumes yet.",
-    "createFirst": "Create Your First Resume",
-    "createNew": "Create New Resume"
-  },
-  "editResume": {
-    "notFound": "Resume not found. Redirecting..."
-  },
-  "dashboard": {
-    "welcome": "Welcome, {{name}}!",
-    "subtitle": "Here's a quick overview of your account.",
-    "myResumes": "My Resumes",
-    "totalResumes": "Total resumes created",
-    "accountStatus": "Account Status",
-    "upgradeToPro": "Upgrade to Pro",
-    "atsAnalyzer": "ATS Analyzer",
-    "recentResumes": "Recent Resumes",
-    "viewAllResumes": "View All Resumes"
-  },
-  "templates": {
-    "title": "Choose Your Template",
-    "description": "Select a template to start building your professional resume.",
-    "proBadge": "PRO",
-    "useButton": "Use Template",
-    "proUpsell": {
-      "title": "Unlock All Templates",
-      "description": "Upgrade to Pro to access all premium templates and features.",
-      "cta": "Go Pro"
-    },
-    "modernMinimalist": { "name": "Modern Minimalist", "description": "A clean, modern design perfect for any industry." },
-    "professionalClassic": { "name": "Professional Classic", "description": "A timeless, elegant layout for corporate roles." },
-    "creativePortfolio": { "name": "Creative Portfolio", "description": "A stylish template for designers and artists." },
-    "techSavvy": { "name": "Tech Savvy", "description": "A sharp, modern look for tech professionals." },
-    "academicResearch": { "name": "Academic Research", "description": "Formatted for academic and research positions." },
-    "executiveSummary": { "name": "Executive Summary", "description": "A powerful layout for leadership and executive roles." }
-  },
-  "pricing": {
-    "title": "Find the Plan That's Right for You",
-    "description": "Start for free, or unlock powerful features with our Pro plan.",
-    "free": {
-      "title": "Free",
-      "price": "$0",
-      "frequency": "Forever",
-      "features": ["1 Resume", "2 Templates", "PDF Download"],
-      "button": "Get Started"
-    },
-    "pro": {
-      "title": "Pro",
-      "frequency": "per month",
-      "features": ["Unlimited Resumes", "All Premium Templates", "AI-Powered Suggestions", "ATS Analyzer", "Priority Support"],
-      "button": "Upgrade to Pro"
-    },
-    "enterprise": {
-      "title": "Enterprise",
-      "price": "Custom",
-      "frequency": "for teams",
-      "features": ["Everything in Pro", "Team Management", "Custom Branding", "Dedicated Support"],
-      "button": "Contact Sales"
-    },
-    "questions": {
-      "title": "Have Questions?",
-      "description": "Our team is here to help you find the perfect solution.",
-      "button": "Contact Us"
+      "improveError": "Please write at least 20 characters to improve.",
+      "improveFailed": "Failed to improve text. Please try again later."
     }
   },
   "ats": {
     "title": "ATS Resume Analyzer",
-    "description": "Check how well your resume matches a job description and optimize it to pass through Applicant Tracking Systems.",
+    "description": "Check how well your resume matches a job description. Paste your resume and the job description below to get an instant analysis and match score.",
     "resumeInput": {
-      "title": "Your Resume Text",
+      "title": "Your Resume",
       "description": "Paste the full text of your resume here.",
-      "placeholder": "Paste your resume content..."
+      "placeholder": "Paste your resume text..."
     },
     "jobInput": {
       "title": "Job Description",
-      "description": "Paste the full job description you're applying for.",
-      "placeholder": "Paste the job description content..."
+      "description": "Paste the full job description here.",
+      "placeholder": "Paste the job description text..."
     },
     "analyzeButton": "Analyze Resume",
     "analyzingButton": "Analyzing...",
+    "validation": {
+      "bothRequired": "Please paste both your resume and the job description.",
+      "analysisFailed": "Analysis failed. Please try again later."
+    },
     "results": {
       "title": "Analysis Results",
       "matchScore": "Match Score",
-      "matchCount": "{{count}} of {{total}} keywords matched.",
+      "matchCount": "Matched {{count}} of {{total}} keywords.",
       "matchedKeywords": "Matched Keywords",
       "missingKeywords": "Missing Keywords"
-    },
-    "validation": {
-      "bothRequired": "Please paste content in both the resume and job description fields.",
-      "analysisFailed": "Analysis failed. Please try again later."
     }
   }
 }

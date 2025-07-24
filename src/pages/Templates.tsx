@@ -38,7 +38,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({ name, description, isPro, i
   return (
     <Card className="flex flex-col overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="relative h-48 bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
-        <img src={imageUrl} alt={`Template ${name}`} className="w-full h-full object-cover" />
+        <img src={imageUrl} alt={`Template ${name}`} className="w-full h-full object-cover object-top" />
         {isPro && (
           <Badge variant="secondary" className="absolute top-3 right-3 bg-yellow-400 text-yellow-900">
             {t('templates.proBadge')}
@@ -64,12 +64,12 @@ const Templates = () => {
   const { t } = useTranslation();
 
   const templates = [
-    { slug: 'modern-minimalist', name: t('templates.modernMinimalist.name'), description: t('templates.modernMinimalist.description'), isPro: false, imageUrl: 'https://via.placeholder.com/300x200?text=Modern+Minimalist' },
-    { slug: 'professional-classic', name: t('templates.professionalClassic.name'), description: t('templates.professionalClassic.description'), isPro: false, imageUrl: 'https://via.placeholder.com/300x200?text=Professional+Classic' },
-    { slug: 'creative-portfolio', name: t('templates.creativePortfolio.name'), description: t('templates.creativePortfolio.description'), isPro: true, imageUrl: 'https://via.placeholder.com/300x200?text=Creative+Portfolio' },
-    { slug: 'tech-savvy', name: t('templates.techSavvy.name'), description: t('templates.techSavvy.description'), isPro: true, imageUrl: 'https://via.placeholder.com/300x200?text=Tech+Savvy' },
-    { slug: 'academic-research', name: t('templates.academicResearch.name'), description: t('templates.academicResearch.description'), isPro: true, imageUrl: 'https://via.placeholder.com/300x200?text=Academic+Research' },
-    { slug: 'executive-summary', name: t('templates.executiveSummary.name'), description: t('templates.executiveSummary.description'), isPro: true, imageUrl: 'https://via.placeholder.com/300x200?text=Executive+Summary' },
+    { slug: 'modern-minimalist', name: t('templates.modernMinimalist.name'), description: t('templates.modernMinimalist.description'), isPro: false, imageUrl: 'https://i.imgur.com/O3aLLaD.png' },
+    { slug: 'professional-classic', name: t('templates.professionalClassic.name'), description: t('templates.professionalClassic.description'), isPro: false, imageUrl: 'https://i.imgur.com/qZqZJ8p.png' },
+    { slug: 'creative-portfolio', name: t('templates.creativePortfolio.name'), description: t('templates.creativePortfolio.description'), isPro: true, imageUrl: 'https://i.imgur.com/3gXyZ0a.png' },
+    { slug: 'tech-savvy', name: t('templates.techSavvy.name'), description: t('templates.techSavvy.description'), isPro: true, imageUrl: 'https://i.imgur.com/M9gqA8r.png' },
+    { slug: 'academic-research', name: t('templates.academicResearch.name'), description: t('templates.academicResearch.description'), isPro: true, imageUrl: 'https://i.imgur.com/5hV3Z8S.png' },
+    { slug: 'executive-summary', name: t('templates.executiveSummary.name'), description: t('templates.executiveSummary.description'), isPro: true, imageUrl: 'https://i.imgur.com/7kF2T9t.png' },
   ];
 
   return (

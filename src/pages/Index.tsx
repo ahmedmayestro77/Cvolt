@@ -72,7 +72,7 @@ const Index = () => {
               <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
               <div className="w-3 h-3 rounded-full bg-green-500"></div>
             </div>
-            <img src="https://dummyimage.com/1200x800/e0e7ff/4338ca.png&text=App+Showcase" alt="CVOLT App Showcase" className="rounded-lg w-full h-auto" />
+            <img src="https://i.imgur.com/9oG4a9g.png" alt="CVOLT App Showcase" className="rounded-lg w-full h-auto" />
           </div>
         </motion.div>
       </section>
