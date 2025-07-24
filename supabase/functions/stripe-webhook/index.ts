@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.43.4";
-import Stripe from "https://esm.sh/stripe@15.12.0?target=deno";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import Stripe from "https://esm.sh/stripe@16.2.0?target=deno";
 
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2024-06-20",
@@ -12,47 +12,83 @@ const supabaseAdmin = createClient(
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
 );
 
+const relevantEvents = new Set([
+  'checkout.session.completed',
+  'customer.subscription.updated',
+  'customer.subscription.deleted',
+]);
+
 serve(async (req) => {
   const signature = req.headers.get("Stripe-Signature");
   const body = await req.text();
 
-  let event;
+  if (!signature) {
+    return new Response("Stripe-Signature header is required.", { status: 400 });
+  }
+
+  let event: Stripe.Event;
   try {
     event = await stripe.webhooks.constructEventAsync(
       body,
-      signature!,
+      signature,
       Deno.env.get("STRIPE_WEBHOOK_SIGNING_SECRET")!
     );
   } catch (err) {
-    console.error(err.message);
+    console.error(`Webhook signature verification failed: ${err.message}`);
     return new Response(err.message, { status: 400 });
   }
 
-  try {
-    if (event.type === "checkout.session.completed") {
-      const session = event.data.object;
-      const customerId = session.customer;
+  if (relevantEvents.has(event.type)) {
+    try {
+      let customerId: string | null = null;
+      let subscriptionStatus: 'pro' | 'free' | null = null;
 
-      if (!customerId) {
-        throw new Error("Webhook Error: Missing customer ID in session.");
+      switch (event.type) {
+        case 'checkout.session.completed': {
+          const session = event.data.object as Stripe.Checkout.Session;
+          customerId = session.customer as string;
+          subscriptionStatus = 'pro';
+          break;
+        }
+        case 'customer.subscription.updated': {
+          const subscription = event.data.object as Stripe.Subscription;
+          customerId = subscription.customer as string;
+          subscriptionStatus = subscription.status === 'active' || subscription.status === 'trialing' ? 'pro' : 'free';
+          break;
+        }
+        case 'customer.subscription.deleted': {
+          const subscription = event.data.object as Stripe.Subscription;
+          customerId = subscription.customer as string;
+          subscriptionStatus = 'free';
+          break;
+        }
+        default:
+          // This should not happen if the event set is correct
+          throw new Error('Unhandled relevant event!');
       }
 
-      // Find user by stripe_customer_id and update their subscription
+      if (!customerId) {
+        throw new Error(`Webhook Error: Missing customer ID for event type ${event.type}.`);
+      }
+
       const { error } = await supabaseAdmin
         .from("profiles")
-        .update({ subscription_status: "pro" })
-        .eq("stripe_customer_id", customerId as string);
+        .update({ subscription_status: subscriptionStatus })
+        .eq("stripe_customer_id", customerId);
 
       if (error) {
         throw new Error(`Webhook Error: Failed to update profile for customer ${customerId}. ${error.message}`);
       }
       
-      console.log(`Successfully upgraded plan for customer: ${customerId}`);
+      console.log(`Successfully processed event ${event.type} for customer: ${customerId}`);
+
+    } catch (error) {
+      console.error(error.message);
+      return new Response(
+        JSON.stringify({ error: `Webhook handler failed: ${error.message}` }),
+        { status: 500 }
+      );
     }
-  } catch (error) {
-    console.error(error.message);
-    // We don't want to return a 400 to Stripe if it's a server error
-    // as it will retry the webhook.
   }
 
   return new Response(JSON.stringify({ received: true }), { status: 200 });
