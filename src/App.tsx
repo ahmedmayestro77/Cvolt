@@ -13,6 +13,7 @@ import ATSAnalyzer from "./pages/ATSAnalyzer";
 import Pricing from "./pages/Pricing";
 import Header from "./components/Header";
 import EditResume from "./pages/EditResume";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/edit-resume/:id" element={<EditResume />} />
+          <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

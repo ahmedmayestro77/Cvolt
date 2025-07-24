@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface PricingCardProps {
   title: string;
@@ -22,79 +23,69 @@ const PricingCard: React.FC<PricingCardProps> = ({
   isPopular = false,
   buttonText,
   buttonVariant = "default",
-}) => (
-  <Card className={`flex flex-col ${isPopular ? 'border-2 border-primary shadow-lg' : ''}`}>
-    <CardHeader className="text-center pb-4">
-      <CardTitle className="text-2xl font-bold">{title}</CardTitle>
-      <CardDescription className="text-gray-600 dark:text-gray-300">
-        {isPopular && <span className="text-primary font-semibold">الأكثر شعبية</span>}
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex-grow flex flex-col items-center justify-center py-6">
-      <div className="text-5xl font-extrabold mb-2">
-        {price}
-      </div>
-      <div className="text-lg text-gray-500 dark:text-gray-400 mb-6">
-        {frequency}
-      </div>
-      <ul className="space-y-3 text-left w-full px-4">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-            <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
-    </CardContent>
-    <CardFooter className="pt-6">
-      <Button className="w-full" variant={buttonVariant}>
-        {buttonText}
-      </Button>
-    </CardFooter>
-  </Card>
-);
+}) => {
+  const { t } = useTranslation();
+  return (
+    <Card className={`flex flex-col ${isPopular ? 'border-2 border-primary shadow-lg' : ''}`}>
+      <CardHeader className="text-center pb-4">
+        <CardTitle className="text-2xl font-bold">{title}</CardTitle>
+        {isPopular && (
+          <CardDescription className="text-primary font-semibold">
+            {t('pricing.pro.popular')}
+          </CardDescription>
+        )}
+      </CardHeader>
+      <CardContent className="flex-grow flex flex-col items-center justify-center py-6">
+        <div className="text-5xl font-extrabold mb-2">
+          {price}
+        </div>
+        <div className="text-lg text-gray-500 dark:text-gray-400 mb-6">
+          {frequency}
+        </div>
+        <ul className="space-y-3 text-left w-full px-4">
+          {features.map((feature, index) => (
+            <li key={index} className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+              <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <span>{feature}</span>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+      <CardFooter className="pt-6">
+        <Button className="w-full" variant={buttonVariant}>
+          {buttonText}
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
 
 const Pricing = () => {
+  const { t } = useTranslation();
+
   const pricingTiers = [
     {
-      title: 'مجاني',
-      price: '0 ر.س',
-      frequency: 'شهريًا',
-      features: [
-        'إنشاء سيرة ذاتية واحدة',
-        'قوالب أساسية',
-        'تحميل PDF',
-        'دعم محدود',
-      ],
-      buttonText: 'ابدأ مجانًا',
+      title: t('pricing.free.title'),
+      price: t('pricing.free.price'),
+      frequency: t('pricing.free.frequency'),
+      features: t('pricing.free.features', { returnObjects: true }) as string[],
+      buttonText: t('pricing.free.button'),
       buttonVariant: 'outline' as const,
     },
     {
-      title: 'Pro',
-      price: '49 ر.س',
-      frequency: 'شهريًا',
-      features: [
-        'عدد غير محدود من السير الذاتية',
-        'جميع القوالب الاحترافية',
-        'تحليل ATS متقدم',
-        'تتبع طلبات الوظائف',
-        'دعم ذو أولوية',
-      ],
+      title: t('pricing.pro.title'),
+      price: t('pricing.pro.price'),
+      frequency: t('pricing.pro.frequency'),
+      features: t('pricing.pro.features', { returnObjects: true }) as string[],
       isPopular: true,
-      buttonText: 'اشترك الآن',
+      buttonText: t('pricing.pro.button'),
     },
     {
-      title: 'Enterprise',
-      price: 'اتصل بنا',
-      frequency: 'للمؤسسات',
-      features: [
-        'جميع ميزات Pro',
-        'حلول مخصصة للشركات',
-        'إدارة فريق العمل',
-        'دعم مخصص 24/7',
-        'تدريب مخصص',
-      ],
-      buttonText: 'تواصل معنا',
+      title: t('pricing.enterprise.title'),
+      price: t('pricing.enterprise.price'),
+      frequency: t('pricing.enterprise.frequency'),
+      features: t('pricing.enterprise.features', { returnObjects: true }) as string[],
+      buttonText: t('pricing.enterprise.button'),
       buttonVariant: 'outline' as const,
     },
   ];
@@ -102,9 +93,9 @@ const Pricing = () => {
   return (
     <div className="container mx-auto p-6 space-y-10">
       <div className="text-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-100 mb-4">خطط الأسعار لدينا</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-100 mb-4">{t('pricing.title')}</h1>
         <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          اختر الخطة التي تناسب احتياجاتك، سواء كنت تبدأ للتو أو تبحث عن حلول متقدمة.
+          {t('pricing.description')}
         </p>
       </div>
 
@@ -116,13 +107,13 @@ const Pricing = () => {
 
       <div className="text-center mt-12">
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
-          هل لديك أسئلة؟
+          {t('pricing.questions.title')}
         </h2>
         <p className="text-gray-600 dark:text-gray-300 mb-6">
-          لا تتردد في التواصل معنا إذا كان لديك أي استفسارات حول خططنا.
+          {t('pricing.questions.description')}
         </p>
-        <Link to="/contact"> {/* Assuming a contact page might be added later */}
-          <Button size="lg" variant="outline">تواصل معنا</Button>
+        <Link to="/contact">
+          <Button size="lg" variant="outline">{t('pricing.questions.button')}</Button>
         </Link>
       </div>
     </div>

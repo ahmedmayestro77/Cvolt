@@ -89,5 +89,122 @@
     "updateError": "Failed to update resume. Please try again.",
     "notFound": "Resume not found.",
     "loading": "Loading resume..."
+  },
+  "templates": {
+    "title": "Browse Templates",
+    "description": "Choose the template that best fits your style and industry.",
+    "proBadge": "Pro",
+    "useButton": "Use This Template",
+    "proUpsell": {
+      "title": "Want More Professional Templates?",
+      "description": "Upgrade to a Pro subscription to access over 20 exclusive templates and advanced features!",
+      "cta": "Explore Pro Plans"
+    },
+    "modernMinimalist": {
+      "name": "Modern Minimalist",
+      "description": "A clean, modern design that focuses on content."
+    },
+    "professionalClassic": {
+      "name": "Professional Classic",
+      "description": "A traditional, professional design suitable for all industries."
+    },
+    "creativePortfolio": {
+      "name": "Creative Portfolio",
+      "description": "Perfect for designers and artists to showcase their work."
+    },
+    "techSavvy": {
+      "name": "Tech Savvy",
+      "description": "A design that highlights technical skills and experience."
+    },
+    "academicResearch": {
+      "name": "Academic Research",
+      "description": "Structured for researchers and academics."
+    },
+    "executiveSummary": {
+      "name": "Executive Summary",
+      "description": "A concise and impactful executive summary."
+    }
+  },
+  "ats": {
+    "title": "ATS & CVOLT-Score Analysis",
+    "description": "Optimize your resume to get past Applicant Tracking Systems (ATS) and increase your interview chances.",
+    "uploadCard": {
+      "title": "Upload Your Resume",
+      "description": "Paste your resume text below or upload a file to get started.",
+      "placeholder": "Paste your resume text here...",
+      "button": "Analyze Resume"
+    },
+    "tipsCard": {
+      "title": "ATS Optimization Tips",
+      "description": "Learn how to make your resume ATS-friendly.",
+      "tip1": "Use relevant keywords from the job description.",
+      "tip2": "Keep the formatting simple and clean.",
+      "tip3": "Avoid complex graphics or tables that an ATS may not read.",
+      "tip4": "Use standard section headings (e.g., 'Experience', 'Education', 'Skills').",
+      "tip5": "Ensure your resume is free of spelling and grammatical errors."
+    }
+  },
+  "pricing": {
+    "title": "Our Pricing Plans",
+    "description": "Choose the plan that fits your needs, whether you're just starting out or looking for advanced solutions.",
+    "free": {
+      "title": "Free",
+      "price": "$0",
+      "frequency": "per month",
+      "features": [
+        "1 Resume",
+        "Basic Templates",
+        "PDF Download",
+        "Limited Support"
+      ],
+      "button": "Start for Free"
+    },
+    "pro": {
+      "title": "Pro",
+      "popular": "Most Popular",
+      "price": "$12",
+      "frequency": "per month",
+      "features": [
+        "Unlimited Resumes",
+        "All Pro Templates",
+        "Advanced ATS Analysis",
+        "Job Application Tracking",
+        "Priority Support"
+      ],
+      "button": "Subscribe Now"
+    },
+    "enterprise": {
+      "title": "Enterprise",
+      "price": "Contact Us",
+      "frequency": "for organizations",
+      "features": [
+        "All Pro features",
+        "Custom solutions for companies",
+        "Team management",
+        "24/7 dedicated support",
+        "Custom training"
+      ],
+      "button": "Contact Us"
+    },
+    "questions": {
+      "title": "Have Questions?",
+      "description": "Feel free to reach out if you have any questions about our plans.",
+      "button": "Contact Us"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "description": "We're here to help. Fill out the form below and we'll get back to you as soon as possible.",
+    "form": {
+      "name": "Your Name",
+      "namePlaceholder": "Enter your name",
+      "email": "Your Email",
+      "emailPlaceholder": "Enter your email address",
+      "message": "Your Message",
+      "messagePlaceholder": "How can we help you?",
+      "button": "Send Message"
+    },
+    "success": "Your message has been sent successfully!",
+    "error": "Failed to send message. Please try again later."
   }
 }
