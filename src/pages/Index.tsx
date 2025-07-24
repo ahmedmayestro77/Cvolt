@@ -6,18 +6,17 @@ import { Edit, FileText, Sparkles, MoveRight } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import ParticlesBackground from "@/components/ParticlesBackground";
 
 const Index = () => {
-  const { t } = useTranslation();
+  const { t, ready } = useTranslation();
 
   const fadeIn: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { 
-        duration: 0.6 
-      } 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   };
 
@@ -27,12 +26,16 @@ const Index = () => {
     { name: "Fatima E.", role: "UX Designer", quote: "The AI suggestions are a game-changer. It's like having a career coach by your side.", avatar: "https://ui-avatars.com/api/?name=Fatima+E&background=random&color=fff" },
   ];
 
+  if (!ready) {
+    return <div className="h-screen w-full flex items-center justify-center">Loading...</div>;
+  }
+
   return (
     <div className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative py-24 md:py-40 text-center">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50 dark:from-blue-950/50 to-white dark:to-gray-950"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 bg-primary/10 dark:bg-primary/20 rounded-full blur-3xl -z-10"></div>
+        <ParticlesBackground />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50/50 dark:from-blue-950/50 to-white dark:to-gray-950"></div>
         
         <motion.div variants={fadeIn} initial="hidden" animate="visible" className="container mx-auto px-4">
           <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
@@ -72,7 +75,7 @@ const Index = () => {
             <img src="https://i.imgur.com/U3A0V82.png" alt="CVOLT App Showcase" className="rounded-lg w-full h-auto" />
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* How It Works Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-900">
