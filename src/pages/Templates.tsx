@@ -64,12 +64,12 @@ const Templates = () => {
   const { t } = useTranslation();
 
   const templates = [
-    { slug: 'modern-minimalist', name: t('templates.modernMinimalist.name'), description: t('templates.modernMinimalist.description'), isPro: false, imageUrl: 'https://i.imgur.com/O3aLLaD.png' },
-    { slug: 'professional-classic', name: t('templates.professionalClassic.name'), description: t('templates.professionalClassic.description'), isPro: false, imageUrl: 'https://i.imgur.com/qZqZJ8p.png' },
-    { slug: 'creative-portfolio', name: t('templates.creativePortfolio.name'), description: t('templates.creativePortfolio.description'), isPro: true, imageUrl: 'https://i.imgur.com/3gXyZ0a.png' },
-    { slug: 'tech-savvy', name: t('templates.techSavvy.name'), description: t('templates.techSavvy.description'), isPro: true, imageUrl: 'https://i.imgur.com/M9gqA8r.png' },
-    { slug: 'academic-research', name: t('templates.academicResearch.name'), description: t('templates.academicResearch.description'), isPro: true, imageUrl: 'https://i.imgur.com/5hV3Z8S.png' },
-    { slug: 'executive-summary', name: t('templates.executiveSummary.name'), description: t('templates.executiveSummary.description'), isPro: true, imageUrl: 'https://i.imgur.com/7kF2T9t.png' },
+    { slug: 'modern-minimalist', name: t('templates.modernMinimalist.name'), description: t('templates.modernMinimalist.description'), isPro: false, imageUrl: '/assets/images/template-modern-minimalist.png' },
+    { slug: 'professional-classic', name: t('templates.professionalClassic.name'), description: t('templates.professionalClassic.description'), isPro: false, imageUrl: '/assets/images/template-professional-classic.png' },
+    { slug: 'creative-portfolio', name: t('templates.creativePortfolio.name'), description: t('templates.creativePortfolio.description'), isPro: true, imageUrl: '/assets/images/template-creative-portfolio.png' },
+    { slug: 'tech-savvy', name: t('templates.techSavvy.name'), description: t('templates.techSavvy.description'), isPro: true, imageUrl: '/assets/images/template-tech-savvy.png' },
+    { slug: 'academic-research', name: t('templates.academicResearch.name'), description: t('templates.academicResearch.description'), isPro: true, imageUrl: '/assets/images/template-academic-research.png' },
+    { slug: 'executive-summary', name: t('templates.executiveSummary.name'), description: t('templates.executiveSummary.description'), isPro: true, imageUrl: '/assets/images/template-executive-summary.png' },
   ];
 
   return (
