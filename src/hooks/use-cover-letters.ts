@@ -14,7 +14,11 @@ export interface CoverLetter {
 }
 
 // The shape of the data to be inserted/updated in Supabase
-export type CoverLetterPayload = Omit<CoverLetter, 'id' | 'user_id' | 'created_at' | 'last_modified'>;
+export type CoverLetterPayload = {
+  job_title: string;
+  company_name?: string;
+  content: string;
+};
 
 export const useCoverLetters = () => {
   const { supabase, session } = useAuth();

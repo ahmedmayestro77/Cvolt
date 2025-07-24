@@ -1,7 +1,7 @@
 /// <reference types="https://esm.sh/@supabase/functions-js@2" />
 
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
-import { OpenAI } from "https://esm.sh/openai@4.49.1";
+import { OpenAI } from "https://esm.sh/openai@4.52.7";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
