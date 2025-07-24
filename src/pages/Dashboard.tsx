@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, ArrowRight, FileText, BarChart, Star } from 'lucide-react';
+import { PlusCircle, ArrowRight, FileText, BarChart, Star, FileSignature } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/use-auth';
 import { useResumes } from '@/hooks/use-resumes';
+import { useCoverLetters } from '@/hooks/use-cover-letters'; // Import new hook
 import { Skeleton } from '@/components/ui/skeleton';
 import { useProfile } from '@/hooks/use-profile';
 
@@ -14,9 +15,12 @@ const Dashboard = () => {
   const { user } = useAuth();
   const { data: profile } = useProfile();
   const { useGetResumes } = useResumes();
-  const { data: resumes, isLoading } = useGetResumes();
+  const { data: resumes, isLoading: isLoadingResumes } = useGetResumes();
+  const { useGetCoverLetters } = useCoverLetters(); // Use new hook
+  const { data: coverLetters, isLoading: isLoadingCoverLetters } = useGetCoverLetters(); // Get cover letters
 
   const userName = user?.user_metadata?.full_name || user?.email;
+  const isLoading = isLoadingResumes || isLoadingCoverLetters;
 
   return (
     <div className="space-y-8">
@@ -38,15 +42,25 @@ const Dashboard = () => {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t('dashboard.myResumes')}</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {isLoading ? <Skeleton className="h-8 w-12" /> : <div className="text-2xl font-bold">{resumes?.length || 0}</div>}
+            {isLoadingResumes ? <Skeleton className="h-8 w-12" /> : <div className="text-2xl font-bold">{resumes?.length || 0}</div>}
             <p className="text-xs text-muted-foreground">{t('dashboard.totalResumes')}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">{t('dashboard.myCoverLetters', 'My Cover Letters')}</CardTitle>
+            <FileSignature className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            {isLoadingCoverLetters ? <Skeleton className="h-8 w-12" /> : <div className="text-2xl font-bold">{coverLetters?.length || 0}</div>}
+            <p className="text-xs text-muted-foreground">{t('dashboard.totalCoverLetters', 'Total cover letters')}</p>
           </CardContent>
         </Card>
         <Card>
@@ -80,7 +94,7 @@ const Dashboard = () => {
         <h2 className="text-2xl font-semibold mb-4">{t('dashboard.recentResumes')}</h2>
         <Card>
           <CardContent className="p-4">
-            {isLoading ? (
+            {isLoadingResumes ? (
               <div className="space-y-4">
                 <Skeleton className="h-12 w-full" />
                 <Skeleton className="h-12 w-full" />

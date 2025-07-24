@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Templates from "./pages/Templates";
 import CreateResume from "./pages/CreateResume";
 import MyResumes from "./pages/MyResumes";
+import MyCoverLetters from "./pages/MyCoverLetters"; // Import new page
 import ATSAnalyzer from "./pages/ATSAnalyzer";
 import Pricing from "./pages/Pricing";
 import Header from "./components/Header";
@@ -43,6 +44,7 @@ const App = () => (
                 <Route path="/templates" element={<Templates />} />
                 <Route path="/create" element={<CreateResume />} />
                 <Route path="/my-resumes" element={<MyResumes />} />
+                <Route path="/my-cover-letters" element={<MyCoverLetters />} /> {/* Add new route */}
                 <Route path="/edit-resume/:id" element={<EditResume />} />
                 <Route path="/pricing" element={<Pricing />} />
                 

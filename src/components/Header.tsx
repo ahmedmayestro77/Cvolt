@@ -19,6 +19,7 @@ const Header = () => {
     { name: t('header.dashboard'), path: '/dashboard' },
     { name: t('header.templates'), path: '/templates' },
     { name: t('header.myResumes'), path: '/my-resumes' },
+    { name: t('header.coverLetters', 'Cover Letters'), path: '/my-cover-letters' },
     { name: t('header.atsAnalyzer'), path: '/ats-analyzer' },
     { name: t('header.pricing'), path: '/pricing' },
   ];
