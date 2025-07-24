@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ProRoute from "./components/ProRoute";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
@@ -29,22 +30,26 @@ const App = () => (
         <AuthProvider>
           <Header />
           <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/templates" element={<Templates />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/contact" element={<Contact />} />
             
-            {/* Protected Routes */}
+            {/* Authenticated Routes */}
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/create" element={<CreateResume />} />
               <Route path="/my-resumes" element={<MyResumes />} />
-              <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
               <Route path="/edit-resume/:id" element={<EditResume />} />
             </Route>
 
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            {/* Pro-only Routes */}
+            <Route element={<ProRoute />}>
+              <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
+            </Route>
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
