@@ -1,18 +1,25 @@
-/// <reference types="https://esm.sh/@supabase/functions-js@2/src/edge-runtime.d.ts" />
+/// <reference types="https://esm.sh/@supabase/functions-js@2" />
 
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+import { OpenAI } from "https://esm.sh/openai@4.49.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Mock AI responses for demonstration purposes
-const mockResponses = {
-  summary: "As a highly motivated and results-oriented professional with over five years of experience in project management, I have a proven track record of delivering complex projects on time and within budget. My expertise in Agile methodologies and cross-functional team leadership has consistently driven efficiency and stakeholder satisfaction. I am seeking to leverage my skills to contribute to a dynamic organization that values innovation and growth.",
-  experience: "Spearheaded the development of a new client onboarding system, which reduced processing time by 30% and improved customer satisfaction scores by 15% within the first quarter. Managed a portfolio of 10+ projects simultaneously, with budgets ranging from $50,000 to $1M, ensuring all deliverables met quality standards and deadlines. Collaborated with international teams across three time zones, fostering a culture of open communication and shared success.",
-  education: "Master of Business Administration (MBA) from Stanford University, Graduate School of Business, with a specialization in Strategic Management. Bachelor of Science in Computer Science from the Massachusetts Institute of Technology (MIT), where I graduated with honors and was actively involved in the university's AI research lab.",
-};
+const getPrompt = (section: string, text: string): string => {
+  switch (section) {
+    case 'summary':
+      return `Rewrite the following professional summary to be more impactful and concise for a resume. Focus on action verbs and quantifiable achievements. The summary is: "${text}"`;
+    case 'experience':
+      return `Rewrite the following work experience description for a resume. Use the STAR method (Situation, Task, Action, Result) to frame the accomplishments. Make it professional and highlight key achievements. The experience is: "${text}"`;
+    case 'education':
+      return `Rewrite the following education section for a resume. Ensure it is clear, professional, and concise. Include degrees, universities, and graduation dates where available. The education description is: "${text}"`;
+    default:
+      return `Improve the following text for a resume: "${text}"`;
+  }
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -20,21 +27,38 @@ serve(async (req) => {
   }
 
   try {
+    const openAIKey = Deno.env.get("OPENAI_API_KEY");
+    if (!openAIKey) {
+      throw new Error("OpenAI API key is not set in project secrets.");
+    }
+    const openai = new OpenAI({ apiKey: openAIKey });
+
     const { section, text } = await req.json();
 
-    if (!section || !text || !mockResponses[section]) {
-      return new Response(JSON.stringify({ error: "Missing or invalid 'section' or 'text' in request body" }), {
+    if (!section || !text) {
+      return new Response(JSON.stringify({ error: "Missing 'section' or 'text' in request body" }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 400,
       });
     }
 
-    // In a real application, you would call an LLM API (e.g., OpenAI) here.
-    // For now, we'll return a mocked, improved version.
-    // Simulate a network delay for a realistic user experience.
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    const prompt = getPrompt(section, text);
 
-    const improvedText = mockResponses[section];
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: "You are an expert resume writing assistant. You provide clear, professional, and impactful content for resumes." },
+        { role: "user", content: prompt },
+      ],
+      temperature: 0.7,
+      max_tokens: 300,
+    });
+
+    const improvedText = completion.choices[0].message.content?.trim();
+
+    if (!improvedText) {
+      throw new Error("Failed to get a response from the AI model.");
+    }
 
     return new Response(JSON.stringify({ improvedText }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

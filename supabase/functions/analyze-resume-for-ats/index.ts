@@ -1,22 +1,31 @@
-/// <reference types="https://esm.sh/@supabase/functions-js@2/src/edge-runtime.d.ts" />
+/// <reference types="https://esm.sh/@supabase/functions-js@2" />
 
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+import { OpenAI } from "https://esm.sh/openai@4.49.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// A simple function to extract keywords from text
-const extractKeywords = (text: string): Set<string> => {
-  return new Set(
-    text
-      .toLowerCase()
-      .replace(/[^\w\s]/g, "") // Remove punctuation
-      .split(/\s+/) // Split by whitespace
-      .filter(word => word.length > 2) // Filter out short words
-  );
-};
+const prompt = `
+You are an expert ATS (Applicant Tracking System) analysis tool. Your task is to compare a resume against a job description.
+Analyze the provided resume text and job description.
+Identify the key skills, technologies, and qualifications mentioned in the job description.
+Then, determine which of these keywords are present in the resume and which are missing.
+Finally, calculate a match score as a percentage based on how many of the job description's keywords are found in the resume.
+
+Provide the output in a JSON format with the following structure:
+{
+  "score": number,
+  "matchedKeywords": string[],
+  "missingKeywords": string[],
+  "matchCount": number,
+  "jobKeywordCount": number
+}
+
+Do not include any explanations or text outside of the JSON object.
+`;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -24,6 +33,12 @@ serve(async (req) => {
   }
 
   try {
+    const openAIKey = Deno.env.get("OPENAI_API_KEY");
+    if (!openAIKey) {
+      throw new Error("OpenAI API key is not set in project secrets.");
+    }
+    const openai = new OpenAI({ apiKey: openAIKey });
+
     const { resumeText, jobDescription } = await req.json();
 
     if (!resumeText || !jobDescription) {
@@ -33,30 +48,23 @@ serve(async (req) => {
       });
     }
 
-    const resumeKeywords = extractKeywords(resumeText);
-    const jobKeywords = extractKeywords(jobDescription);
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: prompt },
+        { role: "user", content: `Job Description: """${jobDescription}"""\n\nResume: """${resumeText}"""` },
+      ],
+      temperature: 0.2,
+    });
 
-    const matchedKeywords = new Set([...resumeKeywords].filter(keyword => jobKeywords.has(keyword)));
-    
-    const score = jobKeywords.size > 0 
-      ? Math.round((matchedKeywords.size / jobKeywords.size) * 100)
-      : 0;
+    const analysisResult = completion.choices[0].message.content;
 
-    const missingKeywords = [...jobKeywords].filter(keyword => !resumeKeywords.has(keyword));
+    if (!analysisResult) {
+      throw new Error("Failed to get a response from the AI model.");
+    }
 
-    // Simulate a delay for a better user experience
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    const analysis = {
-      score: Math.min(score, 100), // Cap score at 100
-      matchedKeywords: Array.from(matchedKeywords),
-      missingKeywords: missingKeywords.slice(0, 15), // Limit for brevity
-      jobKeywordCount: jobKeywords.size,
-      resumeKeywordCount: resumeKeywords.size,
-      matchCount: matchedKeywords.size,
-    };
-
-    return new Response(JSON.stringify(analysis), {
+    return new Response(analysisResult, {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
