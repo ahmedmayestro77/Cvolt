@@ -42,26 +42,14 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const [
-      { count: userCount, error: userError },
-      { count: resumeCount, error: resumeError },
-      { count: coverLetterCount, error: coverLetterError },
-      { count: proUserCount, error: proUserError },
-    ] = await Promise.all([
-      supabaseAdmin.from("profiles").select('*', { count: 'exact', head: true }),
-      supabaseAdmin.from("resumes").select('*', { count: 'exact', head: true }),
-      supabaseAdmin.from("cover_letters").select('*', { count: 'exact', head: true }),
-      supabaseAdmin.from("profiles").select('*', { count: 'exact', head: true }).eq('subscription_status', 'pro'),
-    ]);
+    const { data: users, error: rpcError } = await supabaseAdmin.rpc('get_all_users_with_details');
 
-    if (userError || resumeError || coverLetterError || proUserError) {
-      console.error({ userError, resumeError, coverLetterError, proUserError });
-      throw new Error("Failed to fetch statistics.");
+    if (rpcError) {
+      console.error('RPC Error:', rpcError);
+      throw rpcError;
     }
 
-    const freeUserCount = (userCount ?? 0) - (proUserCount ?? 0);
-
-    return new Response(JSON.stringify({ userCount, resumeCount, coverLetterCount, proUserCount, freeUserCount }), {
+    return new Response(JSON.stringify(users), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
 

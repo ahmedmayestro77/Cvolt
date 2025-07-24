@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Shield, BarChart3 } from 'lucide-react';
+import { Shield, BarChart3, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const AdminSidebar = () => {
   const navLinks = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: BarChart3 },
-    // Future links like { name: 'Users', path: '/admin/users', icon: Users } can be added here
+    { name: 'Users', path: '/admin/users', icon: Users },
   ];
 
   const baseClasses = "flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors";
@@ -26,7 +26,7 @@ const AdminSidebar = () => {
           <NavLink
             key={link.path}
             to={link.path}
-            end
+            end={link.path === '/admin/dashboard'}
             className={({ isActive }) => cn(baseClasses, isActive ? activeClasses : inactiveClasses)}
           >
             <link.icon className="h-5 w-5 mr-3" />

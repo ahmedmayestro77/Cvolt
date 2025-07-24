@@ -14,6 +14,14 @@ serve(async (req) => {
   }
 
   try {
+    const { userId, newRole } = await req.json();
+    if (!userId || !newRole) {
+      throw new Error("userId and newRole are required.");
+    }
+    if (newRole !== 'admin' && newRole !== 'user') {
+      throw new Error("Invalid role specified.");
+    }
+
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_ANON_KEY")!,
@@ -42,26 +50,16 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const [
-      { count: userCount, error: userError },
-      { count: resumeCount, error: resumeError },
-      { count: coverLetterCount, error: coverLetterError },
-      { count: proUserCount, error: proUserError },
-    ] = await Promise.all([
-      supabaseAdmin.from("profiles").select('*', { count: 'exact', head: true }),
-      supabaseAdmin.from("resumes").select('*', { count: 'exact', head: true }),
-      supabaseAdmin.from("cover_letters").select('*', { count: 'exact', head: true }),
-      supabaseAdmin.from("profiles").select('*', { count: 'exact', head: true }).eq('subscription_status', 'pro'),
-    ]);
+    const { data: updatedProfile, error: updateError } = await supabaseAdmin
+      .from('profiles')
+      .update({ role: newRole })
+      .eq('id', userId)
+      .select()
+      .single();
 
-    if (userError || resumeError || coverLetterError || proUserError) {
-      console.error({ userError, resumeError, coverLetterError, proUserError });
-      throw new Error("Failed to fetch statistics.");
-    }
+    if (updateError) throw updateError;
 
-    const freeUserCount = (userCount ?? 0) - (proUserCount ?? 0);
-
-    return new Response(JSON.stringify({ userCount, resumeCount, coverLetterCount, proUserCount, freeUserCount }), {
+    return new Response(JSON.stringify(updatedProfile), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
 

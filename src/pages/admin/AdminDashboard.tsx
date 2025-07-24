@@ -1,15 +1,18 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, FileText, FileSignature } from 'lucide-react';
+import { Users, FileText, FileSignature, Star, Crown } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { showError } from '@/utils/toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
 interface AdminStats {
   userCount: number;
   resumeCount: number;
   coverLetterCount: number;
+  proUserCount: number;
+  freeUserCount: number;
 }
 
 const AdminDashboard = () => {
@@ -42,6 +45,12 @@ const AdminDashboard = () => {
     </Card>
   );
 
+  const pieData = [
+    { name: 'Pro Users', value: stats?.proUserCount ?? 0 },
+    { name: 'Free Users', value: stats?.freeUserCount ?? 0 },
+  ];
+  const COLORS = ['#10B981', '#6B7280'];
+
   return (
     <div className="space-y-8">
       <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-100">
@@ -51,6 +60,32 @@ const AdminDashboard = () => {
         <StatCard title="Total Users" value={stats?.userCount} icon={Users} isLoading={isLoading} />
         <StatCard title="Total Resumes" value={stats?.resumeCount} icon={FileText} isLoading={isLoading} />
         <StatCard title="Total Cover Letters" value={stats?.coverLetterCount} icon={FileSignature} isLoading={isLoading} />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>User Subscriptions</CardTitle>
+          </CardHeader>
+          <CardContent className="h-[250px]">
+            {isLoading ? <Skeleton className="h-full w-full" /> : (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#8884d8" paddingAngle={5}>
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
+          </CardContent>
+        </Card>
+        <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <StatCard title="Pro Users" value={stats?.proUserCount} icon={Crown} isLoading={isLoading} />
+            <StatCard title="Free Users" value={stats?.freeUserCount} icon={Star} isLoading={isLoading} />
+        </div>
       </div>
     </div>
   );
