@@ -13,9 +13,10 @@ const ProRoute = () => {
     );
   }
 
-  if (profile?.subscription_status !== 'pro') {
-    return <Navigate to="/pricing" replace />;
-  }
+  // Temporarily disabled for testing AI functionality
+  // if (profile?.subscription_status !== 'pro') {
+  //   return <Navigate to="/pricing" replace />;
+  // }
 
   return <Outlet />;
 };
