@@ -2,7 +2,7 @@ import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Edit, FileText, Sparkles, MoveRight } from "lucide-react";
+import { Edit, FileText, Sparkles, MoveRight, Check } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,6 +24,15 @@ const Index = () => {
   if (!ready) {
     return <div className="h-screen w-full flex items-center justify-center">Loading...</div>;
   }
+
+  const features = [
+    { title: t('index.features.aiWriter.title', 'AI-Powered Writer'), description: t('index.features.aiWriter.description', 'Generate professional resume sections and cover letters in seconds.') },
+    { title: t('index.features.atsFriendly.title', 'ATS-Friendly Templates'), description: t('index.features.atsFriendly.description', 'Beat the bots with templates designed to pass through applicant tracking systems.') },
+    { title: t('index.features.templateSwitcher.title', 'Dynamic Template Switching'), description: t('index.features.templateSwitcher.description', 'Change your resume\'s look instantly without re-typing any content.') },
+    { title: t('index.features.atsAnalyzer.title', 'ATS Match Score'), description: t('index.features.atsAnalyzer.description', 'Analyze your resume against a job description to see how well you match.') },
+    { title: t('index.features.coverLetters.title', 'Cover Letter Builder'), description: t('index.features.coverLetters.description', 'Create tailored cover letters that complement your resume perfectly.') },
+    { title: t('index.features.pdfExport.title', 'Easy PDF Export'), description: t('index.features.pdfExport.description', 'Download a pixel-perfect PDF of your resume, ready to be sent to employers.') },
+  ];
 
   return (
     <div className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 overflow-x-hidden">
@@ -111,8 +120,50 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Features Section */}
       <section className="py-20">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeIn}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold">{t('index.features.title', 'Everything You Need to Succeed')}</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mt-4 max-w-3xl mx-auto">{t('index.features.subtitle', 'Our platform is packed with features designed to help you create a standout application and land your dream job.')}</p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.5 }}
+                variants={fadeIn}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className="h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="flex-shrink-0 bg-primary/10 text-primary p-2 rounded-full">
+                        <Check className="h-5 w-5" />
+                      </div>
+                      <CardTitle>{feature.title}</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">{feature.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold">{t('testimonials.title')}</h2>
@@ -128,7 +179,7 @@ const Index = () => {
                 variants={fadeIn}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="h-full flex flex-col">
+                <Card className="h-full flex flex-col bg-white dark:bg-gray-950">
                   <CardContent className="pt-6 flex-grow">
                     <p className="text-gray-700 dark:text-gray-300 italic">"{testimonial.quote}"</p>
                   </CardContent>
@@ -152,7 +203,7 @@ const Index = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-900">
+      <section className="py-20">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial="hidden"

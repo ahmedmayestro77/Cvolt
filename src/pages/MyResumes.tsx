@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Edit, Download, Trash2, Loader2, LayoutTemplate } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
+import { Loader2, FileText, PlusCircle } from 'lucide-react';
 import { useResumes, Resume } from '@/hooks/use-resumes';
 import { useTranslation } from 'react-i18next';
 import { createRoot } from 'react-dom/client';
@@ -12,49 +10,7 @@ import jsPDF from 'jspdf';
 import ResumePreview from '@/components/ResumePreview';
 import { showError } from '@/utils/toast';
 import TemplateSwitcherModal from '@/components/TemplateSwitcherModal';
-
-interface ResumeItemProps {
-  resume: Resume;
-  onDelete: (id: string) => void;
-  onDownload: (resume: Resume) => Promise<void>;
-  onOpenTemplateSwitcher: (resume: Resume) => void;
-  isDownloading: boolean;
-  currentDownloadId: string | null;
-}
-
-const ResumeItem: React.FC<ResumeItemProps> = ({ resume, onDelete, onDownload, onOpenTemplateSwitcher, isDownloading, currentDownloadId }) => {
-  const { t } = useTranslation();
-  const isThisDownloading = isDownloading && currentDownloadId === resume.id;
-
-  return (
-    <Card className="flex flex-col md:flex-row items-center justify-between p-4 hover:shadow-md transition-shadow duration-300">
-      <div className="flex items-center gap-4 mb-4 md:mb-0 text-center md:text-left">
-        <FileText className="h-8 w-8 text-primary flex-shrink-0" />
-        <div>
-          <CardTitle className="text-lg">{resume.fullName}'s Resume</CardTitle>
-          <CardDescription className="text-sm">{t('myResumes.lastModified', { date: new Date(resume.last_modified).toLocaleDateString() })}</CardDescription>
-        </div>
-      </div>
-      <div className="flex flex-wrap justify-center gap-2">
-        <Link to={`/edit-resume/${resume.id}`}>
-          <Button variant="outline" size="sm" className="flex items-center gap-1">
-            <Edit className="h-4 w-4" /> {t('myResumes.edit')}
-          </Button>
-        </Link>
-        <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={() => onOpenTemplateSwitcher(resume)}>
-          <LayoutTemplate className="h-4 w-4" /> {t('myResumes.changeTemplate')}
-        </Button>
-        <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={() => onDownload(resume)} disabled={isThisDownloading}>
-          {isThisDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-          {isThisDownloading ? t('myResumes.downloading') : t('myResumes.download')}
-        </Button>
-        <Button variant="destructive" size="sm" className="flex items-center gap-1" onClick={() => onDelete(resume.id)}>
-          <Trash2 className="h-4 w-4" /> {t('myResumes.delete')}
-        </Button>
-      </div>
-    </Card>
-  );
-};
+import ResumeCard from '@/components/ResumeCard';
 
 const MyResumes = () => {
   const { t } = useTranslation();
@@ -117,28 +73,43 @@ const MyResumes = () => {
   return (
     <>
       <div className="container mx-auto p-6 space-y-8">
-        <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">{t('myResumes.title')}</h1>
-        <p className="text-center text-lg text-gray-600 dark:text-gray-300 mb-10">
-          {t('myResumes.description')}
-        </p>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100">{t('myResumes.title')}</h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300 mt-1">
+              {t('myResumes.description')}
+            </p>
+          </div>
+          <Link to="/create">
+            <Button size="lg" className="flex items-center gap-2">
+              <PlusCircle className="h-5 w-5" />
+              {t('myResumes.createNew')}
+            </Button>
+          </Link>
+        </div>
 
         {isLoading ? (
           <div className="flex justify-center items-center py-10">
             <Loader2 className="h-8 w-8 animate-spin" />
           </div>
         ) : !resumes || resumes.length === 0 ? (
-          <div className="text-center py-10">
-            <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
-              {t('myResumes.noResumes')}
-            </p>
-            <Link to="/create">
-              <Button size="lg">{t('myResumes.createFirst')}</Button>
-            </Link>
+          <div className="text-center py-10 border-2 border-dashed rounded-lg">
+            <FileText className="mx-auto h-12 w-12 text-gray-400" />
+            <h3 className="mt-2 text-lg font-medium text-gray-900 dark:text-gray-100">{t('myResumes.noResumes')}</h3>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('myResumes.getStarted', 'Get started by creating a new resume.')}</p>
+            <div className="mt-6">
+              <Link to="/create">
+                <Button>
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  {t('myResumes.createFirst')}
+                </Button>
+              </Link>
+            </div>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {resumes.map((resume) => (
-              <ResumeItem
+              <ResumeCard
                 key={resume.id}
                 resume={resume}
                 onDelete={handleDelete}
@@ -150,17 +121,6 @@ const MyResumes = () => {
             ))}
           </div>
         )}
-
-        <Separator className="my-12" />
-
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
-            {t('myResumes.createNew')}
-          </h2>
-          <Link to="/create">
-            <Button size="lg">{t('myResumes.createNew')}</Button>
-          </Link>
-        </div>
       </div>
       {selectedResume && (
         <TemplateSwitcherModal
