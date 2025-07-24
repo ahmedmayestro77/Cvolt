@@ -9,6 +9,7 @@ export interface Resume extends ResumeFormValues {
   last_modified: string;
   created_at: string;
   user_id: string;
+  template_slug: string;
 }
 
 // The shape of the data to be inserted/updated in Supabase
@@ -21,6 +22,7 @@ type ResumePayload = {
   experience: string;
   education: string;
   skills: string;
+  template_slug: string;
 };
 
 // Helper to map db snake_case to frontend camelCase
@@ -37,10 +39,11 @@ const fromSupabase = (dbResume: any): Resume => ({
   last_modified: dbResume.last_modified,
   created_at: dbResume.created_at,
   user_id: dbResume.user_id,
+  template_slug: dbResume.template_slug,
 });
 
 // Helper to map frontend camelCase to db snake_case
-const toSupabase = (resume: ResumeFormValues): ResumePayload => ({
+const toSupabase = (resume: ResumeFormValues, template_slug: string): ResumePayload => ({
   full_name: resume.fullName,
   email: resume.email,
   phone: resume.phone,
@@ -49,6 +52,7 @@ const toSupabase = (resume: ResumeFormValues): ResumePayload => ({
   experience: resume.experience,
   education: resume.education,
   skills: resume.skills,
+  template_slug: template_slug,
 });
 
 
@@ -91,11 +95,11 @@ export const useResumes = () => {
 
   // Mutation to add a new resume
   const useAddResume = () => useMutation({
-    mutationFn: async (newResume: ResumeFormValues) => {
+    mutationFn: async ({ resumeData, templateSlug }: { resumeData: ResumeFormValues, templateSlug: string }) => {
       if (!session) throw new Error('User not authenticated');
       const { data, error } = await supabase
         .from('resumes')
-        .insert(toSupabase(newResume))
+        .insert(toSupabase(resumeData, templateSlug))
         .select()
         .single();
       if (error) throw error;
@@ -113,9 +117,9 @@ export const useResumes = () => {
 
   // Mutation to update an existing resume
   const useUpdateResume = () => useMutation({
-    mutationFn: async ({ id, updatedValues }: { id: string, updatedValues: ResumeFormValues }) => {
+    mutationFn: async ({ id, updatedValues, templateSlug }: { id: string, updatedValues: ResumeFormValues, templateSlug: string }) => {
       if (!session) throw new Error('User not authenticated');
-      const payload = toSupabase(updatedValues);
+      const payload = toSupabase(updatedValues, templateSlug);
       const { data, error } = await supabase
         .from('resumes')
         .update({ ...payload, last_modified: new Date().toISOString() })

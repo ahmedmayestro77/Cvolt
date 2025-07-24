@@ -10,7 +10,6 @@ import { createRoot } from 'react-dom/client';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import ResumePreview from '@/components/ResumePreview';
-import { ResumeFormValues } from '@/lib/resumeSchema';
 
 interface ResumeItemProps {
   resume: Resume;
@@ -58,14 +57,14 @@ const MyResumes = () => {
     }
   };
 
-  const handleDownload = async (resume: ResumeFormValues) => {
+  const handleDownload = async (resume: Resume) => {
     const tempContainer = document.createElement('div');
     tempContainer.style.position = 'absolute';
     tempContainer.style.left = '-9999px';
     document.body.appendChild(tempContainer);
 
     const root = createRoot(tempContainer);
-    root.render(<ResumePreview resume={resume} />);
+    root.render(<ResumePreview resume={resume} templateSlug={resume.template_slug} />);
 
     await new Promise(resolve => setTimeout(resolve, 500));
 

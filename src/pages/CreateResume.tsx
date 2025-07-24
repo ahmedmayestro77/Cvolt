@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { getResumeFormSchema, ResumeFormValues } from '@/lib/resumeSchema';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/use-auth';
@@ -20,6 +20,9 @@ import ResumePreview from '@/components/ResumePreview';
 const CreateResume = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const templateSlug = searchParams.get('template') || 'modern-minimalist';
+
   const { profile } = useAuth();
   const { useGetResumes, useAddResume } = useResumes();
   const [currentStep, setCurrentStep] = useState(0);
@@ -61,7 +64,7 @@ const CreateResume = () => {
   };
 
   const onSubmit = (values: ResumeFormValues) => {
-    addResumeMutation.mutate(values, {
+    addResumeMutation.mutate({ resumeData: values, templateSlug }, {
       onSuccess: () => {
         navigate('/my-resumes');
       },
@@ -133,7 +136,7 @@ const CreateResume = () => {
         </Card>
       </div>
       <div className="hidden lg:flex justify-center items-start py-8">
-        <ResumePreview resume={watchedValues} />
+        <ResumePreview resume={watchedValues} templateSlug={templateSlug} />
       </div>
     </div>
   );

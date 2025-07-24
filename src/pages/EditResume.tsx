@@ -74,8 +74,8 @@ const EditResume = () => {
   };
 
   const onSubmit = async (values: ResumeFormValues) => {
-    if (!id) return;
-    updateResumeMutation.mutate({ id, updatedValues: values }, {
+    if (!id || !resumeToEdit) return;
+    updateResumeMutation.mutate({ id, updatedValues: values, templateSlug: resumeToEdit.template_slug }, {
       onSuccess: () => {
         navigate('/my-resumes');
       }
@@ -134,7 +134,7 @@ const EditResume = () => {
         </Card>
       </div>
       <div className="hidden lg:flex justify-center items-start py-8">
-        <ResumePreview resume={watchedValues} />
+        <ResumePreview resume={watchedValues} templateSlug={resumeToEdit?.template_slug} />
       </div>
     </div>
   );
