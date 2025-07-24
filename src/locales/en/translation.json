@@ -3,8 +3,48 @@
   "index": {
     "title": "Build Your Professional Resume in Minutes",
     "subtitle": "Create a standout resume with our easy-to-use builder and professionally designed templates. Land your dream job faster.",
-    "ctaPrimary": "Get Started for Free",
-    "ctaSecondary": "Browse Templates"
+    "ctaPrimary": "Create My Resume Now",
+    "ctaSecondary": "Browse Templates",
+    "features": {
+      "title": "Everything You Need for a Perfect Resume",
+      "subtitle": "Our platform is packed with features to help you succeed.",
+      "easy": {
+        "title": "Intuitive Builder",
+        "description": "Our step-by-step process makes creating a resume simple and fast."
+      },
+      "templates": {
+        "title": "Professional Templates",
+        "description": "Choose from a variety of templates designed by experts."
+      },
+      "ats": {
+        "title": "ATS-Optimized",
+        "description": "Craft a resume that gets past automated screeners and into human hands."
+      },
+      "ai": {
+        "title": "AI-Powered Suggestions",
+        "description": "Get smart recommendations to improve your resume's content and impact."
+      }
+    },
+    "steps": {
+      "title": "Get Your Resume in 3 Simple Steps",
+      "subtitle": "A straightforward process to get you from zero to a job-ready resume.",
+      "choose": {
+        "title": "Choose a Template",
+        "description": "Select a design that matches your professional style."
+      },
+      "fill": {
+        "title": "Fill in Your Details",
+        "description": "Use our guided editor to add your experience, skills, and education."
+      },
+      "download": {
+        "title": "Download & Apply",
+        "description": "Export your resume in PDF format and start applying for jobs."
+      }
+    },
+    "finalCta": {
+      "title": "Ready to Land Your Dream Job?",
+      "subtitle": "Join thousands of successful professionals who built their resumes with CVOLT."
+    }
   },
   "header": {
     "dashboard": "Dashboard",
