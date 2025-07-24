@@ -2,6 +2,11 @@ import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import Stripe from "https://esm.sh/stripe@16.2.0?target=deno";
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2024-06-20",
   httpClient: Stripe.createFetchHttpClient(),
@@ -19,11 +24,15 @@ const relevantEvents = new Set([
 ]);
 
 serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
   const signature = req.headers.get("Stripe-Signature");
   const body = await req.text();
 
   if (!signature) {
-    return new Response("Stripe-Signature header is required.", { status: 400 });
+    return new Response("Stripe-Signature header is required.", { status: 400, headers: corsHeaders });
   }
 
   let event: Stripe.Event;
@@ -35,7 +44,7 @@ serve(async (req) => {
     );
   } catch (err) {
     console.error(`Webhook signature verification failed: ${err.message}`);
-    return new Response(err.message, { status: 400 });
+    return new Response(err.message, { status: 400, headers: corsHeaders });
   }
 
   if (relevantEvents.has(event.type)) {
@@ -63,7 +72,6 @@ serve(async (req) => {
           break;
         }
         default:
-          // This should not happen if the event set is correct
           throw new Error('Unhandled relevant event!');
       }
 
@@ -86,10 +94,10 @@ serve(async (req) => {
       console.error(error.message);
       return new Response(
         JSON.stringify({ error: `Webhook handler failed: ${error.message}` }),
-        { status: 500 }
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
   }
 
-  return new Response(JSON.stringify({ received: true }), { status: 200 });
+  return new Response(JSON.stringify({ received: true }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 });
