@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { FileSearch, Loader2, ArrowRight, CheckCircle, XCircle } from 'lucide-react';
+import { FileSearch, Loader2, CheckCircle, XCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/use-auth';
 import { showError } from '@/utils/toast';
-import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { useResumes } from '@/hooks/use-resumes';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface AnalysisResult {
   score: number;
@@ -24,6 +27,29 @@ const ATSAnalyzer = () => {
   const [jobDescription, setJobDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+
+  const { useGetResumes } = useResumes();
+  const { data: resumes, isLoading: isLoadingResumes } = useGetResumes();
+
+  const handleSelectResume = (resumeId: string) => {
+    const selectedResume = resumes?.find(r => r.id === resumeId);
+    if (selectedResume) {
+      const fullText = `
+Professional Summary:
+${selectedResume.summary}
+
+Work Experience:
+${selectedResume.experience}
+
+Education:
+${selectedResume.education}
+
+Skills:
+${selectedResume.skills}
+      `.trim();
+      setResumeText(fullText);
+    }
+  };
 
   const handleAnalyze = async () => {
     if (!resumeText || !jobDescription) {
@@ -58,6 +84,30 @@ const ATSAnalyzer = () => {
         <Card>
           <CardHeader>
             <CardTitle>{t('ats.resumeInput.title')}</CardTitle>
+            {isLoadingResumes ? (
+              <div className="space-y-2 pt-2">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ) : (
+              resumes && resumes.length > 0 && (
+                <div className="space-y-2 pt-2">
+                  <Label htmlFor="resume-select">{t('ats.resumeInput.select', 'Or select an existing resume')}</Label>
+                  <Select onValueChange={handleSelectResume}>
+                    <SelectTrigger id="resume-select">
+                      <SelectValue placeholder={t('ats.resumeInput.selectPlaceholder', 'Choose a resume...')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {resumes.map((resume) => (
+                        <SelectItem key={resume.id} value={resume.id}>
+                          {resume.fullName}'s Resume
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )
+            )}
             <CardDescription>{t('ats.resumeInput.description')}</CardDescription>
           </CardHeader>
           <CardContent>
