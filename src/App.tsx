@@ -5,8 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import Dashboard from "./pages/Dashboard"; // Import the new Dashboard page
-import Templates from "./pages/Templates"; // Import the new Templates page
+import Dashboard from "./pages/Dashboard";
+import Templates from "./pages/Templates";
+import CreateResume from "./pages/CreateResume"; // Import the new CreateResume page
 
 const queryClient = new QueryClient();
 
@@ -18,8 +19,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} /> {/* New Dashboard route */}
-          <Route path="/templates" element={<Templates />} /> {/* New Templates route */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/templates" element={<Templates />} />
+          <Route path="/create" element={<CreateResume />} /> {/* New CreateResume route */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
