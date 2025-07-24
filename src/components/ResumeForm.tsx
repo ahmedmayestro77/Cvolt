@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { getResumeFormSchema, ResumeFormValues } from '@/lib/resumeSchema';
 import { useTranslation } from 'react-i18next';
 import { useResumes, Resume } from '@/hooks/use-resumes';
@@ -20,13 +20,14 @@ import AIResumePromptDialog from './AIResumePromptDialog';
 
 interface ResumeFormProps {
   mode: 'create' | 'edit';
-  resumeToEdit?: Resume | ResumeFormValues;
+  resumeToEdit?: Resume | ResumeFormValues | null;
   isLoading?: boolean;
 }
 
 const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const { useAddResume, useUpdateResume } = useResumes();
   const [currentStep, setCurrentStep] = useState(0);
@@ -56,6 +57,12 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }
       form.reset(resumeToEdit);
     }
   }, [resumeToEdit, form]);
+
+  useEffect(() => {
+    if (location.state?.openAiDialog) {
+      setIsAiDialogOpen(true);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     if (mode === 'edit' && !isLoading && !resumeToEdit) {
@@ -167,7 +174,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }
       <AIResumePromptDialog
         isOpen={isAiDialogOpen}
         onClose={() => setIsAiDialogOpen(false)}
-        onGenerate={(data) => form.reset(data)}
+        onGenerate={(data) => {
+          form.reset(data);
+          setIsAiDialogOpen(false);
+        }}
       />
     </>
   );
