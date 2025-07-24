@@ -55,7 +55,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
 const Pricing = () => {
   const { t } = useTranslation();
-  const { session, user, supabase, profile, refetchProfile } = useAuth();
+  const { session, supabase, profile } = useAuth();
   const navigate = useNavigate();
   const [isSubscribing, setIsSubscribing] = React.useState(false);
 
@@ -66,18 +66,18 @@ const Pricing = () => {
     }
     setIsSubscribing(true);
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ subscription_status: 'pro' })
-        .eq('id', user!.id);
-      if (error) throw error;
-      await refetchProfile();
-      showSuccess("Successfully upgraded to Pro!");
-      navigate('/dashboard');
+      const { data, error } = await supabase.functions.invoke('create-checkout-session');
+      
+      if (error) throw new Error(`Function error: ${error.message}`);
+      if (data.error) throw new Error(`Checkout error: ${data.error}`);
+      if (!data.checkoutUrl) throw new Error("No checkout URL returned.");
+
+      // Redirect to Stripe Checkout
+      window.location.href = data.checkoutUrl;
+
     } catch (error) {
-      showError("Failed to upgrade. Please try again.");
       console.error(error);
-    } finally {
+      showError("Failed to start subscription. Please try again.");
       setIsSubscribing(false);
     }
   };
@@ -91,6 +91,7 @@ const Pricing = () => {
       buttonText: t('pricing.free.button'),
       buttonVariant: 'outline' as const,
       isCurrentPlan: profile?.subscription_status === 'free',
+      onSubscribe: () => navigate('/auth'),
     },
     {
       title: t('pricing.pro.title'),
