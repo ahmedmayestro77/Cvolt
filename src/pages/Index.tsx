@@ -58,14 +58,14 @@ const Index = () => {
       </section>
 
       {/* Showcase Section */}
-      <motion.section 
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={fadeIn}
-        className="py-16"
-      >
-        <div className="container mx-auto px-4">
+      <section className="py-16">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeIn}
+          className="container mx-auto px-4"
+        >
           <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl shadow-primary/10 p-4 md:p-8 border border-primary/10">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -74,16 +74,22 @@ const Index = () => {
             </div>
             <img src="https://i.imgur.com/U3A0V82.png" alt="CVOLT App Showcase" className="rounded-lg w-full h-auto" />
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* How It Works Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeIn}
+            className="text-center mb-16"
+          >
             <h2 className="text-4xl md:text-5xl font-bold">{t('index.steps.title')}</h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 mt-4 max-w-2xl mx-auto">{t('index.steps.subtitle')}</p>
-          </div>
+          </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { icon: <FileText className="h-10 w-10 text-primary" />, title: t('index.steps.choose.title'), description: t('index.steps.choose.description') },
