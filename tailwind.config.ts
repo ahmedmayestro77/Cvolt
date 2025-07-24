@@ -19,7 +19,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Manrope', 'sans-serif'],
+        sans: ['Plus Jakarta Sans', 'Tajawal', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
