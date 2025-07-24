@@ -7,8 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Templates from "./pages/Templates";
-import CreateResume from "./pages/CreateResume";
-import MyResumes from "./pages/MyResumes"; // Import the new MyResumes page
+import CreateResume from "./pages/CreateResume"; // Import the new CreateResume page
 
 const queryClient = new QueryClient();
 
@@ -22,8 +21,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/templates" element={<Templates />} />
-          <Route path="/create" element={<CreateResume />} />
-          <Route path="/my-resumes" element={<MyResumes />} /> {/* New MyResumes route */}
+          <Route path="/create" element={<CreateResume />} /> {/* New CreateResume route */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
