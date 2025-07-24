@@ -2,17 +2,21 @@ import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Edit, FileText, Sparkles, BarChart, CheckCircle, MoveRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { Edit, FileText, Sparkles, MoveRight } from "lucide-react";
+import { motion, Variants } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Index = () => {
-  const { t } = useTranslation();
+  const { t, ready } = useTranslation();
 
-  const fadeIn = {
+  const fadeIn: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   const testimonials = [
@@ -20,6 +24,10 @@ const Index = () => {
     { name: "Ahmed K.", role: "Software Engineer", quote: "CVOLT's templates are modern and ATS-friendly. It helped me land my dream job.", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026705d" },
     { name: "Fatima E.", role: "UX Designer", quote: "The AI suggestions are a game-changer. It's like having a career coach by your side.", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026706d" },
   ];
+
+  if (!ready) {
+    return <div className="h-screen w-full flex items-center justify-center">Loading...</div>;
+  }
 
   return (
     <div className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 overflow-x-hidden">
