@@ -6,6 +6,7 @@ export interface Profile {
   id: string;
   subscription_status: 'free' | 'pro' | null;
   stripe_customer_id: string | null;
+  role: 'admin' | 'user' | null;
 }
 
 interface AuthContextType {

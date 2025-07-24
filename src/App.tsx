@@ -20,6 +20,9 @@ import Contact from "./pages/Contact";
 import AuthPage from "./pages/AuthPage";
 import AppLayout from "./components/AppLayout";
 import { Footer } from "./components/Footer";
+import AdminRoute from "./components/AdminRoute";
+import AdminLayout from "./components/AdminLayout";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -49,9 +52,16 @@ const App = () => (
                 <Route path="/cover-letter/create" element={<EditCoverLetter />} />
                 <Route path="/cover-letter/edit/:id" element={<EditCoverLetter />} />
                 <Route path="/pricing" element={<Pricing />} />
-                
-                {/* ATS Analyzer is now a standard protected route */}
                 <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
+              </Route>
+            </Route>
+
+            {/* Admin Routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route element={<AdminRoute />}>
+                <Route element={<AdminLayout />}>
+                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                </Route>
               </Route>
             </Route>
 

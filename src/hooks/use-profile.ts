@@ -12,7 +12,7 @@ export const useProfile = () => {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('id, subscription_status, stripe_customer_id')
+        .select('id, subscription_status, stripe_customer_id, role')
         .eq('id', user.id)
         .single();
 
