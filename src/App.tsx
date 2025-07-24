@@ -9,7 +9,8 @@ import Dashboard from "./pages/Dashboard";
 import Templates from "./pages/Templates";
 import CreateResume from "./pages/CreateResume";
 import MyResumes from "./pages/MyResumes";
-import ATSAnalyzer from "./pages/ATSAnalyzer"; // Import the new ATSAnalyzer page
+import ATSAnalyzer from "./pages/ATSAnalyzer";
+import Pricing from "./pages/Pricing"; // Import the new Pricing page
 
 const queryClient = new QueryClient();
 
@@ -25,7 +26,8 @@ const App = () => (
           <Route path="/templates" element={<Templates />} />
           <Route path="/create" element={<CreateResume />} />
           <Route path="/my-resumes" element={<MyResumes />} />
-          <Route path="/ats-analyzer" element={<ATSAnalyzer />} /> {/* New ATSAnalyzer route */}
+          <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
+          <Route path="/pricing" element={<Pricing />} /> {/* New Pricing route */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
