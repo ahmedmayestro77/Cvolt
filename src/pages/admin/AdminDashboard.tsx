@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { showError } from '@/utils/toast';
 import { Skeleton } from '@/components/ui/skeleton';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 interface AdminStats {
   userCount: number;
@@ -13,6 +13,11 @@ interface AdminStats {
   coverLetterCount: number;
   proUserCount: number;
   freeUserCount: number;
+}
+
+interface UserGrowthData {
+  date: string;
+  count: number;
 }
 
 const AdminDashboard = () => {
@@ -27,6 +32,17 @@ const AdminDashboard = () => {
       return data;
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
+  const { data: growthData, isLoading: isLoadingGrowth } = useQuery<UserGrowthData[], Error>({
+    queryKey: ['admin-growth-stats'],
+    queryFn: async () => {
+      const { data, error } = await supabase.functions.invoke('get-user-growth-stats');
+      if (error) throw new Error(error.message);
+      if (data.error) throw new Error(data.error);
+      return data;
+    },
+    staleTime: 5 * 60 * 1000,
   });
 
   if (isError) {
@@ -87,6 +103,25 @@ const AdminDashboard = () => {
             <StatCard title="Free Users" value={stats?.freeUserCount} icon={Star} isLoading={isLoading} />
         </div>
       </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>New Users (Last 30 Days)</CardTitle>
+        </CardHeader>
+        <CardContent className="h-[300px]">
+          {isLoadingGrowth ? <Skeleton className="h-full w-full" /> : (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={growthData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" tickFormatter={(str) => new Date(str).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} />
+                <YAxis allowDecimals={false} />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="count" stroke="#8884d8" name="New Users" />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };

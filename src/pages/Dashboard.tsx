@@ -141,6 +141,54 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           </div>
+
+          {/* Recent Cover Letters */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">{t('dashboard.recentCoverLetters', 'Recent Cover Letters')}</h2>
+            <Card>
+              <CardContent className="p-4">
+                {coverLetters && coverLetters.length > 0 ? (
+                  <div className="space-y-2">
+                    {coverLetters.slice(0, 5).map(cl => (
+                      <div key={cl.id} className="flex items-center justify-between p-3 hover:bg-secondary rounded-md transition-colors">
+                        <div className="flex items-center gap-3">
+                          <FileSignature className="h-5 w-5 text-primary" />
+                          <div>
+                            <span className="font-medium">{cl.job_title}</span>
+                            {cl.company_name && <p className="text-sm text-muted-foreground">{cl.company_name}</p>}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-muted-foreground hidden md:block">
+                            {t('myResumes.lastModified', { date: new Date(cl.last_modified).toLocaleDateString() })}
+                          </span>
+                          <Link to={`/cover-letter/edit/${cl.id}`}>
+                            <Button variant="outline" size="sm">
+                              {t('myResumes.edit')} <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-10">
+                    <p className="text-muted-foreground mb-4">{t('myCoverLetters.noCoverLetters', 'You haven\'t created any cover letters yet.')}</p>
+                    <Link to="/cover-letter/create">
+                      <Button>{t('myCoverLetters.createFirst', 'Create Your First Cover Letter')}</Button>
+                    </Link>
+                  </div>
+                )}
+                {coverLetters && coverLetters.length > 5 && (
+                  <Link to="/my-cover-letters" className="mt-4 block">
+                    <Button variant="outline" className="w-full">
+                      {t('dashboard.viewAllCoverLetters', 'View All Cover Letters')}
+                    </Button>
+                  </Link>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </>
       )}
     </div>
