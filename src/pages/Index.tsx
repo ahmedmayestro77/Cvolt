@@ -8,26 +8,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Index = () => {
-  const { t, ready } = useTranslation();
+  const { t } = useTranslation();
 
   const fadeIn: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        duration: 0.6 
+      } 
     },
   };
 
   const testimonials = [
-    { name: "Sarah L.", role: "Marketing Manager", quote: "The fastest and most intuitive resume builder I've ever used. I created a professional CV in minutes!", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d" },
-    { name: "Ahmed K.", role: "Software Engineer", quote: "CVOLT's templates are modern and ATS-friendly. It helped me land my dream job.", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026705d" },
-    { name: "Fatima E.", role: "UX Designer", quote: "The AI suggestions are a game-changer. It's like having a career coach by your side.", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026706d" },
+    { name: "Sarah L.", role: "Marketing Manager", quote: "The fastest and most intuitive resume builder I've ever used. I created a professional CV in minutes!", avatar: "https://ui-avatars.com/api/?name=Sarah+L&background=random&color=fff" },
+    { name: "Ahmed K.", role: "Software Engineer", quote: "CVOLT's templates are modern and ATS-friendly. It helped me land my dream job.", avatar: "https://ui-avatars.com/api/?name=Ahmed+K&background=random&color=fff" },
+    { name: "Fatima E.", role: "UX Designer", quote: "The AI suggestions are a game-changer. It's like having a career coach by your side.", avatar: "https://ui-avatars.com/api/?name=Fatima+E&background=random&color=fff" },
   ];
-
-  if (!ready) {
-    return <div className="h-screen w-full flex items-center justify-center">Loading...</div>;
-  }
 
   return (
     <div className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 overflow-x-hidden">
