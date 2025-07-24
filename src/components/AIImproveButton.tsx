@@ -1,0 +1,78 @@
+import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import { Sparkles, Loader2, Star } from 'lucide-react';
+import { useAuth } from '@/hooks/use-auth';
+import { showError } from '@/utils/toast';
+import { ResumeFormValues } from './ResumeForm';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+
+interface AIImproveButtonProps {
+  fieldName: keyof ResumeFormValues;
+  sectionName: 'summary' | 'experience' | 'education';
+}
+
+const AIImproveButton: React.FC<AIImproveButtonProps> = ({ fieldName, sectionName }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
+  const { supabase, session, profile } = useAuth();
+  const { setValue, getValues } = useFormContext<ResumeFormValues>();
+  const navigate = useNavigate();
+
+  const isPro = profile?.subscription_status === 'pro';
+
+  const handleImproveText = async () => {
+    if (!session) {
+      showError(t('resumeForm.validation.loginRequired'));
+      navigate('/auth');
+      return;
+    }
+    if (!isPro) {
+      showError(t('resumeForm.validation.proRequired'));
+      navigate('/pricing');
+      return;
+    }
+
+    setIsLoading(true);
+    const currentText = getValues(fieldName);
+
+    if (!currentText || (typeof currentText === 'string' && currentText.trim().length < 20)) {
+      showError(t('resumeForm.validation.improveError'));
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.functions.invoke('improve-resume-section', {
+        body: { section: sectionName, text: currentText },
+      });
+
+      if (error) throw error;
+      if (data.error) throw new Error(data.error);
+
+      setValue(fieldName, data.improvedText, { shouldValidate: true, shouldDirty: true });
+
+    } catch (err) {
+      console.error('Error improving text:', err);
+      showError(t('resumeForm.validation.improveFailed'));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const Icon = isPro ? Sparkles : Star;
+
+  return (
+    <Button type="button" variant="outline" size="sm" onClick={handleImproveText} disabled={isLoading && isPro} className="gap-2">
+      {isLoading && isPro ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <Icon className="h-4 w-4 text-yellow-500" />
+      )}
+      {t('resumeForm.improveWithAI')}
+    </Button>
+  );
+};
+
+export default AIImproveButton;

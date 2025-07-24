@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useTranslation } from 'react-i18next';
 import { Loader2 } from 'lucide-react';
+import AIImproveButton from './AIImproveButton';
 
 export const getResumeFormSchema = (t: (key: string) => string) => z.object({
   fullName: z.string().min(2, { message: t('resumeForm.validation.fullNameRequired') }),
@@ -31,134 +32,145 @@ interface ResumeFormProps {
 const ResumeForm: React.FC<ResumeFormProps> = ({ form, onSubmit, buttonText, isSubmitting }) => {
   const { t } = useTranslation();
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="fullName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('resumeForm.fullName')}</FormLabel>
-              <FormControl>
-                <Input placeholder={t('resumeForm.fullNamePlaceholder')} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('resumeForm.email')}</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder={t('resumeForm.emailPlaceholder')} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('resumeForm.phone')}</FormLabel>
-              <FormControl>
-                <Input type="tel" placeholder={t('resumeForm.phonePlaceholder')} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="linkedin"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('resumeForm.linkedin')}</FormLabel>
-              <FormControl>
-                <Input placeholder={t('resumeForm.linkedinPlaceholder')} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="summary"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('resumeForm.summary')}</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder={t('resumeForm.summaryPlaceholder')}
-                  className="min-h-[100px]"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="experience"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('resumeForm.experience')}</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder={t('resumeForm.experiencePlaceholder')}
-                  className="min-h-[150px]"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="education"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('resumeForm.education')}</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder={t('resumeForm.educationPlaceholder')}
-                  className="min-h-[100px]"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="skills"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('resumeForm.skills')}</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder={t('resumeForm.skillsPlaceholder')}
-                  className="min-h-[80px]"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {buttonText}
-        </Button>
-      </form>
-    </Form>
+    <FormProvider {...form}>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="fullName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('resumeForm.fullName')}</FormLabel>
+                <FormControl>
+                  <Input placeholder={t('resumeForm.fullNamePlaceholder')} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('resumeForm.email')}</FormLabel>
+                <FormControl>
+                  <Input type="email" placeholder={t('resumeForm.emailPlaceholder')} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('resumeForm.phone')}</FormLabel>
+                <FormControl>
+                  <Input type="tel" placeholder={t('resumeForm.phonePlaceholder')} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="linkedin"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('resumeForm.linkedin')}</FormLabel>
+                <FormControl>
+                  <Input placeholder={t('resumeForm.linkedinPlaceholder')} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="summary"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex justify-between items-center mb-1">
+                  <FormLabel>{t('resumeForm.summary')}</FormLabel>
+                  <AIImproveButton fieldName="summary" sectionName="summary" />
+                </div>
+                <FormControl>
+                  <Textarea
+                    placeholder={t('resumeForm.summaryPlaceholder')}
+                    className="min-h-[100px]"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="experience"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex justify-between items-center mb-1">
+                  <FormLabel>{t('resumeForm.experience')}</FormLabel>
+                  <AIImproveButton fieldName="experience" sectionName="experience" />
+                </div>
+                <FormControl>
+                  <Textarea
+                    placeholder={t('resumeForm.experiencePlaceholder')}
+                    className="min-h-[150px]"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="education"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex justify-between items-center mb-1">
+                  <FormLabel>{t('resumeForm.education')}</FormLabel>
+                  <AIImproveButton fieldName="education" sectionName="education" />
+                </div>
+                <FormControl>
+                  <Textarea
+                    placeholder={t('resumeForm.educationPlaceholder')}
+                    className="min-h-[100px]"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="skills"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('resumeForm.skills')}</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder={t('resumeForm.skillsPlaceholder')}
+                    className="min-h-[80px]"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {buttonText}
+          </Button>
+        </form>
+      </Form>
+    </FormProvider>
   );
 };
 
