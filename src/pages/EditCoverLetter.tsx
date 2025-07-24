@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Loader2 } from 'lucide-react';
 import { showError } from '@/utils/toast';
+import AICoverLetterGenerator from '@/components/AICoverLetterGenerator';
 
 const EditCoverLetter = () => {
   const { id } = useParams<{ id: string }>();
@@ -81,6 +82,15 @@ const EditCoverLetter = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {!isEditMode && (
+            <AICoverLetterGenerator
+              onGenerate={(content, jobTitle, companyName) => {
+                form.setValue('content', content, { shouldValidate: true });
+                form.setValue('job_title', jobTitle, { shouldValidate: true });
+                form.setValue('company_name', companyName, { shouldValidate: true });
+              }}
+            />
+          )}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

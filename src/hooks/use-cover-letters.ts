@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from './use-auth';
 import { showError, showSuccess } from '@/utils/toast';
+import type { CoverLetterFormValues } from '@/lib/coverLetterSchema';
 
 // The shape of the cover letter data in the frontend
 export interface CoverLetter {
@@ -14,11 +15,7 @@ export interface CoverLetter {
 }
 
 // The shape of the data to be inserted/updated in Supabase
-export type CoverLetterPayload = {
-  job_title: string;
-  company_name?: string;
-  content: string;
-};
+export type CoverLetterPayload = CoverLetterFormValues;
 
 export const useCoverLetters = () => {
   const { supabase, session } = useAuth();

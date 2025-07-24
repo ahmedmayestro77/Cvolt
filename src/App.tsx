@@ -21,8 +21,6 @@ import Contact from "./pages/Contact";
 import AuthPage from "./pages/AuthPage";
 import AppLayout from "./components/AppLayout";
 import { Footer } from "./components/Footer";
-import AIResumeGenerator from "./pages/AIResumeGenerator";
-import CoverLetterGenerator from "./pages/CoverLetterGenerator";
 
 const queryClient = new QueryClient();
 
@@ -55,8 +53,6 @@ const App = () => (
                 
                 {/* Pro-only Routes inside AppLayout */}
                 <Route element={<ProRoute />}>
-                  <Route path="/ai-resume-generator" element={<AIResumeGenerator />} />
-                  <Route path="/cover-letter-generator" element={<CoverLetterGenerator />} />
                   <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
                 </Route>
               </Route>

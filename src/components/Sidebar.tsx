@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Home, FileText, LayoutTemplate, BarChart, Star, FileSignature, Wand2 } from 'lucide-react';
+import { Home, FileText, LayoutTemplate, BarChart, Star, FileSignature } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const Sidebar = () => {
@@ -9,8 +9,6 @@ const Sidebar = () => {
 
   const navLinks = [
     { name: t('header.dashboard'), path: '/dashboard', icon: Home },
-    { name: t('header.aiGenerator', 'AI Resume Generator'), path: '/ai-resume-generator', icon: Wand2 },
-    { name: t('header.aiCoverLetterGenerator', 'AI Cover Letter Generator'), path: '/cover-letter-generator', icon: Wand2 },
     { name: t('header.myResumes'), path: '/my-resumes', icon: FileText },
     { name: t('header.coverLetters', 'My Cover Letters'), path: '/my-cover-letters', icon: FileSignature },
     { name: t('header.templates'), path: '/templates', icon: LayoutTemplate },
