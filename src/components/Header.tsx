@@ -39,82 +39,46 @@ const Header = () => {
 
   const userInitial = session?.user?.email?.[0].toUpperCase() ?? '?';
 
-  return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2">
-          <span className="font-bold text-xl text-primary">{t('brand')}</span>
-        </Link>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-1">
-          {navLinks.map((link) => (
-            <Link key={link.path} to={link.path}>
-              <Button variant="ghost" className="text-sm font-medium">
-                {link.name}
-              </Button>
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          {/* Language Switcher */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Languages className="h-5 w-5" />
-                <span className="sr-only">Change language</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => changeLanguage('en')}>English</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => changeLanguage('ar')}>العربية</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Auth Buttons / User Menu */}
-          {session ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={session.user.user_metadata.avatar_url} alt={session.user.email} />
-                    <AvatarFallback>{userInitial}</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => navigate('/dashboard')}>
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Dashboard</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
+  // For logged-out users, show a different header
+  if (!session) {
+    return (
+      <header className="sticky top-0 z-40 w-full border-b bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-14 items-center justify-between">
+          <Link to="/" className="flex items-center space-x-2">
+            <span className="font-bold text-xl text-primary">{t('brand')}</span>
+          </Link>
+          <div className="flex items-center gap-2">
             <Link to="/auth">
               <Button>Login</Button>
             </Link>
-          )}
+          </div>
+        </div>
+      </header>
+    );
+  }
 
-          {/* Mobile Navigation */}
-          <div className="md:hidden">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">{t('header.toggleMenu')}</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[250px] sm:w-[300px]">
-                <nav className="flex flex-col gap-4 pt-6">
-                  <Link to="/" className="mb-4">
+  // Header for logged-in users (part of AppLayout)
+  return (
+    <header className="flex items-center justify-between h-16 px-6 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
+      <div className="flex items-center">
+        {/* Mobile Navigation Trigger */}
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">{t('header.toggleMenu')}</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[250px] sm:w-[300px] p-0">
+               {/* Re-using Sidebar component for mobile to ensure consistency */}
+               <div className="flex flex-col h-full">
+                <div className="flex items-center justify-center h-16 border-b border-gray-200 dark:border-gray-800">
+                  <Link to="/" className="flex items-center space-x-2">
                     <span className="font-bold text-2xl text-primary">{t('brand')}</span>
                   </Link>
+                </div>
+                <nav className="flex-1 p-4 space-y-2">
                   {navLinks.map((link) => (
                     <Link key={link.path} to={link.path}>
                       <Button variant="ghost" className="w-full justify-start text-lg">
@@ -123,10 +87,49 @@ const Header = () => {
                     </Link>
                   ))}
                 </nav>
-              </SheetContent>
-            </Sheet>
-          </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
+      </div>
+
+      <div className="flex items-center gap-4">
+        {/* Language Switcher */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Languages className="h-5 w-5" />
+              <span className="sr-only">Change language</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => changeLanguage('en')}>English</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => changeLanguage('ar')}>العربية</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* User Menu */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={session.user.user_metadata.avatar_url} alt={session.user.email} />
+                <AvatarFallback>{userInitial}</AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+              <User className="mr-2 h-4 w-4" />
+              <span>Dashboard</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleSignOut}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

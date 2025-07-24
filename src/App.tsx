@@ -17,6 +17,7 @@ import Header from "./components/Header";
 import EditResume from "./pages/EditResume";
 import Contact from "./pages/Contact";
 import AuthPage from "./pages/AuthPage";
+import AppLayout from "./components/AppLayout";
 
 const queryClient = new QueryClient();
 
@@ -26,26 +27,29 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <Header />
           <Routes>
             {/* Public Routes */}
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<><Header /><Index /></>} />
             <Route path="/auth" element={<AuthPage />} />
-            <Route path="/templates" element={<Templates />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/contact" element={<Contact />} />
             
-            {/* Authenticated Routes */}
-            <Route element={<ProtectedRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/create" element={<CreateResume />} />
-              <Route path="/my-resumes" element={<MyResumes />} />
-              <Route path="/edit-resume/:id" element={<EditResume />} />
-            </Route>
+            {/* Routes that need the header but not the full AppLayout */}
+            <Route path="/contact" element={<><Header /><Contact /></>} />
 
-            {/* Pro-only Routes */}
-            <Route element={<ProRoute />}>
-              <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
+            {/* Authenticated Routes with the new AppLayout */}
+            <Route element={<ProtectedRoute />}>
+              <Route element={<AppLayout />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/templates" element={<Templates />} />
+                <Route path="/create" element={<CreateResume />} />
+                <Route path="/my-resumes" element={<MyResumes />} />
+                <Route path="/edit-resume/:id" element={<EditResume />} />
+                <Route path="/pricing" element={<Pricing />} />
+                
+                {/* Pro-only Routes inside AppLayout */}
+                <Route element={<ProRoute />}>
+                  <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
+                </Route>
+              </Route>
             </Route>
 
             <Route path="*" element={<NotFound />} />
