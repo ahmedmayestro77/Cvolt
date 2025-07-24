@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Loader2, Star } from 'lucide-react';
+import { Sparkles, Loader2 } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
-import { useProfile } from '@/hooks/use-profile';
 import { showError } from '@/utils/toast';
 import { ResumeFormValues } from '@/lib/resumeSchema';
 import { useTranslation } from 'react-i18next';
@@ -18,21 +17,13 @@ const AIImproveButton: React.FC<AIImproveButtonProps> = ({ fieldName, sectionNam
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
   const { supabase, session } = useAuth();
-  const { data: profile } = useProfile();
   const { setValue, getValues } = useFormContext<ResumeFormValues>();
   const navigate = useNavigate();
-
-  const isPro = profile?.subscription_status === 'pro';
 
   const handleImproveText = async () => {
     if (!session) {
       showError(t('resumeForm.validation.loginRequired'));
       navigate('/auth');
-      return;
-    }
-    if (!isPro) {
-      showError(t('resumeForm.validation.proRequired'));
-      navigate('/pricing');
       return;
     }
 
@@ -63,14 +54,12 @@ const AIImproveButton: React.FC<AIImproveButtonProps> = ({ fieldName, sectionNam
     }
   };
 
-  const Icon = isPro ? Sparkles : Star;
-
   return (
-    <Button type="button" variant="outline" size="sm" onClick={handleImproveText} disabled={isLoading && isPro} className="gap-2">
-      {isLoading && isPro ? (
+    <Button type="button" variant="outline" size="sm" onClick={handleImproveText} disabled={isLoading} className="gap-2">
+      {isLoading ? (
         <Loader2 className="h-4 w-4 animate-spin" />
       ) : (
-        <Icon className="h-4 w-4 text-yellow-500" />
+        <Sparkles className="h-4 w-4 text-primary" />
       )}
       {t('resumeForm.improveWithAI')}
     </Button>

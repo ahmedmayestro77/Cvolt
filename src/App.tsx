@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-import ProRoute from "./components/ProRoute";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
@@ -51,10 +50,8 @@ const App = () => (
                 <Route path="/cover-letter/edit/:id" element={<EditCoverLetter />} />
                 <Route path="/pricing" element={<Pricing />} />
                 
-                {/* Pro-only Routes inside AppLayout */}
-                <Route element={<ProRoute />}>
-                  <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
-                </Route>
+                {/* ATS Analyzer is now a standard protected route */}
+                <Route path="/ats-analyzer" element={<ATSAnalyzer />} />
               </Route>
             </Route>
 

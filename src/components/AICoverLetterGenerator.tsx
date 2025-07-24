@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Wand2, Loader2, Star } from 'lucide-react';
+import { Wand2, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/use-auth';
 import { showError } from '@/utils/toast';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { useProfile } from '@/hooks/use-profile';
 import { useNavigate } from 'react-router-dom';
 
 interface AICoverLetterGeneratorProps {
@@ -18,7 +17,6 @@ interface AICoverLetterGeneratorProps {
 const AICoverLetterGenerator: React.FC<AICoverLetterGeneratorProps> = ({ onGenerate }) => {
   const { t } = useTranslation();
   const { supabase, session } = useAuth();
-  const { data: profile } = useProfile();
   const navigate = useNavigate();
   const [jobTitle, setJobTitle] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -26,17 +24,10 @@ const AICoverLetterGenerator: React.FC<AICoverLetterGeneratorProps> = ({ onGener
   const [resumeText, setResumeText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const isPro = profile?.subscription_status === 'pro';
-
   const handleGenerate = async () => {
     if (!session) {
       showError(t('resumeForm.validation.loginRequired'));
       navigate('/auth');
-      return;
-    }
-    if (!isPro) {
-      showError(t('resumeForm.validation.proRequired'));
-      navigate('/pricing');
       return;
     }
     if (!jobDescription.trim() || !resumeText.trim()) {
@@ -67,7 +58,7 @@ const AICoverLetterGenerator: React.FC<AICoverLetterGeneratorProps> = ({ onGener
         <AccordionTrigger>
           <div className="flex items-center gap-2 text-lg font-semibold text-primary">
             <Wand2 className="h-5 w-5" />
-            {t('coverLetterGenerator.accordionTitle', 'Generate with AI (Pro)')}
+            {t('coverLetterGenerator.accordionTitle', 'Generate with AI')}
           </div>
         </AccordionTrigger>
         <AccordionContent className="space-y-6 pt-4">
@@ -102,11 +93,11 @@ const AICoverLetterGenerator: React.FC<AICoverLetterGeneratorProps> = ({ onGener
             />
           </div>
           <div className="text-right">
-            <Button onClick={handleGenerate} disabled={isLoading || !isPro}>
+            <Button onClick={handleGenerate} disabled={isLoading}>
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
-                isPro ? <Wand2 className="mr-2 h-4 w-4" /> : <Star className="mr-2 h-4 w-4" />
+                <Wand2 className="mr-2 h-4 w-4" />
               )}
               {t('aiGenerator.generateButton')}
             </Button>

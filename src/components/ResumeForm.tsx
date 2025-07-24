@@ -6,7 +6,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getResumeFormSchema, ResumeFormValues } from '@/lib/resumeSchema';
 import { useTranslation } from 'react-i18next';
 import { useResumes, Resume } from '@/hooks/use-resumes';
-import { Loader2, Wand2, Star } from 'lucide-react';
+import { Loader2, Wand2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ResumeStepper from '@/components/ResumeStepper';
 import PersonalDetailsStep from '@/components/resume-form-steps/PersonalDetailsStep';
@@ -17,7 +17,6 @@ import SkillsStep from '@/components/resume-form-steps/SkillsStep';
 import ResumePreview from '@/components/ResumePreview';
 import { showError } from '@/utils/toast';
 import AIResumePromptDialog from './AIResumePromptDialog';
-import { useProfile } from '@/hooks/use-profile';
 
 interface ResumeFormProps {
   mode: 'create' | 'edit';
@@ -30,7 +29,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { useAddResume, useUpdateResume } = useResumes();
-  const { data: profile } = useProfile();
   const [currentStep, setCurrentStep] = useState(0);
   const [isAiDialogOpen, setIsAiDialogOpen] = useState(false);
 
@@ -39,7 +37,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }
 
   const isSubmitting = addResumeMutation.isPending || updateResumeMutation.isPending;
   const templateSlug = (resumeToEdit as Resume)?.template_slug || searchParams.get('template') || 'modern-minimalist';
-  const isPro = profile?.subscription_status === 'pro';
 
   const resumeFormSchema = getResumeFormSchema(t);
 
@@ -88,11 +85,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }
   };
 
   const handleOpenAiDialog = () => {
-    if (!isPro) {
-      showError(t('resumeForm.validation.proRequired'));
-      navigate('/pricing');
-      return;
-    }
     setIsAiDialogOpen(true);
   };
 
@@ -129,7 +121,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ mode, resumeToEdit, isLoading }
                 <CardTitle className="text-center text-2xl flex-grow">{steps[currentStep].name}</CardTitle>
                 {mode === 'create' && (
                   <Button variant="outline" size="sm" onClick={handleOpenAiDialog} className="gap-2">
-                    {isPro ? <Wand2 className="h-4 w-4 text-primary" /> : <Star className="h-4 w-4 text-yellow-500" />}
+                    <Wand2 className="h-4 w-4 text-primary" />
                     {t('aiGenerator.generateButton')}
                   </Button>
                 )}
