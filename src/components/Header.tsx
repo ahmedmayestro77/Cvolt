@@ -50,6 +50,17 @@ const Header = () => {
           </Link>
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                const nextLang = i18n.language === 'ar' ? 'en' : 'ar';
+                changeLanguage(nextLang);
+              }}
+              aria-label="Change language"
+            >
+              <Languages className="h-5 w-5" />
+            </Button>
             <Link to="/auth">
               <Button>Login</Button>
             </Link>
@@ -97,18 +108,17 @@ const Header = () => {
 
       <div className="flex items-center gap-4">
         {/* Language Switcher */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Languages className="h-5 w-5" />
-              <span className="sr-only">Change language</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => changeLanguage('en')}>English</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => changeLanguage('ar')}>العربية</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => {
+            const nextLang = i18n.language === 'ar' ? 'en' : 'ar';
+            changeLanguage(nextLang);
+          }}
+          aria-label="Change language"
+        >
+          <Languages className="h-5 w-5" />
+        </Button>
 
         {/* Theme Toggle */}
         <ThemeToggle />
