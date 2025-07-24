@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { CheckCircle, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/use-auth';
+import { useProfile } from '@/hooks/use-profile';
 import { showSuccess, showError } from '@/utils/toast';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -73,7 +74,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
 const Pricing = () => {
   const { t } = useTranslation();
-  const { session, supabase, profile } = useAuth();
+  const { session, supabase } = useAuth();
+  const { data: profile } = useProfile();
   const navigate = useNavigate();
   const [isSubscribing, setIsSubscribing] = React.useState(false);
 

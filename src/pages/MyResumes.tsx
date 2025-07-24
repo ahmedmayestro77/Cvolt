@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,15 +10,20 @@ import { createRoot } from 'react-dom/client';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import ResumePreview from '@/components/ResumePreview';
+import { showError } from '@/utils/toast';
 
 interface ResumeItemProps {
   resume: Resume;
   onDelete: (id: string) => void;
-  onDownload: (resume: Resume) => void;
+  onDownload: (resume: Resume) => Promise<void>;
+  isDownloading: boolean;
+  currentDownloadId: string | null;
 }
 
-const ResumeItem: React.FC<ResumeItemProps> = ({ resume, onDelete, onDownload }) => {
+const ResumeItem: React.FC<ResumeItemProps> = ({ resume, onDelete, onDownload, isDownloading, currentDownloadId }) => {
   const { t } = useTranslation();
+  const isThisDownloading = isDownloading && currentDownloadId === resume.id;
+
   return (
     <Card className="flex flex-col md:flex-row items-center justify-between p-4 hover:shadow-md transition-shadow duration-300">
       <div className="flex items-center gap-4 mb-4 md:mb-0 text-center md:text-left">
@@ -34,8 +39,9 @@ const ResumeItem: React.FC<ResumeItemProps> = ({ resume, onDelete, onDownload })
             <Edit className="h-4 w-4" /> {t('myResumes.edit')}
           </Button>
         </Link>
-        <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={() => onDownload(resume)}>
-          <Download className="h-4 w-4" /> {t('myResumes.download')}
+        <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={() => onDownload(resume)} disabled={isThisDownloading}>
+          {isThisDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+          {isThisDownloading ? t('myResumes.downloading') : t('myResumes.download')}
         </Button>
         <Button variant="destructive" size="sm" className="flex items-center gap-1" onClick={() => onDelete(resume.id)}>
           <Trash2 className="h-4 w-4" /> {t('myResumes.delete')}
@@ -50,6 +56,8 @@ const MyResumes = () => {
   const { useGetResumes, useDeleteResume } = useResumes();
   const { data: resumes, isLoading } = useGetResumes();
   const deleteResumeMutation = useDeleteResume();
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [currentDownloadId, setCurrentDownloadId] = useState<string | null>(null);
 
   const handleDelete = (id: string) => {
     if (window.confirm(t('myResumes.deleteConfirm'))) {
@@ -58,33 +66,43 @@ const MyResumes = () => {
   };
 
   const handleDownload = async (resume: Resume) => {
-    const tempContainer = document.createElement('div');
-    tempContainer.style.position = 'absolute';
-    tempContainer.style.left = '-9999px';
-    document.body.appendChild(tempContainer);
+    setIsDownloading(true);
+    setCurrentDownloadId(resume.id);
+    try {
+      const tempContainer = document.createElement('div');
+      tempContainer.style.position = 'absolute';
+      tempContainer.style.left = '-9999px';
+      document.body.appendChild(tempContainer);
 
-    const root = createRoot(tempContainer);
-    root.render(<ResumePreview resume={resume} templateSlug={resume.template_slug} />);
+      const root = createRoot(tempContainer);
+      root.render(<ResumePreview resume={resume} templateSlug={resume.template_slug} />);
 
-    await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-    const canvas = await html2canvas(tempContainer.firstChild as HTMLElement, { scale: 2 });
-    
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
-    const ratio = canvasWidth / canvasHeight;
-    const width = pdfWidth;
-    const height = width / ratio;
+      const canvas = await html2canvas(tempContainer.firstChild as HTMLElement, { scale: 2 });
+      
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const ratio = canvasWidth / canvasHeight;
+      const width = pdfWidth;
+      const height = width / ratio;
 
-    pdf.addImage(imgData, 'PNG', 0, 0, width, height > pdfHeight ? pdfHeight : height);
-    pdf.save(`CV_${resume.fullName.replace(/\s/g, '_')}.pdf`);
+      pdf.addImage(imgData, 'PNG', 0, 0, width, height > pdfHeight ? pdfHeight : height);
+      pdf.save(`CV_${resume.fullName.replace(/\s/g, '_')}.pdf`);
 
-    root.unmount();
-    document.body.removeChild(tempContainer);
+      root.unmount();
+      document.body.removeChild(tempContainer);
+    } catch (error) {
+      console.error("Failed to download PDF:", error);
+      showError(t('myResumes.downloadError'));
+    } finally {
+      setIsDownloading(false);
+      setCurrentDownloadId(null);
+    }
   };
 
   return (
@@ -110,7 +128,14 @@ const MyResumes = () => {
       ) : (
         <div className="space-y-4">
           {resumes.map((resume) => (
-            <ResumeItem key={resume.id} resume={resume} onDelete={handleDelete} onDownload={handleDownload} />
+            <ResumeItem
+              key={resume.id}
+              resume={resume}
+              onDelete={handleDelete}
+              onDownload={handleDownload}
+              isDownloading={isDownloading}
+              currentDownloadId={currentDownloadId}
+            />
           ))}
         </div>
       )}

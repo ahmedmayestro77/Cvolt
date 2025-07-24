@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2, Star } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
+import { useProfile } from '@/hooks/use-profile';
 import { showError } from '@/utils/toast';
 import { ResumeFormValues } from '@/lib/resumeSchema';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +17,8 @@ interface AIImproveButtonProps {
 const AIImproveButton: React.FC<AIImproveButtonProps> = ({ fieldName, sectionName }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
-  const { supabase, session, profile } = useAuth();
+  const { supabase, session } = useAuth();
+  const { data: profile } = useProfile();
   const { setValue, getValues } = useFormContext<ResumeFormValues>();
   const navigate = useNavigate();
 

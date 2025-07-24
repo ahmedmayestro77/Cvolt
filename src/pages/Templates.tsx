@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/use-auth';
+import { useProfile } from '@/hooks/use-profile';
 import { showError } from '@/utils/toast';
 
 interface TemplateCardProps {
@@ -18,7 +19,8 @@ interface TemplateCardProps {
 
 const TemplateCard: React.FC<TemplateCardProps> = ({ name, description, isPro, imageUrl, slug }) => {
   const { t } = useTranslation();
-  const { profile, session } = useAuth();
+  const { session } = useAuth();
+  const { data: profile } = useProfile();
   const navigate = useNavigate();
 
   const handleUseTemplate = (e: React.MouseEvent) => {

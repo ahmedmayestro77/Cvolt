@@ -1,20 +1,16 @@
-import { useAuth } from '@/hooks/use-auth';
+import { useProfile } from '@/hooks/use-profile';
 import { Navigate, Outlet } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 
 const ProRoute = () => {
-  const { session, profile, loading } = useAuth();
+  const { data: profile, isLoading } = useProfile();
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );
-  }
-
-  if (!session) {
-    return <Navigate to="/auth" replace />;
   }
 
   if (profile?.subscription_status !== 'pro') {

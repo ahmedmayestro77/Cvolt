@@ -7,6 +7,7 @@ import { motion, Variants } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ParticlesBackground from "@/components/ParticlesBackground";
+import { testimonials } from "../data/testimonials";
 
 const Index = () => {
   const { t, ready } = useTranslation();
@@ -19,12 +20,6 @@ const Index = () => {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-
-  const testimonials = [
-    { name: "Sarah L.", role: "Marketing Manager", quote: "The fastest and most intuitive resume builder I've ever used. I created a professional CV in minutes!", avatar: "https://ui-avatars.com/api/?name=Sarah+L&background=random&color=fff" },
-    { name: "Ahmed K.", role: "Software Engineer", quote: "CVOLT's templates are modern and ATS-friendly. It helped me land my dream job.", avatar: "https://ui-avatars.com/api/?name=Ahmed+K&background=random&color=fff" },
-    { name: "Fatima E.", role: "UX Designer", quote: "The AI suggestions are a game-changer. It's like having a career coach by your side.", avatar: "https://ui-avatars.com/api/?name=Fatima+E&background=random&color=fff" },
-  ];
 
   if (!ready) {
     return <div className="h-screen w-full flex items-center justify-center">Loading...</div>;

@@ -7,10 +7,12 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/use-auth';
 import { useResumes } from '@/hooks/use-resumes';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useProfile } from '@/hooks/use-profile';
 
 const Dashboard = () => {
   const { t } = useTranslation();
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
+  const { data: profile } = useProfile();
   const { useGetResumes } = useResumes();
   const { data: resumes, isLoading } = useGetResumes();
 
